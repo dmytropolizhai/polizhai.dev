@@ -2,9 +2,34 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## State of the repo
+## What this is
 
-Pre-code planning workspace for the **polizhai.dev** rebuild (personal-brand portfolio of Dmytro Polizhai, "Full-Stack Developer"). There is no `package.json`, no app source, no git repo, and no build/lint/test commands yet. Everything here is research, brand, design and content that the future React/Vite/TS app will consume. Planned deployment: static site on Cloudflare Pages.
+The **polizhai.dev** rebuild: personal-brand portfolio of Dmytro Polizhai, "Full-Stack Developer". A single-page React 19 + Vite 8 + TypeScript app (Tailwind 4, shadcn on Base UI, motion), deployed as a static site on Cloudflare Pages. Planning docs (research, brand, design, content) live beside the app and are its source of truth.
+
+## Commands
+
+pnpm only.
+
+- `pnpm dev`: Vite dev server
+- `pnpm build`: `tsc -b && vite build` (strict TS with `noUncheckedIndexedAccess`; this is the only check, there is no lint or test setup yet)
+- `pnpm typecheck`: types only
+- `pnpm dlx shadcn@latest add <item>`: add registry components (`@magicui/...`, `@animate-ui/...`, React Bits URLs). After adding, check the import of `cn`: shadcn once resolved it to the npm package `cn`, which is wrong; it must be `@/lib/utils`. Strip `'use client'` and unused `React` imports.
+
+## App architecture
+
+- `index.html` → `src/main.tsx` → `src/App.tsx`: Hero, `<main>` (Work, How, Journey, About, ClientQuote, Contact), Footer, Dock. The dock is last in the DOM by design.
+- `src/index.css` imports Tailwind, `@fontsource-variable/archivo/wdth.css` (both axes; the wide titles need it) and `design/tokens.css`. Token classes (`type-*`, `.mark`, `texture-*`) and utilities (`bg-surface`, `text-fg-muted`, `ease-move`, `rounded-pill`) come from there; the stock Tailwind palette is removed. `index.css` adds only `container-site`, `.reveal`, `.rise-in` and `.highlight-sweep`.
+- **Content goes through `src/lib/content.ts`** (`t` = active locale copy, `facts`, `hrefOf`, `showClientQuote`, `formatWhen`). Components never hard-code copy. Aliases: `@/` → `src/`, `@content/` → `content/`.
+- `src/lib/pending.ts` holds everything waiting on Dmytro: **NEW** copy flags (`letsTalk`, `budgetFigures`, `curioBars`), screenshot and portrait paths (`null` renders a halftone placeholder with the same ratio and animation), and `caseStudyPagesLive` (hides `/work/*` links until those pages exist).
+- One job per library:
+  - React Bits Threads: hero background, `src/components/effects/threads.tsx`, lazy-loaded and desktop only, capped at 15% by wrapper opacity.
+  - Magic UI NumberTicker: Stundio and Curio counters, in `ui/number-ticker.tsx`. It is adapted: the HTML ships the final value, and a `play` prop restarts the count.
+  - Animate UI: icons, in `components/animate-ui/icons/`.
+  - shadcn on Base UI: primitives in `components/ui/`. The button is rewritten to the design system's pill variants `primary` and `secondary`.
+  - Own code: the bento grid, the dock (SmoothUI's job), and the journey rail (Aceternity's job), all rebuilt monochrome.
+- Bento tiles (`sections/work/`): `Tile` passes `{ playing, reduced }` from `usePlayTrigger`. The trigger is hover or focus on a fine pointer, and once at 60% in view on touch. Each tile owns exactly one animation and must render its finished state when `reduced`.
+- Entrances use `<Reveal>` (CSS rise and fade, once, stagger with `index` × 60ms). Titles and the H1 never animate.
+- Dock highlight: `useActiveSection`, an IntersectionObserver band at 50% viewport. `#top` and `#client` clear it.
 
 ## Layout and source-of-truth order
 

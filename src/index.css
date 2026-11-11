@@ -1,0 +1,201 @@
+@import "tailwindcss";
+@import "@fontsource-variable/archivo/wdth.css";
+@import "../design/tokens.css";
+
+/* Project-level additions, built only from tokens. Values live in design/tokens.css. */
+
+/* Unlayered so it wins over the token file's :root. */
+:root {
+  --font-archivo: "Archivo Variable", "Archivo Fallback", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --dock-h: 3.25rem;
+}
+
+@utility container-site {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility text-label {
+  font-size: var(--text-label);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Focused elements and anchor jumps never land under the dock. */
+    scroll-padding-bottom: calc(var(--dock-h) + 2rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Size-adjusted local fallback so the swap to Archivo does not shift layout. */
+  @font-face {
+    font-family: "Archivo Fallback";
+    src: local("Arial");
+    size-adjust: 104%;
+    ascent-override: 90%;
+    descent-override: 22%;
+  }
+
+
+  main {
+    /* The dock never covers the last line. */
+    padding-bottom: calc(var(--dock-h) + 2rem + env(safe-area-inset-bottom));
+  }
+}
+
+@layer components {
+  /* Entrance: rise + fade, once (design-system §8). */
+  .reveal {
+    opacity: 0;
+    translate: 0 var(--rise);
+    transition:
+      opacity var(--dur-section) var(--motion-arrive) var(--reveal-delay, 0ms),
+      translate var(--dur-section) var(--motion-arrive) var(--reveal-delay, 0ms);
+  }
+  .reveal[data-revealed] {
+    opacity: 1;
+    translate: 0 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      translate: none;
+    }
+  }
+
+  /* Hero subline: CSS-only, once on load. */
+  .rise-in {
+    animation: rise-in var(--dur-section) var(--motion-arrive) both;
+    animation-delay: 120ms;
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      translate: 0 var(--rise);
+    }
+  }
+
+  /* Underline sweep, 2px white, 560ms (Animate UI highlight job). */
+  .highlight-sweep {
+    position: relative;
+    display: inline;
+    background: linear-gradient(var(--fg), var(--fg)) no-repeat 0 100% / 0% 2px;
+    transition: background-size var(--dur-section) var(--motion-move);
+    padding-bottom: 2px;
+  }
+  .highlight-sweep[data-on] {
+    background-size: 100% 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .highlight-sweep {
+      background-size: 100% 2px;
+    }
+  }
+}
+
+/* ==========================================================================
+   Mark3D: the brand parallelogram extruded into a slab (src/components/effects/mark-3d.tsx).
+   Everything is in cqw of the wrapper, so it scales with its width and needs no JS measuring.
+   Shape: 306.378 x 143.34 (ratio 2.1374), 30deg shear, i.e. polygon(27.01% 0, 100% 0, 72.99% 100%, 0 100%).
+   Nothing between .mark3d-rotor and the faces may use opacity, filter, overflow, mask or isolation.
+   ========================================================================== */
+.mark3d {
+  --mark-ratio: 2.1374;
+  --mark-thick: 0.5; /* depth as a fraction of the mark height */
+  --mark-h: calc(100cqw / var(--mark-ratio));
+  --mark-d: calc(var(--mark-h) * var(--mark-thick));
+  --mark-o: 0.12cqw; /* edge faces overlap their neighbours by this much, hiding AA seams */
+  --mark-edge-len: calc(var(--mark-h) * 1.1547005 + 2 * var(--mark-o)); /* H / cos(30deg) */
+  --mark-edge-d: calc(var(--mark-d) + 2 * var(--mark-o));
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: var(--mark-ratio);
+  pointer-events: none;
+}
+
+.mark3d-rotor {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  /* perspective() lives in the rotor's own transform because cqw does not resolve on the container itself. */
+  transform: perspective(300cqw) rotateX(calc(var(--mark-rx) * 1deg)) rotateY(calc(var(--mark-ry) * 1deg));
+  will-change: transform;
+}
+
+.mark3d-face {
+  position: absolute;
+}
+
+.mark3d-front,
+.mark3d-back {
+  inset: 0;
+}
+.mark3d-front {
+  clip-path: polygon(27.01% 0, 100% 0, 72.99% 100%, 0 100%);
+  transform: translateZ(calc(var(--mark-d) / 2));
+  background: hsl(0 0% var(--tone-front));
+  overflow: hidden; /* clips the sheen; on a face, never on the rotor */
+}
+/* Turned to face away, so it is culled and costs nothing. Its polygon is mirrored by the rotateY. */
+.mark3d-back {
+  clip-path: polygon(0 0, 72.99% 0, 100% 100%, 27.01% 100%);
+  transform: translateZ(calc(var(--mark-d) / -2)) rotateY(180deg);
+  backface-visibility: hidden;
+  background: hsl(0 0% 17%); /* TUNING.floor in mark-3d.tsx */
+}
+
+/* One very soft sheen: a wide low-contrast band that slides with yaw. */
+.mark3d-front::after {
+  content: "";
+  position: absolute;
+  inset: 0 -50%;
+  background: linear-gradient(
+    100deg,
+    rgb(0 0 0 / 0) 18%,
+    rgb(0 0 0 / 0.07) 42%,
+    rgb(0 0 0 / 0) 66%,
+    rgb(0 0 0 / 0.035) 100%
+  );
+  translate: calc(var(--mark-sheen) * 1%) 0;
+}
+
+.mark3d-top,
+.mark3d-bottom {
+  left: calc(27.01% - var(--mark-o));
+  width: calc(72.99% + 2 * var(--mark-o));
+  height: var(--mark-edge-d);
+  transform: rotateX(90deg);
+}
+.mark3d-top {
+  top: calc(var(--mark-edge-d) / -2);
+  background: hsl(0 0% var(--tone-top));
+}
+.mark3d-bottom {
+  left: calc(0% - var(--mark-o));
+  top: calc(100% - var(--mark-edge-d) / 2);
+  background: hsl(0 0% var(--tone-bottom));
+}
+
+.mark3d-left,
+.mark3d-right {
+  width: var(--mark-edge-len);
+  height: var(--mark-edge-d);
+  top: calc(50% - var(--mark-edge-d) / 2);
+  transform: rotateZ(-60deg) rotateX(90deg);
+}
+.mark3d-left {
+  left: calc(13.505% - var(--mark-edge-len) / 2);
+  background: hsl(0 0% var(--tone-left));
+}
+.mark3d-right {
+  left: calc(86.495% - var(--mark-edge-len) / 2);
+  background: hsl(0 0% var(--tone-right));
+}
