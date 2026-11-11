@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Send } from "@/components/animate-ui/icons/send";
 import { buttonVariants } from "@/components/ui/button";
 import { CopyEmailButton } from "@/components/ui/copy-email-button";
-import { CornerLabels } from "@/components/ui/corner-labels";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section";
 import { ExternalNote, externalProps } from "@/components/ui/text-link";
@@ -29,7 +28,7 @@ function RigaClock() {
     };
   }, []);
   return (
-    <p className="type-label mt-2 text-right text-fg-muted">
+    <p className="type-label text-right text-fg-muted">
       {t.contact.localTimeLabel} · <time className="type-num">{now ?? "--:--"}</time>
     </p>
   );
@@ -50,7 +49,7 @@ export function Contact() {
       className="texture-grain relative flex min-h-svh flex-col"
     >
       <div className="container-site relative z-(--z-content) flex flex-1 flex-col pt-(--section-y)">
-        <CornerLabels topic={t.nav.sections.contact.short.toLowerCase()} aside={<RigaClock />} />
+        <RigaClock />
 
         <div className="mt-auto pt-(--space-24)">
           {poster.show && (

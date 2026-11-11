@@ -1,4 +1,3 @@
-import { CornerLabels } from "@/components/ui/corner-labels";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section";
 import { t } from "@/lib/content";
@@ -12,10 +11,7 @@ export function How() {
       <div className="grid gap-x-6 gap-y-12 lg:grid-cols-12">
         <header className="lg:col-span-5">
           <div className="lg:sticky lg:top-12">
-            <CornerLabels topic={t.nav.sections.how.short.toLowerCase()} />
-            <SectionTitle id="how-title" className="mt-(--space-8)">
-              {t.how.heading}
-            </SectionTitle>
+            <SectionTitle id="how-title">{t.how.heading}</SectionTitle>
             <p className="type-lede mt-(--space-6) max-w-[24ch] text-fg-muted">{t.how.intro}</p>
           </div>
         </header>

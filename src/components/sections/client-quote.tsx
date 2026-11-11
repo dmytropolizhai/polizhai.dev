@@ -1,4 +1,3 @@
-import { CornerLabels } from "@/components/ui/corner-labels";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section";
 import { facts, isTbd, showClientQuote, t } from "@/lib/content";
@@ -11,10 +10,7 @@ export function ClientQuote() {
 
   return (
     <section id="client" aria-labelledby="client-title" className="container-site py-(--section-y)">
-      <CornerLabels topic={t.nav.sections.client.short.toLowerCase()} />
-      <SectionTitle id="client-title" className="mt-(--space-8)">
-        {t.client.heading}
-      </SectionTitle>
+      <SectionTitle id="client-title">{t.client.heading}</SectionTitle>
       <Reveal>
         <figure className="mt-(--space-8) border-l-2 border-fg pl-(--space-8)">
           <blockquote className="type-h2">

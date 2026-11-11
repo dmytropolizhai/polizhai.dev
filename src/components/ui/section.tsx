@@ -1,7 +1,5 @@
 import type { SectionId } from "@content/site";
-import { t } from "@/lib/content";
 import { cn } from "@/lib/utils";
-import { CornerLabels } from "./corner-labels";
 import { Reveal } from "./reveal";
 
 type SectionProps = {
@@ -13,12 +11,12 @@ type SectionProps = {
   children: React.ReactNode;
 };
 
-/** Section shell: corner labels, title (never animated), optional `type-lede` intro, then content. */
+/** Section shell: title (never animated), optional `type-lede` intro, then content. */
 export function Section({ id, title, intro, className, children }: SectionProps) {
   const headingId = `${id}-title`;
   return (
     <section id={id} aria-labelledby={headingId} className={cn("container-site py-(--section-y)", className)}>
-      <SectionHeader id={id} headingId={headingId} title={title} intro={intro} />
+      <SectionHeader headingId={headingId} title={title} intro={intro} />
       {children}
     </section>
   );
@@ -42,13 +40,11 @@ export function SectionTitle({
 }
 
 export function SectionHeader({
-  id,
   headingId,
   title,
   intro,
   className,
 }: {
-  id: SectionId;
   headingId: string;
   title: string;
   intro?: string;
@@ -56,10 +52,7 @@ export function SectionHeader({
 }) {
   return (
     <header className={cn("mb-(--space-16)", className)}>
-      <CornerLabels topic={t.nav.sections[id].short.toLowerCase()} />
-      <SectionTitle id={headingId} className="mt-(--space-8)">
-        {title}
-      </SectionTitle>
+      <SectionTitle id={headingId}>{title}</SectionTitle>
       {intro && (
         <Reveal>
           <p className="type-lede mt-(--space-6) max-w-[36ch] text-fg-muted">{intro}</p>
