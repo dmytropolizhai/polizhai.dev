@@ -18,15 +18,20 @@ pnpm only.
 ## App architecture
 
 - `index.html` → `src/main.tsx` → `src/App.tsx`: Hero, `<main>` (Work, How, Journey, About, ClientQuote, Contact), Footer, Dock. The dock is last in the DOM by design.
-- `src/index.css` imports Tailwind, `@fontsource-variable/archivo/wdth.css` (both axes; the wide titles need it) and `design/tokens.css`. Token classes (`type-*`, `.mark`, `texture-*`) and utilities (`bg-surface`, `text-fg-muted`, `ease-move`, `rounded-pill`) come from there; the stock Tailwind palette is removed. `index.css` adds only `container-site`, `.reveal`, `.rise-in` and `.highlight-sweep`.
+- `src/index.css` imports Tailwind, `@fontsource-variable/archivo/wdth.css` (both axes; the wide titles need it) and `design/tokens.css`. Token classes (`type-*`, `.mark`, `texture-*`) and utilities (`bg-surface`, `text-fg-muted`, `ease-move`, `rounded-pill`) come from there; the stock Tailwind palette is removed. `index.css` adds only `container-site`, `.reveal`, `.rise-in`, `.highlight-sweep` and the `.mark3d*` block.
 - **Content goes through `src/lib/content.ts`** (`t` = active locale copy, `facts`, `hrefOf`, `showClientQuote`, `formatWhen`). Components never hard-code copy. Aliases: `@/` → `src/`, `@content/` → `content/`.
 - `src/lib/pending.ts` holds everything waiting on Dmytro: **NEW** copy flags (`letsTalk`, `budgetFigures`, `curioBars`), screenshot and portrait paths (`null` renders a halftone placeholder with the same ratio and animation), and `caseStudyPagesLive` (hides `/work/*` links until those pages exist).
 - One job per library:
-  - React Bits Threads: hero background, `src/components/effects/threads.tsx`, lazy-loaded and desktop only, capped at 15% by wrapper opacity.
+  - React Bits Threads: `src/components/effects/threads.tsx` with the `hero-threads.tsx` wrapper (lazy-loaded, desktop only, capped at 15% by wrapper opacity). Currently unmounted: the hero's picture is the 3D mark.
   - Magic UI NumberTicker: Stundio and Curio counters, in `ui/number-ticker.tsx`. It is adapted: the HTML ships the final value, and a `play` prop restarts the count.
   - Animate UI: icons, in `components/animate-ui/icons/`.
   - shadcn on Base UI: primitives in `components/ui/`. The button is rewritten to the design system's pill variants `primary` and `secondary`.
   - Own code: the bento grid, the dock (SmoothUI's job), and the journey rail (Aceternity's job), all rebuilt monochrome.
+- Hero picture: `Mark3D` (`src/components/effects/mark-3d.tsx`), the mark extruded into a slab that turns toward the cursor. It replaced the eagle photo (2026-11-11; the files in `public/images/` are unused) and is the hero's one moving thing.
+  - CSS 3D only, no WebGL: six faces under one `preserve-3d` rotor, geometry in the `.mark3d*` block of `index.css` (cqw units). Never put opacity, filter, overflow, mask or isolation on the rotor: they flatten it.
+  - The TSX owns the per-face Lambert shading and the pointer loop; pose, range, light and tones live in its `TUNING` object. `--mark-thick` and `perspective()` are in the CSS.
+  - The loop writes custom properties only, stops when settled or off screen, and runs only on fine hover pointers with motion allowed and Save-Data off. Otherwise the rest pose renders statically.
+  - Its width is capped by viewport height as well as width, so short screens keep the hero actions above the fold.
 - Bento tiles (`sections/work/`): `Tile` passes `{ playing, reduced }` from `usePlayTrigger`. The trigger is hover or focus on a fine pointer, and once at 60% in view on touch. Each tile owns exactly one animation and must render its finished state when `reduced`.
 - Entrances use `<Reveal>` (CSS rise and fade, once, stagger with `index` × 60ms). Titles and the H1 never animate.
 - Dock highlight: `useActiveSection`, an IntersectionObserver band at 50% viewport. `#top` and `#client` clear it.
