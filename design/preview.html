@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>polizhai.dev design system</title>
+<link rel="icon" href="logo/favicon.svg">
+<!-- Preview only. The site self-hosts Archivo through Fontsource. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; }
+  p { margin: 0; }
+
+  .wrap { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+  .muted { color: var(--fg-muted); }
+  .subtle { color: var(--fg-subtle); }
+  .stack > * + * { margin-top: var(--space-6); }
+
+  /* Section bar: the two corner labels from the posts */
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);
+    padding-block: var(--space-4); border-top: var(--border) solid var(--line); }
+  .section { padding-block: var(--space-16) var(--space-24); }
+  .section > .wrap > .type-h2 { margin-block: var(--space-12) var(--space-12); }
+  .sub { margin-block: var(--space-16) var(--space-6); }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+    min-height: 3rem; padding: 0 var(--space-6); border-radius: var(--round-pill);
+    border: var(--border) solid transparent; font: 700 0.9375rem/1 var(--font-archivo);
+    letter-spacing: -0.01em; text-decoration: none; cursor: pointer;
+    transition: background-color var(--dur-micro) var(--motion-move), border-color var(--dur-micro) var(--motion-move), color var(--dur-micro) var(--motion-move); }
+  .btn-primary { background: var(--inverse); color: var(--on-inverse); }
+  .btn-primary:hover, .btn-primary.is-hover { background: var(--inverse-hover); }
+  .btn-secondary { background: transparent; color: var(--fg); border-color: var(--control); }
+  .btn-secondary:hover, .btn-secondary.is-hover { border-color: var(--fg); background: var(--raised); }
+  .btn-sm { min-height: 2.75rem; padding-inline: var(--space-4); font-size: var(--text-small); }
+  .is-focus { outline: 2px solid var(--inverse); outline-offset: 2px; }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.25em;
+    transition: text-decoration-color var(--dur-micro) var(--motion-move); text-decoration-color: var(--control); }
+  .link:hover { text-decoration-color: var(--fg); }
+
+  .tag { display: inline-flex; align-items: center; min-height: 1.75rem; padding: 0 var(--space-3);
+    border: var(--border) solid var(--line-strong); border-radius: var(--round-pill);
+    font-size: var(--text-label); font-weight: 500; color: var(--fg-muted); white-space: nowrap; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .status { display: inline-flex; align-items: center; gap: var(--space-2); }
+
+  /* Swatches */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: var(--space-6) var(--space-4); }
+  .swatch { display: grid; gap: var(--space-2); }
+  .chip { height: 4.5rem; border: var(--border) solid var(--line); }
+
+  /* Type specimen */
+  .spec { display: grid; grid-template-columns: 9rem 1fr; gap: var(--space-6); align-items: baseline;
+    padding-block: var(--space-6); border-top: var(--border) solid var(--line); }
+  .spec > :first-child { position: sticky; }
+  @media (max-width: 640px) { .spec { grid-template-columns: 1fr; gap: var(--space-2); } }
+
+  /* Spacing */
+  .space-row { display: flex; align-items: center; gap: var(--space-4); padding-block: var(--space-2); }
+  .space-row i { display: block; height: 0.75rem; background: var(--fg); }
+  .space-row span { width: 7rem; flex: none; }
+
+  /* Cards */
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-6); }
+  .col-6 { grid-column: span 6; } .col-4 { grid-column: span 4; } .col-12 { grid-column: span 12; }
+  @media (max-width: 800px) { .col-6, .col-4 { grid-column: span 12; } }
+
+  .card { background: var(--surface); border: var(--border) solid var(--line); display: flex; flex-direction: column;
+    transition: border-color var(--dur-component) var(--motion-move); }
+  .card:hover { border-color: var(--control); }
+  .card-media { aspect-ratio: 16 / 10; background: var(--raised); display: grid; place-items: center;
+    border-bottom: var(--border) solid var(--line); overflow: hidden; }
+  .card-body { padding: var(--space-6); display: grid; gap: var(--space-4); }
+  .card-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
+
+  .placeholder { color: var(--fg-subtle); font-size: var(--text-label); font-weight: 700; }
+  .portrait { aspect-ratio: 3 / 4; background: var(--raised); border: var(--border) solid var(--line);
+    display: grid; place-items: center; max-width: 20rem; }
+
+  /* Proof strip and customers bar */
+  .proof { display: grid; grid-template-columns: repeat(3, 1fr); border-block: var(--border) solid var(--line); }
+  .proof > div { padding: var(--space-6) var(--space-6) var(--space-6) 0; display: grid; gap: var(--space-2); }
+  .proof > div + div { border-left: var(--border) solid var(--line); padding-left: var(--space-6); }
+  .proof b { font-size: var(--text-h3); font-stretch: var(--width-wide); font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+  @media (max-width: 640px) { .proof { grid-template-columns: 1fr; }
+    .proof > div + div { border-left: 0; border-top: var(--border) solid var(--line); padding-left: 0; } }
+
+  .customers { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-12);
+    padding-block: var(--space-6); border-top: var(--border) solid var(--line); }
+  .customers .logo { font-stretch: var(--width-wide); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.02em;
+    color: var(--fg); opacity: 0.6; transition: opacity var(--dur-micro) var(--motion-move); }
+  .customers .logo:hover { opacity: 1; }
+
+  /* Dock */
+  .dock { display: inline-flex; gap: var(--space-1); padding: var(--space-2); background: var(--raised);
+    border: var(--border) solid var(--line-strong); border-radius: var(--round-pill); }
+  .dock a { position: relative; height: 2.75rem; padding: 0 var(--space-4); display: grid; place-items: center; border-radius: var(--round-pill);
+    text-decoration: none; color: var(--fg-muted); font-size: var(--text-small); font-weight: 700; letter-spacing: -0.01em;
+    transition: color var(--dur-micro) var(--motion-move), background-color var(--dur-micro) var(--motion-move), transform var(--dur-micro) var(--motion-move); }
+  .dock a:hover { color: var(--fg); background: var(--line); transform: translateY(-2px); }
+  .dock a[aria-current] { color: var(--fg); }
+  .dock a[aria-current]::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); bottom: 0.25rem; height: 0.3125rem;
+    aspect-ratio: var(--mark-ratio); background: var(--inverse); clip-path: polygon(27.01% 0, 100% 0, 72.99% 100%, 0 100%); }
+
+  @media (max-width: 480px) { .dock a { padding-inline: var(--space-2); font-size: var(--text-label); } }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: var(--space-8); display: grid; gap: var(--space-12); }
+  .timeline::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--line); }
+  .timeline::after { content: ""; position: absolute; left: -0.5px; top: 0; height: 58%; width: 2px; background: var(--inverse); }
+  .timeline li { list-style: none; display: grid; gap: var(--space-2); color: var(--fg-subtle); }
+  .timeline li.is-lit { color: var(--fg); }
+  .timeline li.is-lit p { color: var(--fg-muted); }
+  ol.timeline { margin: 0; }
+
+  /* Quote */
+  .quote { border-left: 2px solid var(--inverse); padding-left: var(--space-6); display: grid; gap: var(--space-6); margin: 0; }
+
+  /* Textures */
+  .panel { min-height: 16rem; background: var(--bg); border: var(--border) solid var(--line);
+    display: grid; place-items: center; padding: var(--space-6); text-align: center; }
+  .panel > * { position: relative; z-index: var(--z-content); }
+
+  /* Motion demo */
+  .move-demo { height: 9rem; border: var(--border) solid var(--line); position: relative; overflow: hidden; background: var(--surface); }
+  .move-demo i { position: absolute; left: var(--space-6); bottom: var(--space-4); width: 3rem; aspect-ratio: var(--mark-ratio);
+    background: var(--inverse); clip-path: polygon(27.01% 0, 100% 0, 72.99% 100%, 0 100%);
+    animation: move 2.4s var(--motion-move) infinite alternate; }
+  .move-demo.arrive i { animation: arrive 2.4s var(--motion-arrive) infinite; }
+  .move-demo span { position: absolute; right: var(--space-4); top: var(--space-4); }
+  @keyframes move { to { transform: translateY(-5.5rem); } }
+  @keyframes arrive { 0% { transform: translateY(var(--rise)); opacity: 0; } 25%, 100% { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .move-demo i { animation: none; } }
+
+  /* Bento grid */
+  .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-4); grid-auto-rows: minmax(18rem, auto); }
+  .tile { background: var(--surface); border: var(--border) solid var(--line); display: flex; flex-direction: column; overflow: hidden;
+    min-width: 0; transition: border-color var(--dur-component) var(--motion-move); }
+  .tile:hover, .tile:focus-within { border-color: var(--control); }
+  .tile-body { padding: var(--space-6); display: grid; gap: var(--space-3); align-content: start; }
+  .tile-media { flex: 1; min-height: 9rem; background: var(--raised); position: relative; overflow: hidden; border-bottom: var(--border) solid var(--line); }
+  .t-8x2 { grid-column: span 8; grid-row: span 2; flex-direction: row; }
+  .t-8x2 .tile-media { flex: 0 0 56%; border-bottom: 0; border-right: var(--border) solid var(--line); }
+  .t-8x2 .tile-body { flex: 1; min-width: 0; align-content: center; }
+  .t-8x2 .type-h2 { font-size: clamp(1.75rem, 3.2vw, 2.75rem); }
+  .t-4x2 { grid-column: span 4; grid-row: span 2; }
+  .t-7x1 { grid-column: span 7; flex-direction: row; align-items: center; justify-content: space-between; }
+  .t-5x1 { grid-column: span 5; background: var(--bg); justify-content: center; }
+  .stat { display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap; }
+  .stat b { font-size: var(--text-h2); font-stretch: var(--width-wide); font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+  @media (max-width: 1024px) { .bento { grid-template-columns: repeat(6, 1fr); }
+    .t-8x2, .t-7x1, .t-5x1 { grid-column: span 6; } .t-4x2 { grid-column: span 3; } }
+  @media (max-width: 640px) { .bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .t-8x2, .t-4x2, .t-7x1, .t-5x1 { grid-column: auto; grid-row: auto; flex-direction: column; align-items: stretch; }
+    .t-8x2 .tile-media { border-right: 0; border-bottom: var(--border) solid var(--line); aspect-ratio: 4 / 3; flex: none; } }
+
+  /* 1. page scrolls itself */
+  .pan { position: absolute; inset: 0 0 auto 0; display: grid; gap: var(--space-3); padding: var(--space-4);
+    transition: transform var(--dur-section) var(--motion-move); }
+  .pan i { display: block; height: 7rem; background: var(--line); }
+  .pan i:nth-child(3n+1) { height: 12rem; background: var(--line-strong); }
+  .tile:hover .pan, .tile:focus-within .pan { transform: translateY(calc(-100% + 34rem)); transition-duration: 8s; }
+  /* 2. underline sweep */
+  .sweep { background: linear-gradient(var(--fg), var(--fg)) left bottom / 0 2px no-repeat; padding-bottom: 2px;
+    transition: background-size var(--dur-section) var(--motion-move); }
+  .tile:hover .sweep, .tile:focus-within .sweep { background-size: 100% 2px; }
+  .phones { position: absolute; inset: 0; display: flex; justify-content: center; align-items: flex-end; gap: var(--space-4); }
+  .phones i { width: 28%; height: 78%; background: var(--line-strong); border: var(--border) solid var(--control); border-bottom: 0;
+    transform: translateY(var(--rise)); transition: transform var(--dur-component) var(--motion-arrive); }
+  .phones i + i { height: 66%; transition-delay: 60ms; }
+  .tile:hover .phones i, .tile:focus-within .phones i { transform: none; }
+  /* 3. two bars */
+  .bars { display: flex; align-items: flex-end; gap: var(--space-2); height: 3.5rem; border-bottom: var(--border) solid var(--control); }
+  .bars i { width: 0.75rem; height: 100%; background: var(--fg-subtle); transform-origin: bottom; transform: scaleY(0.15);
+    transition: transform var(--dur-section) var(--motion-move); }
+  .bars i + i { height: 90%; background: var(--fg); transition-delay: var(--dur-micro); }
+  .tile:hover .bars i, .tile:focus-within .bars i { transform: none; }
+  /* 4. three screens */
+  .screens i { position: absolute; inset: 0; display: grid; place-items: center; background: var(--raised); font-style: normal;
+    transition: transform var(--dur-section) var(--motion-move); }
+  .screens i + i { transform: translateY(100%); background: var(--line); }
+  .screens i + i + i { background: var(--line-strong); }
+  .tile:hover .screens i:nth-child(2), .tile:focus-within .screens i:nth-child(2) { transform: none; transition-delay: 0.4s; }
+  .tile:hover .screens i:nth-child(3), .tile:focus-within .screens i:nth-child(3) { transform: none; transition-delay: 2.4s; }
+  /* 5. chat lines */
+  .chat { position: absolute; inset: 0; display: grid; align-content: center; gap: var(--space-3); padding: var(--space-6); z-index: var(--z-content); }
+  .chat i { height: 0.625rem; width: 46%; background: var(--fg-subtle); opacity: 0; transform: translateY(var(--rise));
+    transition: opacity var(--dur-component) var(--motion-arrive), transform var(--dur-component) var(--motion-arrive); }
+  .chat i:nth-child(even) { justify-self: end; background: var(--fg); width: 34%; }
+  .tile:hover .chat i, .tile:focus-within .chat i { opacity: 1; transform: none; }
+  .chat i:nth-child(2) { transition-delay: 0.35s; } .chat i:nth-child(3) { transition-delay: 0.7s; }
+  .chat i:nth-child(4) { transition-delay: 1.05s; } .chat i:nth-child(5) { transition-delay: 1.4s; }
+  /* 6. timer */
+  .timer { font-size: var(--text-h2); font-stretch: var(--width-wide); font-weight: 900; letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums; padding: var(--space-6); min-width: 5.5ch; text-align: right; }
+  /* 7. two beats */
+  .beats span { display: block; opacity: 0.35; transition: opacity var(--dur-component) var(--motion-arrive); }
+  .tile:hover .beats span { opacity: 1; } .tile:hover .beats span + span { transition-delay: var(--dur-component); }
+  @media (prefers-reduced-motion: reduce), (hover: none) {
+    .pan, .phones i, .bars i, .chat i { transform: none !important; opacity: 1; }
+    .sweep { background-size: 100% 2px; } .beats span { opacity: 1; } }
+
+  /* Sample hero */
+  .hero { position: relative; overflow: hidden; border-bottom: var(--border) solid var(--line); }
+  .hero .wrap { position: relative; z-index: var(--z-content); padding-block: var(--space-6) var(--space-16); display: grid; gap: var(--space-12); }
+  .hero-top { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
+  .hero-top img { height: 1.125rem; width: auto; }
+  .hero-top .type-label { font-size: var(--text-small); }
+  .hero-copy { display: grid; gap: var(--space-6); max-width: 46rem; }
+
+  .contact-title { font-size: clamp(2.75rem, 11.5vw, 9.5rem); letter-spacing: -0.06em; white-space: nowrap; }
+  code { font-family: inherit; font-weight: 700; font-size: var(--text-label); color: var(--fg-muted); }
+</style>
+</head>
+<body>
+
+<!-- Sample composition: hero -->
+<header class="hero texture-grain">
+  <div class="wrap">
+    <div class="hero-top">
+      <img src="logo/lockup.svg" alt="polizhai.dev" width="116" height="18">
+      <span class="type-label muted">full-stack developer · riga</span>
+    </div>
+    <h1 class="type-display">Dmytro<br>Polizhai</h1>
+    <div class="hero-copy">
+      <p class="type-lede">Make it run, make it right.</p>
+      <p class="type-body muted">I design, build and ship web apps, from the first commit to the live site.</p>
+      <div class="row">
+        <a class="btn btn-primary" href="#components">Email me</a>
+        <a class="btn btn-secondary" href="#components">See the work <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    <div class="customers">
+      <span class="type-label muted">more than 5 happy customers</span>
+      <span class="logo">Pro-lifts SIA</span><span class="logo">Curio</span><span class="logo">Numerologgi</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="section" id="logo">
+  <div class="wrap">
+    <div class="bar"><span class="type-label">polizhai</span><span class="type-label muted">logo</span></div>
+    <h2 class="type-h2">Mark</h2>
+    <div class="grid">
+      <div class="col-6 panel"><img src="logo/lockup.svg" alt="polizhai.dev lockup" width="320" height="50"></div>
+      <div class="col-6 panel texture-halftone"><img src="logo/mark.svg" alt="Mark" width="120" height="56"></div>
+    </div>
+    <p class="type-body muted sub">The parallelogram leans 30°. It is the only graphic element: live marker, current section in the dock, favicon. Clear space on every side equals the mark's height. Below 120px wide, use the mark alone.</p>
+  </div>
+</section>
+
+<section class="section" id="colour">
+  <div class="wrap">
+    <div class="bar"><span class="type-label">polizhai</span><span class="type-label muted">colour</span></div>
+    <h2 class="type-h2">Black, white, grey</h2>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:var(--bg)"></div><b class="type-label">bg</b><span class="type-small muted">#000000 · page</span></div>
+      <div class="swatch"><div class="chip" style="background:var(--surface)"></div><b class="type-label">surface</b><span class="type-small muted">#0D0D0D · cards</span></div>
+      <div class="swatch"><div class="chip" style="background:var(--raised)"></div><b class="type-label">raised</b><span class="type-small muted">#171717 · dock, hover</span></div>
+      <div class="swatch"><div class="chip" style="background:var(--line)"></div><b class="type-label">line</b><span class="type-small muted">#262626 · hairlines</span></div>
+      <div class="swatch"><div class="chip" style="background:var(--line-strong)"></div><b class="type-label">line-strong</b><span class="type-small muted">#3D3D3D · tag outlines</span></div>
+      <div class="swatch"><div class="chip" style="background:var(--control)"></div><b class="type-label">control</b><span class="type-small muted">#6B6B6B · 3.9:1 on bg</span></div>
+      <div class="swatch"><div class="chip" style="background:var(--fg-subtle)"></div><b class="type-label">fg-subtle</b><span class="type-small muted">#808080 · 5.3:1 on bg</span></div>
+      <div class="swatch"><div class="chip" style="background:var(--fg-muted)"></div><b class="type-label">fg-muted</b><span class="type-small muted">#A3A3A3 · 8.3:1 on bg</span></div>
+      <div class="swatch"><div class="chip" style="background:var(--fg)"></div><b class="type-label">fg / inverse</b><span class="type-small muted">#FFFFFF · 21:1 on bg</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="type">
+  <div class="wrap">
+    <div class="bar"><span class="type-label">polizhai</span><span class="type-label muted">type</span></div>
+    <h2 class="type-h2">Archivo, one family</h2>
+    <div class="spec"><code>type-display<br>900 · 125%</code><p class="type-display">Announ<br>cement</p></div>
+    <div class="spec"><code>type-h2<br>900 · 125%</code><p class="type-h2">Selected work</p></div>
+    <div class="spec"><code>type-h3<br>800 · 125%</code><p class="type-h3">Not a product, just a channel</p></div>
+    <div class="spec"><code>type-lede<br>400 · 100%</code><p class="type-lede">Make it run, make it right.</p></div>
+    <div class="spec"><code>type-body<br>400 · 17px</code><p class="type-body">I rebuilt the Next.js frontend of curio.today and cut page load time by 10%. I made all 830 commits in the frontend repository.</p></div>
+    <div class="spec"><code>type-small<br>400 · 14px</code><p class="type-small muted">Unofficial. Not affiliated with RVT or EduPage.</p></div>
+    <div class="spec"><code>type-label<br>700 · 13px</code><p class="type-label">polizhai · design announcement · why?</p></div>
+    <div class="spec"><code>type-num<br>tabular</code><p class="type-h3 type-num">442 / 545 · 830 / 830 · 400+</p></div>
+  </div>
+</section>
+
+<section class="section" id="space">
+  <div class="wrap">
+    <div class="bar"><span class="type-label">polizhai</span><span class="type-label muted">space and shape</span></div>
+    <h2 class="type-h2">4px grid, sharp corners</h2>
+    <div class="space-row"><span class="type-label muted">space-1 · 4</span><i style="width:var(--space-1)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-2 · 8</span><i style="width:var(--space-2)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-3 · 12</span><i style="width:var(--space-3)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-4 · 16</span><i style="width:var(--space-4)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-6 · 24</span><i style="width:var(--space-6)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-8 · 32</span><i style="width:var(--space-8)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-12 · 48</span><i style="width:var(--space-12)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-16 · 64</span><i style="width:var(--space-16)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-24 · 96</span><i style="width:var(--space-24)"></i></div>
+    <div class="space-row"><span class="type-label muted">space-32 · 128</span><i style="width:var(--space-32)"></i></div>
+    <p class="type-body muted sub">Surfaces and media have square corners. Only controls are pills: buttons, tags, the dock. Dividers are 1px. No shadows, no gradients.</p>
+  </div>
+</section>
+
+<section class="section" id="components">
+  <div class="wrap">
+    <div class="bar"><span class="type-label">polizhai</span><span class="type-label muted">components</span></div>
+    <h2 class="type-h2">Parts</h2>
+
+    <p class="type-label muted sub">buttons: default · hover · focus</p>
+    <div class="row">
+      <button class="btn btn-primary">Email me</button>
+      <button class="btn btn-primary is-hover">Email me</button>
+      <button class="btn btn-primary is-focus">Email me</button>
+    </div>
+    <div class="row" style="margin-top:var(--space-4)">
+      <button class="btn btn-secondary">See the work ↓</button>
+      <button class="btn btn-secondary is-hover">See the work ↓</button>
+      <button class="btn btn-secondary is-focus">See the work ↓</button>
+      <button class="btn btn-secondary btn-sm">Copy</button>
+    </div>
+
+    <p class="type-label muted sub">link · tags · live marker</p>
+    <div class="row">
+      <a class="link" href="#components">Visit the live site</a>
+      <span class="tag">Next.js 16</span><span class="tag">Sanity</span><span class="tag">LV / RU / EN</span>
+      <span class="status type-label"><i class="mark"></i>live</span>
+      <span class="status type-label subtle">code only</span>
+    </div>
+
+    <p class="type-label muted sub">proof strip</p>
+    <div class="proof">
+      <div><b class="type-num">400+</b><span class="status type-small muted"><i class="mark" style="color:var(--fg)"></i>Stundio · students every school day</span></div>
+      <div><b>Live</b><span class="status type-small muted"><i class="mark" style="color:var(--fg)"></i>Prolifts · client site</span></div>
+      <div><b class="type-num">830</b><span class="status type-small muted"><i class="mark" style="color:var(--fg)"></i>Curio · frontend commits</span></div>
+    </div>
+
+    <p class="type-label muted sub">project cards</p>
+    <div class="grid">
+      <article class="card col-6">
+        <div class="card-media texture-halftone"><span class="placeholder">screenshot · 16:10 · true colour</span></div>
+        <div class="card-body">
+          <div class="card-head"><span class="type-label muted">client site</span><span class="status type-label"><i class="mark"></i>live</span></div>
+          <h3 class="type-h3">Prolifts</h3>
+          <p class="type-body muted">The live website of Pro-lifts SIA, a Riga elevator company. A hero you scroll down like a lift shaft.</p>
+          <div class="row"><span class="tag">Next.js 16</span><span class="tag">Sanity</span><span class="tag">LV / RU / EN</span></div>
+          <div class="row"><a class="btn btn-secondary btn-sm" href="#components">Visit the live site</a><a class="link type-small" href="#components">Read the case study</a></div>
+        </div>
+      </article>
+      <article class="card col-6">
+        <div class="card-media"><span class="placeholder">architecture diagram</span></div>
+        <div class="card-body">
+          <div class="card-head"><span class="type-label muted">code</span><span class="type-label subtle">code only</span></div>
+          <h3 class="type-h3">one-to-one</h3>
+          <p class="type-body muted">Real-time private chat. Socket.IO, Redis, Postgres, Docker and CI. 212 of 212 commits.</p>
+          <div class="row"><span class="tag">Socket.IO</span><span class="tag">Redis 7</span><span class="tag">Postgres 17</span></div>
+          <div class="row"><a class="btn btn-secondary btn-sm" href="#components">Source on GitHub</a></div>
+        </div>
+      </article>
+    </div>
+
+    <p class="type-label muted sub">dock · fixed at the bottom of the screen</p>
+        <nav class="dock" aria-label="Sections">
+          <a href="#components" aria-current="location">Work</a>
+          <a href="#components">How</a>
+          <a href="#components">Journey</a>
+          <a href="#components">About</a>
+          <a href="#components">Contact</a>
+        </nav>
+
+    <div class="grid sub">
+      <div class="col-4">
+        <p class="type-label muted" style="margin-bottom:var(--space-6)">portrait placeholder · 3:4</p>
+        <div class="portrait texture-grain"><span class="placeholder">portrait · b/w</span></div>
+      </div>
+      <div class="col-4">
+        <p class="type-label muted" style="margin-bottom:var(--space-6)">timeline</p>
+        <ol class="timeline">
+          <li class="is-lit"><span class="type-label">first script</span><b class="type-h3">A Google Maps scraper</b></li>
+          <li class="is-lit"><span class="type-label type-num">2025</span><b class="type-h3">Curio</b><p class="type-small">Rebuilt the frontend for Curio's founder.</p></li>
+          <li><span class="type-label type-num">2026</span><b class="type-h3">Stundio</b><p class="type-small">Not reached yet: dimmed until the rail passes.</p></li>
+        </ol>
+      </div>
+      <div class="col-4">
+        <p class="type-label muted" style="margin-bottom:var(--space-6)">quote</p>
+        <figure class="quote">
+          <blockquote class="type-lede" style="margin:0">[TBD: Prolifts quote]</blockquote>
+          <figcaption class="type-label muted">[name] · [role] · pro-lifts sia</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="type-label muted sub">contact</p>
+    <p class="type-display contact-title">Let's talk</p>
+    <div class="row" style="margin-top:var(--space-8)">
+      <button class="btn btn-primary">Copy email</button>
+      <a class="btn btn-secondary" href="#components">Telegram</a>
+      <a class="btn btn-secondary" href="#components">Book a call</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="bento">
+  <div class="wrap">
+    <div class="bar"><span class="type-label">polizhai</span><span class="type-label muted">bento grid</span></div>
+    <h2 class="type-h2">Selected work</h2>
+    <p class="type-small muted" style="margin-bottom:var(--space-8)">Hover or tab into a tile to play its animation. Grey blocks stand in for screenshots, which will be in true colour.</p>
+    <div class="bento">
+      <article class="tile t-8x2">
+        <div class="tile-media"><div class="pan"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="tile-body">
+          <div class="card-head"><span class="type-label muted">client site</span><span class="status type-label"><i class="mark"></i>live</span></div>
+          <h3 class="type-h2">Prolifts</h3>
+          <p class="type-body">The website of Pro-lifts SIA, an elevator company in Riga. In Latvian, Russian and English, with a video hero that plays as you scroll.</p>
+          <p class="type-body muted">I designed and built it, set up the CMS and run the deploys.</p>
+          <div class="row"><span class="tag">Next.js 16</span><span class="tag">Sanity</span><span class="tag">next-intl</span></div>
+          <div class="row"><a class="btn btn-primary btn-sm" href="#bento">Visit the live site</a><a class="link type-small" href="#bento">Read the case study</a></div>
+        </div>
+      </article>
+      <article class="tile t-4x2">
+        <div class="tile-media"><div class="phones"><i></i><i></i></div></div>
+        <div class="tile-body">
+          <div class="card-head"><span class="type-label muted">open source</span><span class="status type-label"><i class="mark"></i>live</span></div>
+          <h3 class="type-h3">Stundio</h3>
+          <p class="stat"><b class="type-num">400+</b><span class="type-small sweep">students every school day</span></p>
+          <p class="type-small muted">An unofficial timetable app for students at Riga State Technical School. I wrote 442 of its 545 commits.</p>
+          <div class="row"><a class="btn btn-secondary btn-sm" href="#bento">Open the app</a></div>
+        </div>
+      </article>
+      <article class="tile t-4x2">
+        <div class="tile-media"><span class="placeholder" style="position:absolute;inset:0;display:grid;place-items:center">curio.today screenshot</span></div>
+        <div class="tile-body">
+          <div class="card-head"><span class="type-label muted">built for curio's founder</span><span class="status type-label"><i class="mark"></i>live</span></div>
+          <h3 class="type-h3">Curio</h3>
+          <p class="stat"><span class="bars" aria-hidden="true"><i></i><i></i></span><b class="type-num">10%</b><span class="type-small">lower page load time</span></p>
+          <p class="type-small muted">I rebuilt its frontend in Next.js. 830 of 830 commits in the frontend repository.</p>
+          <div class="row"><a class="btn btn-secondary btn-sm" href="#bento">Visit the live site</a></div>
+        </div>
+      </article>
+      <article class="tile t-4x2">
+        <div class="tile-media screens"><i class="placeholder">catalogue</i><i class="placeholder">product</i><i class="placeholder">checkout</i></div>
+        <div class="tile-body">
+          <div class="card-head"><span class="type-label muted">client shop</span><span class="status type-label"><i class="mark"></i>live</span></div>
+          <h3 class="type-h3">Numerologgi</h3>
+          <p class="type-small muted">An online shop for planners, with a CMS catalogue and card payments. I wrote all 113 commits.</p>
+          <div class="row"><a class="btn btn-secondary btn-sm" href="#bento">Visit the live site</a></div>
+        </div>
+      </article>
+      <article class="tile t-4x2">
+        <div class="tile-media texture-halftone"><div class="chat" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="tile-body">
+          <div class="card-head"><span class="type-label muted">code</span><span class="type-label subtle">code only</span></div>
+          <h3 class="type-h3">one-to-one</h3>
+          <p class="type-small muted">A private one-to-one chat in real time. I wrote all 212 commits, across frontend, backend and CI.</p>
+          <div class="row"><a class="btn btn-secondary btn-sm" href="#bento">Source on GitHub</a></div>
+        </div>
+      </article>
+      <article class="tile t-7x1" id="dnf">
+        <div class="tile-body">
+          <span class="type-label muted">side project</span>
+          <h3 class="type-h3">DNF</h3>
+          <p class="type-small muted">A timer app for Rubik's cube speedsolvers. My own side project, built with Angular.</p>
+          <a class="link type-small" href="#bento">Source on GitHub</a>
+        </div>
+        <div class="timer" aria-hidden="true">0.00</div>
+      </article>
+      <article class="tile t-5x1">
+        <div class="tile-body"><p class="type-h3 beats"><span>Live first.</span><span>Motion only where it helps.</span></p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="texture">
+  <div class="wrap">
+    <div class="bar"><span class="type-label">polizhai</span><span class="type-label muted">texture and motion</span></div>
+    <h2 class="type-h2">Grain, halftone, motion</h2>
+    <div class="grid">
+      <div class="col-4 panel texture-grain"><p class="type-h3">texture-grain</p></div>
+      <div class="col-4 panel texture-halftone"><p class="type-h3">texture-halftone</p></div>
+      <div class="col-4 panel texture-grain texture-halftone"><p class="type-h3">both</p></div>
+      <div class="col-6 move-demo"><i></i><span class="type-label muted">motion-move · between states</span></div>
+      <div class="col-6 move-demo arrive"><i></i><span class="type-label muted">motion-arrive · entering, rise 14px</span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <div class="bar"><span class="type-label">polizhai.dev</span><span class="type-label muted">design system · 2026-11-11</span></div>
+</footer>
+
+<script>
+  // DNF tile: the timer runs while the pointer is on the tile.
+  (() => {
+    const tile = document.getElementById("dnf"), out = tile.querySelector(".timer");
+    let raf = 0, start = 0;
+    const tick = (now) => { out.textContent = ((now - start) / 1000).toFixed(2); raf = requestAnimationFrame(tick); };
+    tile.addEventListener("pointerenter", () => {
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      start = performance.now(); raf = requestAnimationFrame(tick);
+    });
+    tile.addEventListener("pointerleave", () => { cancelAnimationFrame(raf); setTimeout(() => { out.textContent = "0.00"; }, 600); });
+  })();
+</script>
+
+</body>
+</html>

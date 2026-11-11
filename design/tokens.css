@@ -1,0 +1,306 @@
+/*
+ * polizhai.dev design tokens: "Poster mono". Dark only.
+ * Spec: design/design-system.md. This file is the single source of values.
+ *
+ * Use in src/index.css:
+ *   @import "tailwindcss";
+ *   @import "@fontsource-variable/archivo/wdth.css";   (weight + width axes)
+ *   @import "../design/tokens.css";
+ *
+ * Plain browsers ignore the @theme block, so design/preview.html links this
+ * file directly and reads the same values.
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Colour: black, white and a neutral grey ramp. No hue anywhere. */
+  --bg: #000000; /* page */
+  --surface: #0d0d0d; /* cards, panels */
+  --raised: #171717; /* dock, tooltips, hover fill */
+  --line: #262626; /* hairlines, decorative only */
+  --line-strong: #3d3d3d; /* tag outlines, decorative only */
+  --control: #6b6b6b; /* borders that carry meaning (3.4:1 or better) */
+  --fg: #ffffff; /* headings and body */
+  --fg-muted: #a3a3a3; /* secondary text */
+  --fg-subtle: #808080; /* tertiary text, 14px or larger */
+  --inverse: #ffffff; /* the accent: filled buttons, mark, active states */
+  --inverse-hover: #d9d9d9;
+  --on-inverse: #000000;
+
+  /* Type */
+  --font-archivo: "Archivo Variable", "Archivo", system-ui, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --width-wide: 125%;
+  --width-normal: 100%;
+
+  --text-display: clamp(3rem, 14.5vw, 11rem);
+  --text-h2: clamp(2rem, 6.5vw, 4.5rem);
+  --text-h3: clamp(1.375rem, 2.6vw, 2rem);
+  --text-lede: clamp(1.375rem, 3vw, 2.25rem);
+  --text-body: 1.0625rem; /* 17px */
+  --text-small: 0.875rem; /* 14px */
+  --text-label: 0.8125rem; /* 13px */
+
+  /* Space: 4px base */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --section-y: clamp(6rem, 14vw, 12rem);
+  --container: 80rem;
+  --measure: 68ch;
+
+  /* Shape */
+  --radius: 0px; /* shadcn reads this: every surface is sharp */
+  --round-pill: 9999px; /* buttons, tags, dock */
+  --border: 1px;
+  --shear: -30deg; /* the mark's angle; mark-derived shapes only */
+  --mark-ratio: 306.378 / 143.34;
+
+  /* Motion: vertical, no bounce (design-system.md section 8) */
+  --motion-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --motion-arrive: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-micro: 160ms;
+  --dur-component: 320ms;
+  --dur-section: 560ms;
+  --rise: 14px;
+
+  /* Texture */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.1;
+  --halftone: radial-gradient(circle, #fff 1px, transparent 1.6px);
+  --halftone-size: 6px 6px;
+  --halftone-opacity: 0.14;
+
+  /* Layers */
+  --z-texture: 1;
+  --z-content: 2;
+  --z-dock: 40;
+  --z-overlay: 50;
+
+  /* shadcn variable names, mapped onto the tokens above */
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --card: var(--surface);
+  --card-foreground: var(--fg);
+  --popover: var(--raised);
+  --popover-foreground: var(--fg);
+  --primary: var(--inverse);
+  --primary-foreground: var(--on-inverse);
+  --secondary: var(--raised);
+  --secondary-foreground: var(--fg);
+  --muted: var(--raised);
+  --muted-foreground: var(--fg-muted);
+  --accent: var(--raised);
+  --accent-foreground: var(--fg);
+  --destructive: var(--fg);
+  --input: var(--control);
+  --ring: var(--inverse);
+}
+
+/* Tailwind v4: expose the tokens as utilities (bg-surface, text-fg-muted, ease-move ...). */
+@theme inline {
+  --color-*: initial;
+  --color-black: #000;
+  --color-white: #fff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-control: var(--control);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-inverse: var(--inverse);
+  --color-inverse-hover: var(--inverse-hover);
+  --color-on-inverse: var(--on-inverse);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--line);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-archivo);
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-pill: var(--round-pill);
+
+  --ease-move: var(--motion-move);
+  --ease-arrive: var(--motion-arrive);
+
+  --container-site: var(--container);
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-archivo);
+    font-size: 100%;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--text-body);
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: var(--inverse);
+    color: var(--on-inverse);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--inverse);
+    outline-offset: 2px;
+  }
+}
+
+/* Type styles. One class sets size, weight, width, tracking and leading together. */
+@layer components {
+  .type-display,
+  .type-h2,
+  .type-h3 {
+    font-stretch: var(--width-wide);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .type-display {
+    font-size: var(--text-display);
+    font-weight: 900;
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+
+  .type-h2 {
+    font-size: var(--text-h2);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .type-h3 {
+    font-size: var(--text-h3);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .type-lede {
+    font-size: var(--text-lede);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .type-body {
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    max-width: var(--measure);
+  }
+
+  .type-small {
+    font-size: var(--text-small);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+
+  .type-label {
+    font-size: var(--text-label);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-transform: lowercase;
+  }
+
+  .type-num {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+  }
+
+  /* The mark as a CSS shape: live marker and the current-section light in the dock. */
+  .mark {
+    display: inline-block;
+    flex: none;
+    height: 0.5em;
+    aspect-ratio: var(--mark-ratio);
+    background: currentColor;
+    clip-path: polygon(27.01% 0, 100% 0, 72.99% 100%, 0 100%);
+  }
+
+  .texture-grain,
+  .texture-halftone {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .texture-grain::after,
+  .texture-halftone::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: var(--z-texture);
+  }
+
+  .texture-grain::after {
+    background: var(--grain);
+    opacity: var(--grain-opacity);
+    mix-blend-mode: screen;
+  }
+
+  .texture-halftone::before {
+    background: var(--halftone) 0 0 / var(--halftone-size);
+    opacity: var(--halftone-opacity);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-micro: 0ms;
+    --dur-component: 0ms;
+    --dur-section: 0ms;
+    --rise: 0px;
+  }
+}
