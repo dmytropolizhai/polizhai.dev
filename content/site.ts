@@ -337,6 +337,7 @@ export type SiteCopy = {
     backToWork: string;
     linkLabels: Record<LinkKind, string>;
     statusLabels: Record<Exclude<ProjectStatus, "hidden">, string>;
+    close: string;
   };
   nav: {
     label: string;
@@ -355,7 +356,14 @@ export type SiteCopy = {
     intro: string;
     secondaryLine: string;
     sideProjectsHeading: string;
-    projects: Record<ProjectId, { kindLabel: string; oneLiner: string; role: string; note?: string }>;
+    /** Title of the draggable project canvas in the hero. */
+    canvasTitle: string;
+    /** Cursor pill over the canvas: on empty space, and over a card. */
+    cursor: { drag: string; view: string };
+    /** Label above each card's outcome line. NEW, needs Dmytro's OK. */
+    outcomeLabel: string;
+    /** `outcome`: what the project gives its client or users, one short line on the canvas card. NEW, needs Dmytro's OK. */
+    projects: Record<ProjectId, { kindLabel: string; oneLiner: string; role: string; outcome: string; note?: string }>;
   };
   how: {
     heading: string;
@@ -436,6 +444,7 @@ export const en = {
       contact: "Email me about a project",
     },
     statusLabels: { live: "Live", "repo-only": "Code only" },
+    close: "Close",
   },
 
   nav: {
@@ -473,40 +482,49 @@ export const en = {
     intro: "Live products first. Every card links to the site or the code.",
     secondaryLine: "Live first. Motion only where it helps.",
     sideProjectsHeading: "Side projects",
+    canvasTitle: "Explore the projects",
+    cursor: { drag: "Drag", view: "View" },
+    outcomeLabel: "Outcome",
     projects: {
       prolifts: {
         kindLabel: "Client site",
         oneLiner:
           "The website of Pro-lifts SIA, an elevator company in Riga. In Latvian, Russian and English, with a video hero that plays as you scroll.",
         role: "I designed and built it, set up the CMS and run the deploys.",
+        outcome: "One site in three languages, and a CMS the team updates without a developer.",
       },
       stundio: {
         kindLabel: "Open source",
         oneLiner:
           "An unofficial timetable app for students at Riga State Technical School. On web, Android and Linux.",
         role: "I wrote 442 of its 545 commits.",
+        outcome: "400+ students check their timetable on it every school day.",
       },
       curio: {
         kindLabel: "Built for Curio's founder",
         oneLiner: "A feed of short news stories. I rebuilt its frontend in Next.js, with support for several languages.",
         role: "I wrote 830 of 830 commits in the frontend repository. Page load time went down 10% (site analytics).",
+        outcome: "Pages load 10% faster, in several languages.",
       },
       numerologgi: {
         kindLabel: "Client shop",
         oneLiner: "An online shop for planners, with a CMS catalogue and card payments.",
         role: "I wrote all 113 commits.",
+        outcome: "Planners sell online, with card payments and a catalogue the owner edits.",
       },
       "one-to-one": {
         kindLabel: "Code",
         oneLiner:
           "A private one-to-one chat in real time, with email code sign-in. It runs on Socket.IO, Redis, Postgres and Docker.",
         role: "I wrote all 212 commits, across frontend, backend and CI.",
+        outcome: "A full real-time stack in one repo: sign-in, chat, data and CI.",
         note: "Archived. There is no live site, but the code is public.",
       },
       dnf: {
         kindLabel: "Side project",
         oneLiner: "A timer app for Rubik's cube speedsolvers.",
         role: "My own side project, built with Angular.",
+        outcome: "A focused practice timer for speedsolvers.",
       },
     },
   },

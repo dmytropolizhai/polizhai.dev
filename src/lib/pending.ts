@@ -14,8 +14,8 @@ export const pendingCopy = {
       { value: "160 kB", label: "JavaScript, budget" },
     ],
   },
-  /** Open item 2b. Off → the Curio tile keeps the counter and drops the bars. */
-  curioBars: { show: true, before: "before", after: "after" },
+  /** NEW (hero canvas): the "Outcome" line on each project card, `work.projects[id].outcome`. Off → cards end with the one-liner. */
+  projectOutcome: { show: true },
 } as const;
 
 /**

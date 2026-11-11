@@ -12,7 +12,7 @@ Three things repeat on every poster, so the page feels like one series:
 
 1. **The corner labels.** A hairline, `polizhai` on the left, the topic on the right. Same as the top of every post you made.
 2. **The loud line.** One `type-h2` or `type-display` title in wide, heavy Archivo capitals.
-3. **One moving thing.** Each poster has one thing that moves and no more: the lines in the hero, the bento grid in Selected work, the white rail in Journey, the clock in Contact.
+3. **One moving thing.** Each poster has one thing that moves and no more: the project canvas in the hero (the ferrofluid behind it is the background, not a second mover), the white rail in Journey, the clock in Contact. (Changed 2026-11-11: the bento grid in Selected work is gone, and the canvas replaced it as the signature element.)
 
 Colour appears in one place only: product screenshots. On a black and white page, the real products are the brightest thing you see.
 
@@ -20,9 +20,8 @@ Colour appears in one place only: product screenshots. On a black and white page
 
 ```
 skip link
-<header>  Hero                      #top
+<header>  Hero + project canvas     #top, panel #work
 <main>
-  Selected work                     #work
   How I work                        #how
   Journey                           #journey
   About                             #about
@@ -64,6 +63,8 @@ Changed 2026-11-11 (Dmytro): a top bar joins the dock. Spec in `design-system.md
 **Job:** pass the 10-second test. Name, role, what he does, one action.
 
 > **Changed 2026-11-11 (Dmytro).** As built, the hero is centred: the 3D mark (own code, it turns toward the cursor) in the middle of the screen, then the name on one line from 768px up (two lines on phones), tagline, subline, the two buttons, and the customers bar on its hairline. The lockup and the role label moved out: the lockup is in the top bar, and the role label was removed. React Bits Threads is no longer used. The layout below is the original plan, kept as a record.
+
+> **Changed again 2026-11-11 (Dmytro, project canvas).** The hero has no H1 and no 3D mark any more. The background is the lazy WebGL ferrofluid (React Bits port); `Mark3D` still exists but is unmounted. The hero now holds the tagline, subline, the two buttons and the "Explore the projects" canvas (panel `id="work"`, see section 2). The canvas is the hero's one moving thing. The ferrofluid ignores the pointer while it is over the panel. Where the text below mentions the 3D mark, the H1, the name poster or the Threads lines, it is the original plan, kept as a record. Open question for Dmytro: the plan does not say whether the customers bar stays in the hero.
 
 **Layout (desktop).** Full viewport height (`100svh`), content pinned to the bottom-left like a printed poster.
 
@@ -115,65 +116,43 @@ Changed 2026-11-11 (Dmytro): a top bar joins the dock. Spec in `design-system.md
 
 **Needs from you:** white single-colour logos for Pro-lifts SIA and Curio; more customer names so "more than 5" has at least six logos behind it.
 
-## 2. Selected work: the bento grid
+## 2. Selected work: the project canvas
 
-**Job:** show live work, deepest first. Each tile says exactly what you did. This is the signature section of the page.
+> **Changed 2026-11-11 (Dmytro).** The Work poster is gone. Its job moved into the hero: an "Explore the projects" canvas under the buttons (panel `id="work"`), plus a dialog per project. The bento grid, its seven tiles, the per-tile animations and the statement line are removed. The canvas is now the signature element of the page. The project text tables below are still the source for the dialog; the tile sizes, animations, Curio bars and statement line are dropped.
 
-**Header**
+**Job:** show live work, deepest first. Each project says exactly what you did. This is the signature element of the page, and it lives in the hero.
 
-| Element | Text | Style | Source |
-|---|---|---|---|
-| Corner labels | polizhai / work | `type-label` | `facts.person.familyName`, `nav.sections.work.short` |
-| Title | Selected work | `type-h2` | `work.heading` |
-| Intro | Live products first. Every card links to the site or the code. | `type-lede` | `work.intro` |
+### The canvas
 
-### The grid
+- **Panel.** `id="work"`, `--raised` fill, `--radius-panel` (1.25rem), `overflow-clip`, height `clamp(28rem, 80svh, 48rem)`, inside the hero's `container-site`. The title "Explore the projects" (`work.canvasTitle`) is the panel's `<h2>`, top left, not clickable. It is **NEW** copy: lv/ru/uk wording needs your OK.
+- **Cards.** One per project that is not hidden: six cards. Each is a button (`#work-<id>`) with `--canvas-card` (`#d9d9d9`) fill, black text (project name and `kindLabel`), rotated about 42°. Position, size, rotation and depth (parallax 0.9 to 1.1) per project live in a `LAYOUT` record keyed by `ProjectId`. When a screenshot exists, the card face shows it.
+- **Drag.** Free 2D drag on fine pointers, with inertia (lerp plus friction). The canvas wraps in both directions: every card wraps on its own, so six cards are six DOM nodes with no clones. A drag past 5px suppresses the click that follows it.
+- **Feel.** The world scales to 0.97 while pressed (system spring, stiffness 380, damping 38). Cards lean up to ±4° with drag velocity. The cards scatter in once when the panel enters the view. A "Drag" / "View" cursor pill shows on fine hover pointers only (`work.cursor.drag`, `work.cursor.view`, **NEW**).
+- **Touch.** `touch-action: pan-y`: vertical swipes scroll the page, horizontal swipes pan the canvas. No wheel hijacking.
+- **Keyboard.** Arrow keys on the focused panel pan by 120px. Focus on a card centres it. Enter opens it.
+- **Links in.** A `#work-<id>` hash (Journey links) centres that card and opens its dialog. Nav "Work" and "See the work" land on the panel.
+- **Reduced motion.** Static layout, 1:1 drag, no inertia, no intro, no lean.
+- **Ferrofluid.** The hero's background ignores the pointer while it is over the panel, so the two never compete.
 
-Seven tiles of four different sizes on a 12-column grid, 16px gaps. Rows are at least 288px high and grow with their content. Every tile is a design-system card: `--surface`, 1px `--line`, square corners, 24px padding. The project with the most to show gets the most space.
+### The project dialog
 
-```
-┌───────────────────────────────────────┬───────────────────┐
-│                                       │                   │
-│  PROLIFTS                     8 × 2   │  STUNDIO   4 × 2  │
-│  page scrolls itself │ text           │  phones, 400+     │
-│                                       │                   │
-├───────────────────┬───────────────────┼───────────────────┤
-│                   │                   │                   │
-│  CURIO     4 × 2  │  NUMEROLOGGI 4 × 2│  ONE-TO-ONE 4 × 2 │
-│  10%, two bars    │  three screens    │  chat lines       │
-│                   │                   │                   │
-├───────────────────┴──────────────┬────┴───────────────────┤
-│  DNF                      7 × 1  │  Live first.    5 × 1  │
-│  running timer                   │  Motion only where…    │
-└──────────────────────────────────┴────────────────────────┘
-```
+Clicking a card opens a shadcn Dialog on Base UI. It holds what a tile used to hold: the meta row (kind label, status), the title, one-liner, role, tags, the stat (Stundio 400+, Curio 10%, counted by Magic UI `NumberTicker`, which ships the final value in the HTML) and the actions. `Esc` closes it and returns focus to the card. The close label is `common.close` (**NEW**, lv/ru/uk need your OK). The dialog is square, like every dialog in the system.
 
-- **Tablet (under 1024px):** 6 columns. Prolifts 6 × 2, then Stundio and Curio 3 × 2, Numerologgi and one-to-one 3 × 2, DNF 6 × 1, statement 6 × 1.
-- **Phone (under 640px):** one column, tiles in the order above, each as tall as its content.
+- **Buttons.** The Prolifts dialog has the one white button. Every other dialog uses secondary pills and links.
+- **Colour.** Screenshots in true colour. Everything else is white and grey.
+- **Reduced motion.** The dialog shows its finished state; the counters show their final value.
 
-### Rules for every tile
+The project text per dialog:
 
-- **One animation per tile, and it says what the project is.** No decoration.
-- **When it plays.** On a device with a mouse: while the pointer is over the tile, or while keyboard focus is inside it. On touch: once, when 60% of the tile is on screen. Nothing runs while the tile is off screen.
-- **How it moves.** Up and down only, transforms and opacity only, `--motion-move`, no bounce, no tilt, no glow that follows the pointer.
-- **Entrance.** The seven tiles rise 14px and fade in one after another, 60ms apart, in reading order, once.
-- **Hover.** The border goes from `--line` to `--control`. The tile itself does not move or scale.
-- **Colour.** Screenshots are in true colour. Everything drawn (bars, chat lines, timer) is white and grey.
-- **Buttons.** The Prolifts tile has the one white button of the section. Every other tile uses secondary pills and links.
-- **A tile is not one big link.** It holds real links and buttons, so every action has a clear name for keyboard and screen-reader users.
-- **Reduced motion.** Every tile shows its finished state and nothing plays. The states are listed per tile below.
+### Project 1: Prolifts
 
-### Tile 1: Prolifts (8 × 2)
-
-The largest tile, split in two: the animation on the left (56% of the tile, full height), the text on the right.
-
-**Animation: the page scrolls itself.** The left side is a window onto one tall, full-page screenshot of pro-lifts.lv in true colour. When the animation plays, the screenshot moves up slowly, top to bottom of the page in about 8 seconds, like someone reading the site. When the pointer leaves, it goes back to the top in 560ms. You see the whole real site without leaving the tile. Reduced motion: the top of the page, still.
+The first project. It has the most to show.
 
 | Element | Text | Style | Source |
 |---|---|---|---|
 | Kind label | Client site | `type-label`, `--fg-muted` | `work.projects.prolifts.kindLabel` |
 | Status | ▰ Live | mark + `type-label` | `common.statusLabels.live` |
-| Title | Prolifts | `type-h2` style at 44px (the other tiles use `type-h3`) | `facts.projects.prolifts.name` |
+| Title | Prolifts | `type-h2` style at 44px (the other dialogs use `type-h3`) | `facts.projects.prolifts.name` |
 | One-liner | The website of Pro-lifts SIA, an elevator company in Riga. In Latvian, Russian and English, with a video hero that plays as you scroll. | `type-body`, white | `work.projects.prolifts.oneLiner` |
 | Role | I designed and built it, set up the CMS and run the deploys. | `type-body`, `--fg-muted` | `work.projects.prolifts.role` |
 | Tags | Next.js 16 · Sanity · next-intl · GitHub Actions | tags | `facts.projects.prolifts.stack` |
@@ -181,13 +160,9 @@ The largest tile, split in two: the animation on the left (56% of the tile, full
 | Link | Read the case study | underlined link to `/work/prolifts` | `common.linkLabels.caseStudy` |
 | New-tab note (screen readers) | opens in a new tab | appended to every external link on the page | `a11y.externalLink` |
 
-On phones the window sits on top at 4:3 and the text goes under it.
+### Project 2: Stundio
 
-### Tile 2: Stundio (4 × 2)
-
-Tall tile. Top half: two phone screenshots of the app, in true colour, on `--raised`. Bottom half: the number and the text.
-
-**Animation: the number counts.** "400+" counts from 0 to 400 (Animate UI `CountingNumber`; the "+" is printed outside the counter and the HTML already says 400). When it stops, "students every school day" gets one white underline sweep, 560ms (Animate UI `HighlightText`). This is the only underline sweep on the page, and it sits on the one number that is verified daily use. At the same time the two phones rise 14px into place, the second 60ms after the first. Reduced motion: 400+, underlined, phones in place.
+Two phone screenshots of the app, in true colour, on `--raised`; then the number and the text.
 
 | Element | Text | Style | Source |
 |---|---|---|---|
@@ -199,30 +174,25 @@ Tall tile. Top half: two phone screenshots of the app, in true colour, on `--rai
 | Tags | React 19 · TypeScript · Vite · Capacitor · Tauri | tags | `facts.projects.stundio.stack` |
 | Actions | Open the app (secondary pill) · Read the case study · Source on GitHub (links) | | `common.linkLabels` |
 
-### Tile 3: Curio (4 × 2)
+### Project 3: Curio
 
-Top: a screenshot of curio.today in true colour. Bottom: the number and the text.
-
-**Animation: two bars.** Next to "10%" stand two thin vertical bars on a hairline base. The first is grey and full height. The second is white and 10% shorter. When the animation plays, both grow up from the base in 560ms, the white one 160ms later, and "10%" counts up from 0. The picture is the claim: the same page, a tenth less waiting. Reduced motion: both bars full, 10% shown.
+A screenshot of curio.today in true colour; then the number and the text.
 
 | Element | Text | Style | Source |
 |---|---|---|---|
 | Kind label / status | Built for Curio's founder / ▰ Live | `type-label` | `work.projects.curio.kindLabel` |
 | Title | Curio | `type-h3` | |
 | Stat | **10%** lower page load time | figure in `type-h2` size with `type-num`; label in `type-small` | `stats.curioLoadTime`, `en.stats.curioLoadTime` |
-| Bar labels | before / after | `type-label`, `--fg-subtle`, under each bar | **NEW**, needs your OK |
 | One-liner | A feed of short news stories. I rebuilt its frontend in Next.js, with support for several languages. | `type-body`, `--fg-muted` | `work.projects.curio.oneLiner` |
 | Role | I wrote 830 of 830 commits in the frontend repository. Page load time went down 10% (site analytics). | `type-small`, `--fg-muted` | `work.projects.curio.role` |
 | Tags | Next.js 16 · React 19 · TypeScript · next-intl · TanStack Query | tags | |
 | Actions | Visit the live site (secondary pill) · Source on GitHub (link) | | |
 
-The owner is never named. If you say no to the two bar labels, drop the bars and keep the counting number.
+The owner is never named.
 
-### Tile 4: Numerologgi (4 × 2)
+### Project 4: Numerologgi
 
-Top: a screenshot window. Bottom: the text.
-
-**Animation: three screens.** The window shows the catalogue. When the animation plays, the product page slides up over it, then the checkout slides up over that, each move 560ms with a 1.4 second hold. Three screens tell the whole shop: browse, choose, pay. Three small hairline ticks under the window show which screen is up; the current tick is white. Reduced motion: the catalogue, still.
+A screenshot window; then the text.
 
 | Element | Text | Style | Source |
 |---|---|---|---|
@@ -233,11 +203,9 @@ Top: a screenshot window. Bottom: the text.
 | Tags | Next.js 16 · Payload · Postgres · Stripe · three.js | tags | |
 | Actions | Visit the live site (secondary pill) | | |
 
-### Tile 5: one-to-one (4 × 2)
+### Project 5: one-to-one
 
-There is no live site, so there is no screenshot. The top half is `--raised` with `texture-halftone`, and the animation is drawn.
-
-**Animation: a conversation.** Five short horizontal lines appear one by one, each rising 14px into place: grey on the left, white on the right, grey, white, grey. They are chat messages reduced to lines, two people taking turns in real time. After the fifth, the set fades and starts again while the pointer stays. No words, no bubbles, no avatars. Reduced motion: all five lines shown.
+There is no live site, so there is no screenshot. The media area is `--raised` with `texture-halftone`.
 
 | Element | Text | Style | Source |
 |---|---|---|---|
@@ -249,13 +217,9 @@ There is no live site, so there is no screenshot. The top half is `--raised` wit
 | Tags | Next.js 16 · Socket.IO · Redis 7 · Postgres 17 · Docker Compose · GitHub Actions | tags | |
 | Actions | Source on GitHub (secondary pill) | | |
 
-This is the only project tile without the live mark. The page shows the difference between live and code-only instead of hiding it.
+This is the only project without the live mark. The page shows the difference between live and code-only instead of hiding it.
 
-### Tile 6: DNF (7 × 1)
-
-A wide, low tile. Text on the left, the animation on the right.
-
-**Animation: the timer runs.** On the right, a stopwatch in wide heavy figures: `0.00`. While the pointer is on the tile, it runs like a speedcubing timer, hundredths of a second, tabular figures so nothing jumps. When the pointer leaves, it stops for a moment and resets to `0.00`. On touch it runs while the tile is on screen. The timer has `aria-hidden`, because it is a picture of the app and not information. Reduced motion: `0.00`, still.
+### Project 6: DNF
 
 | Element | Text | Style | Source |
 |---|---|---|---|
@@ -266,19 +230,9 @@ A wide, low tile. Text on the left, the animation on the right.
 | Tags | Angular · Tailwind | tags | `facts.projects.dnf.stack` |
 | Action | Source on GitHub | underlined link | `common.linkLabels.source` |
 
-`work.sideProjectsHeading` ("Side projects") is no longer shown, because DNF now carries its own "Side project" label inside the grid. The key can stay unused or be removed.
+`work.sideProjectsHeading` ("Side projects") is no longer shown, because DNF carries its own "Side project" label. The key can stay unused or be removed.
 
-### Tile 7: the statement (5 × 1)
-
-No project. One sentence, the only tile with no border fill: `--bg` instead of `--surface`, so it reads as a gap in the grid with words in it.
-
-**Animation: two beats.** "Live first." rises in. 320ms later, "Motion only where it helps." rises in under it. It plays once, when the tile enters the screen, and it is the last tile to arrive. After six tiles that each move once, the grid explains itself. Reduced motion: both lines shown.
-
-| Element | Text | Style | Source |
-|---|---|---|---|
-| Statement | Live first. Motion only where it helps. | `type-h3`, white, two lines | `work.secondaryLine` |
-
-**Needs from you:** a full-page screenshot of pro-lifts.lv (about 1200px wide); two phone screenshots of Stundio; a screenshot of curio.today; three Numerologgi screens (catalogue, product, checkout).
+**Needs from you:** a full-page screenshot of pro-lifts.lv (about 1200px wide); two phone screenshots of Stundio; a screenshot of curio.today; three Numerologgi screens (catalogue, product, checkout). They show on the cards and in the dialogs.
 
 ## 3. How I work: the spec sheet
 
@@ -345,7 +299,7 @@ Dates come from `facts.journey` and are formatted with `Intl.DateTimeFormat`. Da
 
 - **The first entry has no date, on purpose.** Where the others show a year, "First script" shows an empty slot. The path starts with a thing he made, not with a number.
 - **The rail ends in the mark.** When the fill reaches the last entry, the small white mark appears at the bottom end of the rail, next to "Numerologgi goes live". It is the same mark that means "live" on the project cards. The timeline ends on a live product.
-- **Entries link back.** Titles of projects that have a tile (Curio, one-to-one, Stundio, Prolifts, Numerologgi) are links to that tile in the bento grid.
+- **Entries link back.** Titles of projects that have a card (Curio, one-to-one, Stundio, Prolifts, Numerologgi) are links to `#work-<id>`: that card is centred on the canvas and its dialog opens.
 
 **Reduced motion:** the rail is full, every entry is lit, the mark is shown.
 
@@ -446,17 +400,16 @@ Small and factual, under a hairline.
 
 | Where | What | Library |
 |---|---|---|
-| Hero background | White vertical lines drifting up, desktop only | React Bits `Threads` |
+| Hero background | Ferrofluid, lazy WebGL, ignores the pointer over the canvas panel | React Bits `Ferrofluid` (port) |
+| Hero project canvas | Draggable panel with six tilted cards, inertia, wrap in both directions, press scale and velocity lean | Own code (`use-pan-canvas.ts`) |
 | Hero customers | Slow logo loop, only with six or more logos | React Bits `LogoLoop` |
 | Dock | Rise 2px on hover, mark under the current section | SmoothUI `dock` |
-| Bento grid | Seven tiles, one animation each: page scrolls itself, phones rise, bars grow, three screens, chat lines, timer, two-beat statement | Own code |
-| Stundio and Curio stats | Count up | Animate UI `CountingNumber` |
-| Stundio stat label | One underline sweep | Animate UI `HighlightText` |
+| Stundio and Curio stats (in the project dialog) | Count up | Magic UI `NumberTicker` |
 | Email buttons | Icon flips to a check, "Copied" | Animate UI `CopyButton` |
 | Journey | White rail fills, entries light up, mark at the end | Aceternity `timeline` |
 | Every section | Content rises 14px and fades in, once | CSS |
 
-Nothing moves sideways. Titles never animate. Under reduced motion everything above is static and complete.
+Nothing moves sideways except the project canvas, which is the one named exception (tilted cards, free 2D drag, `--radius-panel`; decided by Dmytro, 2026-11-11). Titles never animate. Under reduced motion everything above is static and complete.
 
 ## Open items
 
@@ -464,11 +417,11 @@ Nothing moves sideways. Titles never animate. Under reduced motion everything ab
 |---|---|---|
 | 1 | "Let's talk" as the Contact poster line: yes or no | Contact layout |
 | 2 | The two budget labels in How I work: yes or no | Row 2 figures |
-| 2b | The bar labels "before" and "after" in the Curio tile: yes or no | Curio bars |
+| 2b | The lv/ru/uk wording of `work.canvasTitle`, `work.cursor.*` and `common.close` | Canvas and dialog copy |
 | 3 | Logos for Pro-lifts SIA and Curio; more customers | Hero customers bar |
 | 4 | Portrait, 3:4 | About, OG image |
 | 5 | Three Riga photos | About strip (optional) |
-| 6 | Full-page screenshot of pro-lifts.lv; two Stundio phone screenshots; a Curio screenshot; three Numerologgi screens | Bento grid |
+| 6 | Full-page screenshot of pro-lifts.lv; two Stundio phone screenshots; a Curio screenshot; three Numerologgi screens | Canvas cards and dialogs |
 | 7 | Dmitrijs Kuliks: role and sign-off | Client section stays hidden |
 | 8 | Booking link | "Book a call" stays hidden |
 | 9 | `/logos/numerologgi.svg`: the copy deck says the file is in `design/assets/logos/`, but that folder does not exist | Hero customers bar |

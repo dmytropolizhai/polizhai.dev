@@ -3,46 +3,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { Status } from "@/components/ui/status";
 import { TagList } from "@/components/ui/tag";
 import { ExternalNote, TextLink, externalProps } from "@/components/ui/text-link";
-import { Reveal } from "@/components/ui/reveal";
-import { usePlayTrigger } from "@/hooks/use-play-trigger";
 import { facts, hrefOf, t } from "@/lib/content";
 import { caseStudyPagesLive } from "@/lib/pending";
 import { cn } from "@/lib/utils";
-
-export type Play = { playing: boolean; reduced: boolean };
-
-type TileProps = {
-  /** Anchor target `#work-<id>`, linked from Journey. */
-  project: ProjectId;
-  index: number;
-  span: string;
-  className?: string;
-  /** Children get the play state so each tile owns exactly one animation. */
-  children: (play: Play) => React.ReactNode;
-};
-
-/**
- * Bento tile shell (design-system §9 Project card + Bento grid). Square, --surface, 1px --line,
- * border goes to --control on hover. The tile never moves, scales or tilts; only its animation plays.
- * Not one big link: it holds real links so every action has a name.
- */
-export function Tile({ project, index, span, className, children }: TileProps) {
-  const { ref, playing, reduced, handlers } = usePlayTrigger<HTMLElement>();
-  return (
-    <Reveal as="li" id={`work-${project}`} index={index} className={cn("min-w-0 scroll-mt-8", span)}>
-      <article
-        ref={ref}
-        {...handlers}
-        className={cn(
-          "flex h-full flex-col border border-line bg-surface p-6 transition-colors duration-(--dur-micro) ease-move hover:border-control focus-within:border-control",
-          className,
-        )}
-      >
-        {children({ playing, reduced })}
-      </article>
-    </Reveal>
-  );
-}
 
 /** Kind label left, live marker right. */
 export function TileMeta({ id }: { id: ProjectId }) {
@@ -71,7 +34,7 @@ export function TileBody({ id, oneLinerClass = "text-fg-muted" }: { id: ProjectI
 
 /**
  * Actions from `facts.projects[id].links`. The first becomes a pill (`lead`), the rest underlined
- * links. Only the Prolifts tile gets the white pill; a grid never shows a row of white buttons.
+ * links. Only Prolifts gets the white pill; the dialog never shows a white button for every project.
  */
 export function TileActions({ id, lead }: { id: ProjectId; lead: "primary" | "secondary" | "link" }) {
   const links = facts.projects[id].links

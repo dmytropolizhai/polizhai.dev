@@ -37,12 +37,19 @@ Everything else in the strategy still holds: voice, "one job per library", the m
 | Secondary button: transparent with a `--control` border | Secondary button wears the **dock surface**: `--raised` fill, `--line-strong` border, muted text. The primary stays white. See §9 Button. |
 | Hero: name pinned bottom-left over React Bits Threads | Hero: a **3D mark** (own code, CSS 3D) above the name, centred. Threads is no longer used. |
 
+**Later again (2026-11-11), the project canvas:**
+
+| Was | Now |
+|---|---|
+| Hero: 3D mark above the name, with an H1. Selected work is a bento grid, the signature element. | Hero: no H1 and no 3D mark. Background is the lazy WebGL ferrofluid (React Bits). Under the tagline, subline and buttons sits the **project canvas**, a draggable panel of tilted project cards. It is the signature element and replaces the bento grid. |
+| No tilt, no sideways motion, 0px corners everywhere | The canvas is the **one named exception** to all three. See §6, §8 and §9 Project canvas. |
+
 ## 1. Principles
 
 1. **Poster first.** Each section opens with one huge line of type. The type is the image.
 2. **Two values.** Black and white. Grey is for hierarchy only. White is the accent, so use it for one thing per view: the primary button or the mark.
 3. **One shape.** The parallelogram means "this is live" or "you are here". Nothing else on the page is slanted.
-4. **Sharp surfaces, round controls.** If it holds content, its corners are square. If you can press it, it is a pill.
+4. **Sharp surfaces, round controls.** If it holds content, its corners are square. If you can press it, it is a pill. The project canvas panel is the one named exception.
 5. **Real things carry the colour.** Product screenshots stay in true colour. They are the only colour on the page, so the proof stands out.
 
 ## 2. Logo
@@ -123,17 +130,17 @@ Loading:
 - **Section rhythm:** `--section-y`, `clamp(6rem, 14vw, 12rem)` between sections.
 - **Section header:** a hairline, then two labels on one row (`polizhai` left, the section topic right), then the `type-h2` title. This is the corner-label pattern from the posts. Sections have no numbers.
 - **Space scale (4px base):** 4, 8, 12, 16, 24, 32, 48, 64, 96, 128. Tokens `--space-1` to `--space-32`. Use the scale; no one-off values.
-- **Alignment:** left. Two exceptions: the single poster line where a section is nothing but that line, and the hero, which is centred under the 3D mark.
+- **Alignment:** left. Two exceptions: the single poster line where a section is nothing but that line, and the hero, which is centred.
 - **Top bar:** `--nav-h` (4.5rem). The page keeps `scroll-padding-top: var(--nav-h)` so anchor jumps and focus land below it.
 - **Breakpoints:** Tailwind defaults (640, 768, 1024, 1280).
 
 ## 6. Shape
 
-- Corners: 0 on cards, media, panels, images, dialogs. `--radius` is 0, so every shadcn primitive is square by default.
+- Corners: 0 on cards, media, panels, images, dialogs. `--radius` is 0, so every shadcn primitive is square by default. One named exception: the project canvas panel uses `--radius-panel` (1.25rem, `rounded-panel`). Decided by Dmytro, 2026-11-11.
 - Pills (`--round-pill`): buttons, tags, the dock and its items. In the shadcn button, set `rounded-pill` in the variant, because the default radius is now 0.
 - Borders: 1px. Hairlines use `--line`. Meaningful borders use `--control`.
 - Depth: none. No shadows. Layers are separated by a 1px line and a step up the grey ramp (`bg` → `surface` → `raised`).
-- The 30° lean (`--shear`) belongs to the mark and shapes cut from it. Do not skew cards, buttons, images or text.
+- The 30° lean (`--shear`) belongs to the mark and shapes cut from it. Do not skew cards, buttons, images or text. The canvas cards are rotated (about 42°), not skewed; see §9 Project canvas.
 
 ## 7. Texture and imagery
 
@@ -145,7 +152,7 @@ Textures (classes in `tokens.css`):
 Imagery:
 - **Photos** (portrait, Riga): black and white, high contrast, deep blacks, on a plain ground. The reference is the hoodie shot: faceless, calm, product-like.
 - **Portrait:** 3:4, fixed ratio, square corners. Until the photo exists, the placeholder is a `--raised` panel with grain and a label.
-- **Screenshots:** real, current, in true colour, 16:10, inside a square frame with a 1px line. No device mockups, no tilt, no reflections.
+- **Screenshots:** real, current, in true colour, 16:10, inside a square frame with a 1px line. No device mockups, no tilt, no reflections. (On the canvas, a screenshot may sit on a rotated card face; the screenshot itself is never tilted on its own.)
 - **Client logos** (customers bar): single-colour white at 60% opacity, 100% on hover. No colour logos.
 - No stock photos, no illustrations, no emoji in the UI.
 
@@ -162,9 +169,9 @@ Same values as the strategy. Motion is vertical and settles without bounce. Toke
 | `--dur-section` | 560ms | Section reveal |
 | `--rise` | 14px | Entrance offset |
 
-- Vertical only. No sideways slides, no spin, no bounce, no scale from zero.
+- Vertical only. No sideways slides, no spin, no bounce, no scale from zero. One named exception: the project canvas (free 2D drag, tilted cards; see §9 Project canvas).
 - Entrance is a rise plus fade, once per element. The H1 never animates.
-- `motion` spring: stiffness 380, damping 38.
+- `motion` spring: stiffness 380, damping 38. The canvas press scale uses the same values.
 - Under `prefers-reduced-motion`, the duration tokens become 0 and `--rise` becomes 0. Every effect also needs a static state.
 
 ## 9. Components
@@ -193,7 +200,14 @@ The secondary border is decoration (`--line-strong`, 1.7:1). The button is ident
 
 **Project card.** `--surface`, 1px `--line`, square. Media 16:10 on top, then: meta row (type label left, live marker right), `type-h3` title, one or two lines of body in `--fg-muted`, tags, actions. Card buttons are secondary, so a grid of cards never shows a row of white buttons. On hover the border goes to `--control`. Nothing moves.
 
-**Bento grid.** The signature layout, used for Selected work. A 12-column grid with 16px gaps (`--space-4`); rows are at least 288px and grow with content. Tiles are project cards in four sizes: 8 × 2, 4 × 2, 7 × 1, 5 × 1. Under 1024px the grid has 6 columns; under 640px it has one. Each tile has one animation that shows what the project is. It plays on hover or keyboard focus (once on entering the screen on touch), moves up and down only, and uses transforms and opacity. On hover the tile border goes to `--control`; the tile does not scale, tilt or glow. One tile may be text only, on `--bg`. Tile-by-tile spec: `design/landing-page.md`, section 2.
+**Project canvas.** The signature element, in the hero, replacing the bento grid. It is the single named exception to no tilt, vertical-only motion and 0px corners (Dmytro, 2026-11-11).
+- **Panel:** `id="work"`, fill `--raised`, radius `--radius-panel` (1.25rem), `overflow-clip`, height `clamp(28rem, 80svh, 48rem)`. Title "Explore the projects" top left as the section `<h2>`.
+- **Cards:** one per visible project, fill `--canvas-card` (`#d9d9d9`), black text (project name and kind label), rotated about 42°. Each card is a button. Position, size, rotation and depth are set per project in code.
+- **Motion:** free 2D drag with inertia, wrapping in both directions. The world scales to 0.97 while pressed, on the system spring (380 / 38). Cards lean up to ±4° with drag velocity. Touch pans horizontally only, so the page still scrolls.
+- **Reduced motion:** static layout, 1:1 drag, no inertia, no lean, no intro.
+- Everything else on the page keeps the rules above. Spec: `design/landing-page.md`, section 2.
+
+**Project dialog.** Opens from a canvas card. Square, `--surface`, 1px `--line`, like every dialog. It carries the meta row, title, body, stats and actions that the bento tile used to carry.
 
 **Navigation.** Two parts that share one look: a pill on `--raised` with a 1px `--line-strong` border, text items 44px high in bold 14px, default `--fg-muted`, hover white with fill `--line`. The current section is white with a small mark under the label and has `aria-current="location"`. Nothing in the hero is marked. The nav is labelled "Sections". No numbers and no icons.
 
@@ -219,14 +233,15 @@ The "one job per library" map from the strategy stays. Only the colours change.
 | Library | Job | Change for this system |
 |---|---|---|
 | React Bits `Threads` | Removed | Was the hero background; the 3D mark replaced it and the code was deleted (2026-11-11). To bring it back, re-add it with `pnpm dlx shadcn@latest add https://reactbits.dev/r/Threads-TS-TW`: white lines only, under the 15% cap. |
+| React Bits `Ferrofluid` | Hero background | A port, lazy WebGL. Monochrome, under the 15% cap behind text. Ignores the pointer while it is over the canvas panel. |
 | React Bits `LogoLoop` | Customers bar | White logos, 60% opacity. Only with six or more logos. |
 | SmoothUI `dock` | Top bar and phone dock | Rebuilt as text in own code: no icon tiles, no magnification. Active dot becomes the mark. |
-| Magic UI `NumberTicker` | Counters (Stundio 400+, Curio 10%) | Ships the final value in the HTML; counts from 0 when the tile plays. |
+| Magic UI `NumberTicker` | Stats in the project dialog (Stundio 400+, Curio 10%) | Ships the final value in the HTML; counts from 0 when the dialog opens. |
 | Aceternity `timeline` | Journey | Replace the purple-blue fill with white. Titles in `--fg-subtle` until lit. |
 | Animate UI | Icons (lucide set: mail, copy, check, arrow-down, send) | Stroke in `currentColor`. They animate on the hover of their button, and are still under reduced motion. The underline sweep (white, 2px, 560ms) is own CSS. |
-| shadcn | Base primitives | Tokens from `tokens.css`. Square by default; buttons get `rounded-pill`. |
-| Own code | Bento grid in Selected work | CSS grid plus small CSS and `motion` animations. No bento library: the ready-made ones bring glow, tilt and colour that this system bans. |
-| Own code | Hero 3D mark | The mark as a CSS 3D slab that turns toward the cursor. White and grey faces only. |
+| shadcn | Base primitives, including the Dialog | Tokens from `tokens.css`. Square by default; buttons get `rounded-pill`. |
+| Own code | Project canvas in the hero | `use-pan-canvas.ts` (one rAF loop, lerp plus friction, per-card modulo wrap) and `project-canvas.tsx`. Cards on `--canvas-card`. No gallery library. |
+| Own code | Hero 3D mark | Unmounted (2026-11-11). The code stays in `mark-3d.tsx`. |
 
 ## 11. Accessibility
 

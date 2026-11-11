@@ -1,20 +1,30 @@
-import { Section } from "@/components/ui/section";
-import { t } from "@/lib/content";
-import { CurioTile, DnfTile, NumerologgiTile, OneToOneTile, ProliftsTile, StatementTile, StundioTile } from "./tiles";
+import type { ProjectId } from "@content/site";
+import { lazy, Suspense, useState } from "react";
+import { ProjectCanvas } from "./project-canvas";
 
-/** §2 Selected work: the bento grid, the signature section. Own code, no bento library. */
-export function Work() {
+// The dialog (Base UI) is only needed after a click, so it stays out of the first bundle (160 kB JS budget).
+const ProjectDialog = lazy(() => import("./project-dialog").then((m) => ({ default: m.ProjectDialog })));
+
+type Props = { onHoverChange?: (over: boolean) => void; className?: string };
+
+/** The project showcase: the draggable canvas plus the dialog it opens. Owns which project is open. */
+export function ProjectExplorer({ onHoverChange, className }: Props) {
+  const [open, setOpen] = useState<ProjectId | null>(null);
+  // Mount the dialog on the first open and keep it, so the close transition can play.
+  const [wanted, setWanted] = useState(false);
+  const onOpen = (id: ProjectId) => {
+    setWanted(true);
+    setOpen(id);
+  };
+
   return (
-    <Section id="work" title={t.work.heading} intro={t.work.intro}>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-6 sm:auto-rows-[minmax(18rem,auto)] lg:grid-cols-12">
-        <ProliftsTile index={0} />
-        <StundioTile index={1} />
-        <CurioTile index={2} />
-        <NumerologgiTile index={3} />
-        <OneToOneTile index={4} />
-        <DnfTile index={5} />
-        <StatementTile index={6} />
-      </ul>
-    </Section>
+    <>
+      <ProjectCanvas onOpen={onOpen} onHoverChange={onHoverChange} className={className} />
+      {wanted && (
+        <Suspense fallback={null}>
+          <ProjectDialog id={open} onClose={() => setOpen(null)} />
+        </Suspense>
+      )}
+    </>
   );
 }

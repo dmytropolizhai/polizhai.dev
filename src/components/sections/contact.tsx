@@ -4,6 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { CopyEmailButton } from "@/components/ui/copy-email-button";
 import { CornerLabels } from "@/components/ui/corner-labels";
 import { Reveal } from "@/components/ui/reveal";
+import { SectionTitle } from "@/components/ui/section";
 import { ExternalNote, externalProps } from "@/components/ui/text-link";
 import { facts, hrefOf, t } from "@/lib/content";
 import { pendingCopy } from "@/lib/pending";
@@ -55,14 +56,14 @@ export function Contact() {
           {poster.show && (
             <p
               aria-hidden="true"
-              className="type-display text-[clamp(3rem,13vw,10rem)] tracking-[-0.06em] whitespace-nowrap"
+              className="type-display text-[clamp(3rem,13vw,10rem)] whitespace-nowrap"
             >
               {poster.text}
             </p>
           )}
-          <h2 id="contact-title" className={poster.show ? "type-lede mt-(--space-8)" : "type-h2"}>
+          <SectionTitle id="contact-title" className={poster.show ? "mt-(--space-8)" : undefined}>
             {t.contact.heading}
-          </h2>
+          </SectionTitle>
 
           <Reveal>
             <p className="type-body mt-(--space-4) text-fg-muted">{t.contact.body}</p>

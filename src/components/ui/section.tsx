@@ -13,7 +13,7 @@ type SectionProps = {
   children: React.ReactNode;
 };
 
-/** Section shell: corner labels, `type-h2` title (never animated), optional `type-lede` intro, then content. */
+/** Section shell: corner labels, title (never animated), optional `type-lede` intro, then content. */
 export function Section({ id, title, intro, className, children }: SectionProps) {
   const headingId = `${id}-title`;
   return (
@@ -21,6 +21,23 @@ export function Section({ id, title, intro, className, children }: SectionProps)
       <SectionHeader id={id} headingId={headingId} title={title} intro={intro} />
       {children}
     </section>
+  );
+}
+
+/** Shared section heading style matching the ProjectExplorer canvas title. */
+export function SectionTitle({
+  id,
+  className,
+  children,
+}: {
+  id?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <h2 id={id} className={cn("type-h2 text-fg", className)}>
+      {children}
+    </h2>
   );
 }
 
@@ -40,9 +57,9 @@ export function SectionHeader({
   return (
     <header className={cn("mb-(--space-16)", className)}>
       <CornerLabels topic={t.nav.sections[id].short.toLowerCase()} />
-      <h2 id={headingId} className="type-h2 mt-(--space-8)">
+      <SectionTitle id={headingId} className="mt-(--space-8)">
         {title}
-      </h2>
+      </SectionTitle>
       {intro && (
         <Reveal>
           <p className="type-lede mt-(--space-6) max-w-[36ch] text-fg-muted">{intro}</p>

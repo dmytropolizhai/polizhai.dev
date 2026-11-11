@@ -2,7 +2,8 @@
 > - **Domain:** polizhai.dev.
 > - **Visuals live in `design/`** (`design-system.md`, `tokens.css`): Archivo only, black, white and grey, no green accent, dark theme only, no theme toggle. The parallelogram mark replaces the square and the "DP" monogram.
 > - **No floor concept.** Sections are not floors and have no numbers. Navigation is one dock fixed at the bottom of the screen.
-> - **No lift, no shaft.** Not as a metaphor, not in copy, not as a scroll-played stage on the home page. Selected work is one animated bento grid instead.
+> - **No lift, no shaft.** Not as a metaphor, not in copy, not as a scroll-played stage on the home page. Selected work was planned as one animated bento grid; see the 2026-11-11 note below, which replaces it with the project canvas.
+> - **Changed 2026-11-11 (Dmytro): project canvas.** The bento grid is replaced by an "Explore the projects" canvas in the hero: a draggable panel of tilted project cards, with a dialog per project. It is the signature element. The hero has no H1 and no 3D mark; its background is the lazy WebGL ferrofluid, which ignores the pointer over the canvas. The canvas is the one named exception to "motion is always vertical", no tilt and 0px corners. Wherever this file names the bento grid, the Selected work poster, or the hero as H1 plus CSS-only subline motion, read the canvas instead. Spec: `design/design-system.md` and `design/landing-page.md`.
 > - Sections 3, 6 and 7 below are rewritten to match. The review notes at the end are the 2026-11-09 record and still describe the old visuals.
 
 > ## ✅ Amendments by Dmytro (2026-11-09): override anything below
@@ -182,7 +183,7 @@ One family: **Archivo Variable** (`@fontsource-variable/archivo`, import `wdth.c
 
 ### Motion
 
-Motion is always **vertical**. It accelerates, cruises, then slows and settles without bounce. Nothing slides sideways, nothing spins, nothing pops from zero scale.
+Motion is always **vertical**. It accelerates, cruises, then slows and settles without bounce. Nothing slides sideways, nothing spins, nothing pops from zero scale. (Exception, 2026-11-11: the hero project canvas pans freely in 2D with tilted cards.)
 
 Tokens (one set, shared by every library; names as in `design/tokens.css`):
 - `--motion-move: cubic-bezier(0.65, 0, 0.35, 1)` for moves between states.
@@ -200,7 +201,7 @@ Tokens (one set, shared by every library; names as in `design/tokens.css`):
 | **Aceternity** | Journey timeline | A rail that fills downward in white as you scroll, lighting each entry as you pass it. **Component: `timeline`** (`@aceternity/timeline`, uses `useScroll` + `useTransform` from `motion/react`; the rail already fills top to bottom with scroll). Gaps: its fill is hard-coded purple-blue (`from-purple-500 via-blue-500`), which the palette bans, so make it white; its titles are `neutral-500`, so use `--fg-subtle` until lit. It does not light entries as you pass them: add an `active` state with `useMotionValueEvent` on the same scroll progress. Remove `React`/`useMotionValueEvent` unused-import errors (TS6133). The stock sticky year titles are `md` only, so on mobile each year sits inline above its text. Static rail, all entries lit, under reduced motion. |
 | **Animate UI** | Micro-interactions | Short, tactile, honest: the copy icon flips to a check with "Copied", true numbers count up once on first view (tabular figures), and one proof phrase gets a single white underline sweep. Never on hover-for-nothing. **Components** (verified in `@animate-ui/react` 2.4.3): `primitives/buttons/copy` (`CopyButton` + `CopyButtonIcon`, `content` prop; add `aria-live="polite"` text "Email copied"), `primitives/texts/counting-number` (`CountingNumber`; for "400+" count the 400 and print the "+" outside; the span is `aria-hidden` with a static `sr-only` "400+"; prerendered HTML must show 400, not 0, so use `initiallyStable` or verify the SSR output), `primitives/texts/highlight` (`HighlightText`, a background-size sweep, not an underline; give it `bg-[linear-gradient(transparent_92%,var(--fg)_92%)]` so the filled strip is a 2 px underline, and set `transition` to 560 ms, because the default is 2 s). `primitives/effects/highlight` is a different thing (a moving hover pill) and is not used. All three import full `motion` (~45 kB gz, paid once, inside budget). |
 | **shadcn** | Base primitives | No motion of its own. Buttons, dialog, tooltip, tabs, all restyled to the design tokens: square surfaces, pill buttons. |
-| **Own code** | Bento grid in Selected work (signature) | A CSS grid of seven tiles of different sizes. Each tile has one small animation that shows what the project is: a page that scrolls itself, numbers that count up, bars, chat lines, a running timer. Transforms and opacity only, running only while the tile is on screen. Full spec in `design/landing-page.md`, section 2. |
+| **Own code** | Project canvas in the hero (signature) | A draggable panel of six tilted project cards that wraps in both directions, with inertia. A card opens a dialog with the project's detail. Replaces the planned bento grid (2026-11-11). Full spec in `design/landing-page.md`, section 2. |
 
 ### Imagery
 - **A real photo of Dmytro.** None exists yet ([TBD: portrait]). One natural-light portrait in Riga, chest-up, looking at camera, no laptop-on-knees cliché. Used in About, OG image variant, and all profiles.
@@ -217,7 +218,7 @@ Single page plus two case-study routes (`/work/prolifts`, `/work/stundio`). Sect
 | Section | Purpose | Proof it carries |
 |---|---|---|
 | **Hero** | Name, role, tagline, one action. Pass the 10-second test. | Proof strip: Stundio (400+ daily) · Prolifts · Curio, each with a live mark; "400+" counts up once (Animate UI). React Bits background. |
-| **Selected work** | Show production work, deepest first. | One animated bento grid: Prolifts (largest tile), Stundio, Curio, Numerologgi, one-to-one, DNF, and the line "Live first. Motion only where it helps." |
+| **Selected work** | Show production work, deepest first. | The hero's project canvas (2026-11-11; no separate poster): Prolifts, Stundio, Curio, Numerologgi, one-to-one, DNF as draggable cards, each opening a dialog. |
 | **How I work** | Answer the reliability and handoff objections. | 4 plain rows: design + build solo; performance and accessibility (this site's own budgets: LCP ≤1.8s, JS ≤160 kB); CMS handoff (Sanity, Payload); CI/CD on every project. Prolifts timeline as the real example. No icon-card grid. |
 | **Journey** | Show the path, not the age. | Aceternity timeline (see §8 for wording): the Google Maps scraper (no year label) → 2025 Curio → 2026 one-to-one, Stundio, freelance client work, Prolifts → Numerologgi (when live). |
 | **About** | The human layer. | Photo, Riga, name line, languages, "Make it run, make it right.", one RVT line, certificates (small). |
@@ -225,13 +226,13 @@ Single page plus two case-study routes (`/work/prolifts`, `/work/stundio`). Sect
 | **Contact** | One path. | Copy email (Animate UI), GitHub, LinkedIn, Telegram. Riga local time. No form. |
 | **Footer** | Craft details. | "Built by Dmytro Polizhai in Riga", source link, © 2026, custom 404. |
 
-**The signature moment (Selected work).** The whole section is one bento grid with small animations, built in own code. Prolifts is the largest tile: a full-page screenshot of pro-lifts.lv scrolls by itself inside the tile. Stundio's "400+" counts up. Each other tile has one animation of its own. Under reduced motion every tile is static and complete.
+**The signature moment (the hero canvas).** Changed 2026-11-11: the bento grid is gone. The signature is the draggable project canvas in the hero, built in own code. The visitor drags tilted project cards in any direction and opens one for its detail. Stundio's "400+" counts up in its dialog. Under reduced motion the layout is static and the drag is 1:1.
 
 **Project depth**
 
 | Project | Depth | Content |
 |---|---|---|
-| **Prolifts** | Full case study + the largest bento tile | Context (Riga elevator contractor, LV/RU/EN), how the AI video was made into scrubbable frames, mobile performance trade-offs, Sanity handoff, CI on a self-hosted runner, timeline (2026-08-08 to live), quote [TBD]. Mention once: "delivered under my studio name, Multilance". |
+| **Prolifts** | Full case study + the first card on the canvas | Context (Riga elevator contractor, LV/RU/EN), how the AI video was made into scrubbable frames, mobile performance trade-offs, Sanity handoff, CI on a self-hosted runner, timeline (2026-08-08 to live), quote [TBD]. Mention once: "delivered under my studio name, Multilance". |
 | **Stundio** | Full case study | Problem (school timetable changes daily), offline-first design, EduPage data, Android widgets, push, three platforms, MIT repo link, commit share, 400+ daily users. State "unofficial, not affiliated with RVT". Strongest recruiter proof. |
 | **Curio** | Card + short write-up on home | Built for its owner, Alexander Shunin. Next.js rebuild of the curio.today frontend: multilingual, Payload backend, 830/830 commits, page load time down 10% (site analytics), live link. Label: "Client product", not "my product". |
 | **one-to-one** | Card, "code" label | Real-time private chat: Socket.IO, Redis, Postgres, Docker, CI, email OTP. Archived, no live link: show the architecture diagram and the repo. Proof of backend depth. |

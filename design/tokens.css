@@ -27,6 +27,7 @@
   --inverse: #ffffff; /* the accent: filled buttons, mark, active states */
   --inverse-hover: #d9d9d9;
   --on-inverse: #000000;
+  --canvas-card: #d9d9d9; /* project canvas cards only (named exception, hero canvas) */
 
   /* Type */
   --font-archivo: "Archivo Variable", "Archivo", system-ui, "Segoe UI", Roboto,
@@ -35,7 +36,7 @@
   --width-normal: 100%;
 
   --text-display: clamp(3rem, 14.5vw, 11rem);
-  --text-h2: clamp(2rem, 6.5vw, 4.5rem);
+  --text-h2: clamp(2rem, 4.2vw, 3.5rem);
   --text-h3: clamp(1.375rem, 2.6vw, 2rem);
   --text-lede: clamp(1.375rem, 3vw, 2.25rem);
   --text-body: 1.0625rem; /* 17px */
@@ -126,6 +127,7 @@
   --color-inverse: var(--inverse);
   --color-inverse-hover: var(--inverse-hover);
   --color-on-inverse: var(--on-inverse);
+  --color-canvas-card: var(--canvas-card);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -153,6 +155,7 @@
   --radius-lg: 0px;
   --radius-xl: 0px;
   --radius-pill: var(--round-pill);
+  --radius-panel: 1.25rem; /* the hero project canvas only (named exception to 0px) */
 
   --ease-move: var(--motion-move);
   --ease-arrive: var(--motion-arrive);
@@ -193,42 +196,33 @@
 @layer components {
   .type-display,
   .type-h2,
-  .type-h3 {
-    font-stretch: var(--width-wide);
+  .type-h3,
+  .type-lede {
+    font-stretch: var(--width-normal);
+    font-weight: 400;
+    letter-spacing: -0.035em;
     margin: 0;
     text-wrap: balance;
   }
 
   .type-display {
     font-size: var(--text-display);
-    font-weight: 900;
     line-height: 0.88;
-    letter-spacing: -0.035em;
-    text-transform: uppercase;
   }
 
   .type-h2 {
     font-size: var(--text-h2);
-    font-weight: 900;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
+    line-height: 1.02;
   }
 
   .type-h3 {
     font-size: var(--text-h3);
-    font-weight: 800;
     line-height: 1.05;
-    letter-spacing: -0.025em;
   }
 
   .type-lede {
     font-size: var(--text-lede);
-    font-weight: 400;
     line-height: 1.15;
-    letter-spacing: -0.035em;
-    margin: 0;
-    text-wrap: balance;
   }
 
   .type-body {

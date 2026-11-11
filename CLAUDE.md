@@ -17,22 +17,22 @@ pnpm only.
 
 ## App architecture
 
-- `index.html` → `src/main.tsx` → `src/App.tsx`: Hero, `<main>` (Work, How, Journey, About, ClientQuote, Contact), Footer, Dock. The dock is last in the DOM by design.
-- `src/index.css` imports Tailwind, `@fontsource-variable/archivo/wdth.css` (both axes; the wide titles need it) and `design/tokens.css`. Token classes (`type-*`, `.mark`, `texture-*`) and utilities (`bg-surface`, `text-fg-muted`, `ease-move`, `rounded-pill`) come from there; the stock Tailwind palette is removed. `index.css` adds only `container-site`, `.reveal`, `.rise-in`, `.highlight-sweep` and the `.mark3d*` block.
+- `index.html` → `src/main.tsx` → `src/App.tsx`: Hero, `<main>` (How, Journey, About, ClientQuote, Contact), Footer, Dock. The dock is last in the DOM by design. There is no Work section: the hero holds the tagline, subline, two buttons and the project canvas (panel `id="work"`).
+- `src/index.css` imports Tailwind, `@fontsource-variable/archivo/wdth.css` (both axes; the wide titles need it) and `design/tokens.css`. Token classes (`type-*`, `.mark`, `texture-*`) and utilities (`bg-surface`, `text-fg-muted`, `ease-move`, `rounded-pill`, `rounded-panel`) come from there; the stock Tailwind palette is removed. `index.css` adds only `container-site`, `.reveal`, `.rise-in` and the `.mark3d*` block (`.highlight-sweep` is removed).
 - **Content goes through `src/lib/content.ts`** (`t` = active locale copy, `facts`, `hrefOf`, `showClientQuote`, `formatWhen`). Components never hard-code copy. Aliases: `@/` → `src/`, `@content/` → `content/`.
-- `src/lib/pending.ts` holds everything waiting on Dmytro: **NEW** copy flags (`letsTalk`, `budgetFigures`, `curioBars`), screenshot and portrait paths (`null` renders a halftone placeholder with the same ratio and animation), and `caseStudyPagesLive` (hides `/work/*` links until those pages exist).
+- `src/lib/pending.ts` holds everything waiting on Dmytro: **NEW** copy flags (`letsTalk`, `budgetFigures`; `curioBars` is removed), screenshot and portrait paths (`null` renders a halftone placeholder with the same ratio and animation), and `caseStudyPagesLive` (hides `/work/*` links until those pages exist).
 - One job per library:
-  - React Bits Threads: removed. The hero's picture is the 3D mark (`effects/mark-3d.tsx`, own code).
-  - Magic UI NumberTicker: Stundio and Curio counters, in `ui/number-ticker.tsx`. It is adapted: the HTML ships the final value, and a `play` prop restarts the count.
+  - React Bits: the hero background, `Ferrofluid` (`src/components/effects/ferrofluid.tsx`, a port). Threads is removed.
+  - Magic UI NumberTicker: the stats in the project dialog (Stundio 400+, Curio 10%), in `ui/number-ticker.tsx`. It is adapted: the HTML ships the final value, and a `play` prop restarts the count.
   - Animate UI: icons, in `components/animate-ui/icons/`.
-  - shadcn on Base UI: primitives in `components/ui/`. The button is rewritten to the design system's pill variants `primary` and `secondary`.
-  - Own code: the bento grid, the dock (SmoothUI's job), and the journey rail (Aceternity's job), all rebuilt monochrome.
-- Hero picture: `Mark3D` (`src/components/effects/mark-3d.tsx`), the mark extruded into a slab that turns toward the cursor. It replaced the eagle photo (2026-11-11; the files in `public/images/` are unused) and is the hero's one moving thing.
-  - CSS 3D only, no WebGL: six faces under one `preserve-3d` rotor, geometry in the `.mark3d*` block of `index.css` (cqw units). Never put opacity, filter, overflow, mask or isolation on the rotor: they flatten it.
-  - The TSX owns the per-face Lambert shading and the pointer loop; pose, range, light and tones live in its `TUNING` object. `--mark-thick` and `perspective()` are in the CSS.
-  - The loop writes custom properties only, stops when settled or off screen, and runs only on fine hover pointers with motion allowed and Save-Data off. Otherwise the rest pose renders statically.
-  - Its width is capped by viewport height as well as width, so short screens keep the hero actions above the fold.
-- Bento tiles (`sections/work/`): `Tile` passes `{ playing, reduced }` from `usePlayTrigger`. The trigger is hover or focus on a fine pointer, and once at 60% in view on touch. Each tile owns exactly one animation and must render its finished state when `reduced`.
+  - shadcn on Base UI: primitives in `components/ui/`, including the Dialog. The button is rewritten to the design system's pill variants `primary` and `secondary`.
+  - Own code: the project canvas, the dock (SmoothUI's job), and the journey rail (Aceternity's job), all rebuilt monochrome.
+- Hero: no H1 and no 3D mark. The background is the lazy WebGL `Ferrofluid`, which ignores the pointer (move and click) while it is over the canvas panel. `Mark3D` (`src/components/effects/mark-3d.tsx`) still exists but is unmounted; leave it alone.
+- Project canvas (the hero's one moving thing and the site's signature element):
+  - `src/hooks/use-pan-canvas.ts` (own code): refs only, no React state per frame, one rAF loop with lerp plus friction inertia. Each card wraps on its own with a modulo, so six cards are six DOM nodes with no clones. The loop stops when settled, off screen or tab hidden. Tuning lives in a `TUNING` object.
+  - `sections/work/project-canvas.tsx`: the panel, and the cards as `<button id="work-<id>">`. Layout (position, size, rotation, depth) is a `LAYOUT` record keyed by `ProjectId`, so a new project fails to compile until it is placed.
+  - `sections/work/project-dialog.tsx`: a shadcn Dialog on Base UI. It shows the meta, body, stats and actions, built from `sections/work/project-parts.tsx`.
+  - Touch: `touch-action: pan-y`, so vertical swipes scroll the page and only horizontal pan moves the canvas. Reduced motion: static layout, 1:1 drag, no inertia.
 - Entrances use `<Reveal>` (CSS rise and fade, once, stagger with `index` × 60ms). Titles and the H1 never animate.
 - Navigation: `SiteNav` is the fixed top bar: lockup, section links from md up, and a "Let's talk" action. `useScrolled` uses a sentinel and an IntersectionObserver, not a scroll listener. When scrolled, the bar turns solid and everything inside it goes transparent and square. `Dock` is the bottom pill for phones only.
 - `cn` uses `extendTailwindMerge` with the `pill` radius. Without it, `rounded-none` cannot override `rounded-pill`.
@@ -59,12 +59,13 @@ When documents disagree, later entries win:
 ## Hard rules (decided by Dmytro)
 
 - **Never mention game development** (NN Game Studio / UE5) anywhere on the site.
-- **No lift/elevator metaphor, no "lift shaft" wording, no floor concept**, and no scroll-played Prolifts stage on the home page. The signature element is an own-code animated bento grid in Selected work.
+- **No lift/elevator metaphor, no "lift shaft" wording, no floor concept**, and no scroll-played Prolifts stage on the home page. The signature element is the own-code draggable project canvas in the hero.
+- The project canvas is the one named exception to the design system's no-tilt, vertical-only motion and 0px radius: tilted cards, free 2D drag and `rounded-panel`. Decided by Dmytro, 2026-11-11. Everything else stays vertical, untilted and square.
 - No green accent, no light theme, no toggle, no availability pill.
 - Education shown is RVT (Riga State Technical School), not RTU. Languages: Ukrainian/Russian native, Latvian B1, English B1.
 - Effects: **one job per UI library** (shadcn/ui, React Bits, Aceternity UI, Animate UI, SmoothUI); one moving thing per poster section.
 - Showcase clients: Prolifts, Numerologgi, Stundio (400+ daily users), Curio ("built for Curio's founder", owner not named).
-- New copy (e.g. "Let's talk" Contact line, two budget labels in How I work) needs Dmytro's OK before shipping.
+- New copy (e.g. "Let's talk" Contact line, two budget labels in How I work) needs Dmytro's OK before shipping. The same goes for the lv/ru/uk wording of `work.canvasTitle`, `work.cursor.*` and `common.close`.
 
 ## Workflow
 
