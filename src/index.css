@@ -9,6 +9,7 @@
   --font-archivo: "Archivo Variable", "Archivo Fallback", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial,
     sans-serif;
   --dock-h: 3.25rem;
+  --nav-h: 4.5rem;
 }
 
 @utility container-site {
@@ -27,6 +28,8 @@
     scroll-behavior: smooth;
     /* Focused elements and anchor jumps never land under the dock. */
     scroll-padding-bottom: calc(var(--dock-h) + 2rem);
+    /* Anchor jumps and focus land below the fixed top bar. */
+    scroll-padding-top: var(--nav-h);
   }
 
   @media (prefers-reduced-motion: reduce) {

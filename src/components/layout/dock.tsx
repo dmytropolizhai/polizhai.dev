@@ -4,8 +4,8 @@ import { Mark } from "@/components/ui/mark";
 import { cn } from "@/lib/utils";
 
 /**
- * The only navigation (design-system §9 Dock, SmoothUI dock's job, rebuilt as text).
- * Fixed bottom centre, one pill on --raised. Current section: white label, mark under it,
+ * Phone navigation (design-system §9 Dock, SmoothUI dock's job, rebuilt as text).
+ * From md up the links live in the top bar (`SiteNav`). Fixed bottom centre, one pill on --raised. Current section: white label, mark under it,
  * aria-current="location". Present from first paint, never animates in.
  */
 const CLEAR = ["top", "client"] as const;
@@ -16,7 +16,7 @@ export function Dock() {
   return (
     <nav
       aria-label={t.nav.label}
-      className="fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-(--z-dock) flex justify-center px-2 md:top-4 md:bottom-auto"
+      className="fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-(--z-dock) flex justify-center px-2 md:hidden"
     >
       <ul className="flex h-(--dock-h) items-center rounded-pill border border-line-strong bg-raised p-1">
         {facts.dock.map((id) => {

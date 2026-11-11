@@ -29,6 +29,14 @@ This system replaced these parts of `brand/strategy.md`, which is now updated to
 
 Everything else in the strategy still holds: voice, "one job per library", the motion rules, the performance budgets.
 
+**Later the same day (2026-11-11), while building the page, Dmytro changed:**
+
+| Was | Now |
+|---|---|
+| One dock at the bottom, the only navigation | A **top bar**: lockup, section links and a "Let's talk" action. From 768px up the links live in the bar. On phones the bar shows lockup and action, and the dock at the bottom keeps the links. See §9 Navigation. |
+| Secondary button: transparent with a `--control` border | Secondary button wears the **dock surface**: `--raised` fill, `--line-strong` border, muted text. The primary stays white. See §9 Button. |
+| Hero: name pinned bottom-left over React Bits Threads | Hero: a **3D mark** (own code, CSS 3D) above the name, centred. Threads is no longer used. |
+
 ## 1. Principles
 
 1. **Poster first.** Each section opens with one huge line of type. The type is the image.
@@ -115,7 +123,8 @@ Loading:
 - **Section rhythm:** `--section-y`, `clamp(6rem, 14vw, 12rem)` between sections.
 - **Section header:** a hairline, then two labels on one row (`polizhai` left, the section topic right), then the `type-h2` title. This is the corner-label pattern from the posts. Sections have no numbers.
 - **Space scale (4px base):** 4, 8, 12, 16, 24, 32, 48, 64, 96, 128. Tokens `--space-1` to `--space-32`. Use the scale; no one-off values.
-- **Alignment:** left. Centre only the single poster line where a section is nothing but that line.
+- **Alignment:** left. Two exceptions: the single poster line where a section is nothing but that line, and the hero, which is centred under the 3D mark.
+- **Top bar:** `--nav-h` (4.5rem). The page keeps `scroll-padding-top: var(--nav-h)` so anchor jumps and focus land below it.
 - **Breakpoints:** Tailwind defaults (640, 768, 1024, 1280).
 
 ## 6. Shape
@@ -166,8 +175,9 @@ Reference markup for each is in `preview.html`.
 | Variant | Default | Hover | Focus |
 |---|---|---|---|
 | Primary | white fill, black text | fill `--inverse-hover` | 2px white ring, 2px offset |
-| Secondary | transparent, `--control` border, white text | border white, fill `--raised` | same ring |
-One primary button per view. No press scale; the colour change is the feedback. Touch target is never under 44px.
+| Secondary | the dock surface: fill `--raised`, 1px `--line-strong` border, `--fg-muted` text | fill `--line`, white text | same ring |
+One primary button per view. Every other button is secondary, so it reads as part of the same family as the dock and the nav pill. No press scale; the colour change is the feedback. Touch target is never under 44px.
+The secondary border is decoration (`--line-strong`, 1.7:1). The button is identified by its fill step and its label, as the dock is; do not rely on the border for state.
 
 **Link.** White text, 1px underline in `--control`, offset 0.25em. On hover the underline turns white. Links in body text are always underlined.
 
@@ -185,13 +195,18 @@ One primary button per view. No press scale; the colour change is the feedback. 
 
 **Bento grid.** The signature layout, used for Selected work. A 12-column grid with 16px gaps (`--space-4`); rows are at least 288px and grow with content. Tiles are project cards in four sizes: 8 × 2, 4 × 2, 7 × 1, 5 × 1. Under 1024px the grid has 6 columns; under 640px it has one. Each tile has one animation that shows what the project is. It plays on hover or keyboard focus (once on entering the screen on touch), moves up and down only, and uses transforms and opacity. On hover the tile border goes to `--control`; the tile does not scale, tilt or glow. One tile may be text only, on `--bg`. Tile-by-tile spec: `design/landing-page.md`, section 2.
 
-**Dock.** The only navigation. One pill on `--raised` with a 1px `--line-strong` border, fixed at the bottom centre of the screen, 16px above the edge (plus the safe-area inset on phones). Five text items, 44px high, bold 14px with 16px side padding (13px with 8px under 480px, which fits a 360px phone): Work, How, Journey, About, Contact. Default `--fg-muted`. Hover: white text, fill `--line`, rise 2px. The current section is white with a small mark under the label and has `aria-current="location"`. The nav is labelled "Sections". No numbers and no icons. The page keeps bottom padding equal to the dock height plus 32px so the dock never covers the last line.
+**Navigation.** Two parts that share one look: a pill on `--raised` with a 1px `--line-strong` border, text items 44px high in bold 14px, default `--fg-muted`, hover white with fill `--line`. The current section is white with a small mark under the label and has `aria-current="location"`. Nothing in the hero is marked. The nav is labelled "Sections". No numbers and no icons.
+
+- **Top bar** (`SiteNav`), fixed to the top, full width, `--nav-h` high: lockup left, section links centre (from 768px up: Work, How, Journey, About), "Let's talk" right as a secondary button linking to Contact. Contact is not repeated in the links, because the action covers it.
+  - *At the top of the page:* the bar is transparent. The links sit in the pill; the action is a secondary pill.
+  - *Once the page scrolls (8px):* the bar turns solid, `--bg` with a 1px `--line` bottom border. Everything inside it drops its fill: the link group loses the pill (transparent, square), links no longer fill on hover, and the action keeps its shape and border but loses its fill. The change runs over `--dur-component` with `--motion-move`. Scroll state comes from an IntersectionObserver on a sentinel, not a scroll listener.
+- **Dock** (phones only, under 768px): the same pill fixed at the bottom centre, 16px above the edge plus the safe-area inset, with all five items including Contact. 13px with 8px padding under 480px, which fits a 360px phone. The page keeps bottom padding equal to the dock height plus 32px so it never covers the last line.
 
 **Timeline.** A 1px `--line` rail on the left. A 2px white fill grows down it with scroll. Entries above the fill are white with muted text; entries below are `--fg-subtle`. Under reduced motion the rail is full and every entry is lit.
 
 **Quote.** 2px white rule on the left, the quote in `type-lede`, then a label with name, role and company.
 
-**Contact.** "Let's talk" in `type-display` at −0.06em, then three pills: Copy email (primary), Telegram, Book a call. The email address is also shown as text.
+**Contact.** "Let's talk" in `type-display` at −0.06em, then three pills: Copy email (primary, white), Telegram and Book a call (secondary, dock surface). The email address is also shown as text.
 
 **Portrait.** See Imagery.
 
@@ -203,13 +218,15 @@ The "one job per library" map from the strategy stays. Only the colours change.
 
 | Library | Job | Change for this system |
 |---|---|---|
-| React Bits `Threads` | Hero background | Lines in white only. Keep them under the 15% cap from the colour rules. No accent colour. |
-| React Bits `LogoLoop` | Customers bar | White logos, 60% opacity. |
-| SmoothUI `dock` | Bottom dock nav | Text labels instead of icon tiles. Active dot becomes the mark. Magnification 1.12 or lower, no click bounce (as in the strategy). |
+| React Bits `Threads` | Removed | Was the hero background; the 3D mark replaced it and the code was deleted (2026-11-11). To bring it back, re-add it with `pnpm dlx shadcn@latest add https://reactbits.dev/r/Threads-TS-TW`: white lines only, under the 15% cap. |
+| React Bits `LogoLoop` | Customers bar | White logos, 60% opacity. Only with six or more logos. |
+| SmoothUI `dock` | Top bar and phone dock | Rebuilt as text in own code: no icon tiles, no magnification. Active dot becomes the mark. |
+| Magic UI `NumberTicker` | Counters (Stundio 400+, Curio 10%) | Ships the final value in the HTML; counts from 0 when the tile plays. |
 | Aceternity `timeline` | Journey | Replace the purple-blue fill with white. Titles in `--fg-subtle` until lit. |
-| Animate UI | Copy button, counters, highlight | Underline sweep in white, 2px, 560ms. |
+| Animate UI | Icons (lucide set: mail, copy, check, arrow-down, send) | Stroke in `currentColor`. They animate on the hover of their button, and are still under reduced motion. The underline sweep (white, 2px, 560ms) is own CSS. |
 | shadcn | Base primitives | Tokens from `tokens.css`. Square by default; buttons get `rounded-pill`. |
 | Own code | Bento grid in Selected work | CSS grid plus small CSS and `motion` animations. No bento library: the ready-made ones bring glow, tilt and colour that this system bans. |
+| Own code | Hero 3D mark | The mark as a CSS 3D slab that turns toward the cursor. White and grey faces only. |
 
 ## 11. Accessibility
 
@@ -226,7 +243,7 @@ The "one job per library" map from the strategy stays. Only the colours change.
 | Do | Don't |
 |---|---|
 | One poster line per section | Several display lines fighting on one screen |
-| White for the one action that matters | White fills on several buttons in a row |
+| White for the one action that matters; every other button on the dock surface | White fills on several buttons in a row |
 | Square cards, pill buttons | Rounded cards, square buttons |
 | Screenshots in true colour | Tinting or desaturating product screenshots |
 | The mark for "live" | The mark as a bullet or ornament |
@@ -239,4 +256,4 @@ Updated on 2026-11-11 to match this system: `brand/strategy.md` (amendment block
 
 Still describing the old direction, left as a record: the review notes at the end of `brand/strategy.md`, and `research/` (BRIEF.md still says polizhai.com).
 
-The page-by-page plan is in `design/landing-page.md`.
+The page-by-page plan is in `design/landing-page.md`. The built components live in `src/components/`; where this file and the code disagree, fix one of them in the same change.

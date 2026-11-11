@@ -1,6 +1,7 @@
 import { MotionConfig } from "motion/react";
 import { Dock } from "@/components/layout/dock";
 import { Footer } from "@/components/layout/footer";
+import { SiteNav } from "@/components/layout/site-nav";
 import { About } from "@/components/sections/about";
 import { ClientQuote } from "@/components/sections/client-quote";
 import { Contact } from "@/components/sections/contact";
@@ -20,6 +21,7 @@ export function App() {
       >
         {t.a11y.skipLink}
       </a>
+      <SiteNav />
       <Hero />
       <main id="main" tabIndex={-1} className="outline-none">
         <Work />

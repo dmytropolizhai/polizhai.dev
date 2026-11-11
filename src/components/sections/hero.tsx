@@ -2,7 +2,6 @@ import { ArrowDown } from "@/components/animate-ui/icons/arrow-down";
 import { Mark3D } from "@/components/effects/mark-3d";
 import { buttonVariants } from "@/components/ui/button";
 import { CopyEmailButton } from "@/components/ui/copy-email-button";
-import { Lockup } from "@/components/ui/lockup";
 import { facts, hrefOf, isTbd, t } from "@/lib/content";
 import { useState } from "react";
 
@@ -16,14 +15,7 @@ export function Hero() {
 
   return (
     <header id="top" className="texture-grain relative flex min-h-svh flex-col overflow-hidden">
-      <div className="container-site relative z-(--z-content) flex flex-1 flex-col pt-(--space-6) pb-[calc(var(--dock-h)+2.5rem)]">
-        <div className="flex items-center justify-between gap-4">
-          <a href="#top" className="inline-flex min-h-11 shrink-0 items-center">
-            <Lockup className="h-[18px] w-auto" />
-          </a>
-          <p className="text-sm font-bold text-fg-muted lowercase">{t.hero.eyebrow}</p>
-        </div>
-
+      <div className="container-site relative z-(--z-content) flex flex-1 flex-col pt-(--nav-h) pb-[calc(var(--dock-h)+2.5rem)] md:pb-(--space-8)">
         {/*
          * The 3D mark replaced the eagle photo (Dmytro's call, 2026-11-11): the hero's picture and its one moving thing.
          * Sized by width and by viewport height, so short screens keep the actions above the fold.

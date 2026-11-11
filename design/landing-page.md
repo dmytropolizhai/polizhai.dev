@@ -29,7 +29,8 @@ skip link
   What a client says                #client   (only when approved)
   Contact                           #contact
 <footer>
-<nav>     Dock, fixed at the bottom
+<header>  Top bar, fixed at the top (before the hero)
+<nav>     Dock, fixed at the bottom (phones)
 ```
 
 - Container 1280px, gutter `clamp(16px, 4vw, 48px)`, space between sections `--section-y`.
@@ -37,28 +38,32 @@ skip link
 - `<main>` has bottom padding of the dock height plus 32px, so the dock never covers the last line.
 - Every section enters the same way, once: the corner labels and the title are already there (no animation on titles), the content under them rises 14px and fades in over 560ms with `--motion-arrive`.
 
-## The dock
+## Navigation
 
-The only navigation. There is no top nav bar.
+Changed 2026-11-11 (Dmytro): a top bar joins the dock. Spec in `design-system.md` §9 Navigation.
 
 | Item | Text | Source |
 |---|---|---|
 | Nav label (screen readers) | Sections | `nav.label` |
-| Items | Work · How · Journey · About · Contact | `nav.sections[id].short`, ids from `facts.dock` |
+| Bar links (768px and up) | Work · How · Journey · About | `nav.sections[id].short`, `facts.dock` without `contact` |
+| Bar action | Let's talk → `#contact` | `pendingCopy.letsTalk` (**NEW**, needs your OK); falls back to `nav.sections.contact.label` |
+| Dock items (phones) | Work · How · Journey · About · Contact | `nav.sections[id].short`, ids from `facts.dock` |
 | Current item suffix (screen readers) | current section | `a11y.currentSection` |
 
-- **Place:** fixed, bottom centre, 16px above the edge plus the phone safe-area inset. One pill on `--raised` with a 1px `--line-strong` border.
-- **Items:** 44px high, bold 14px labels in `--fg-muted` (13px and tighter padding under 480px; five labels fit a 360px phone, checked in `preview.html`).
-- **Current section:** white label with the small white mark under it, `aria-current="location"`. The current section is the one that crosses the middle of the screen (IntersectionObserver, no scroll listener).
-- **Hover:** white label, `--line` fill, rise 2px, 160ms. No bounce on click.
-- **On the hero:** the dock is there from first paint, with no item marked. It does not animate in; a nav that arrives late looks broken.
-- **Top:** not in the dock. The logo in the hero and "Back to top" in the footer go there.
-- **Client words:** not in the dock. You reach it by scrolling between About and Contact.
-- **Keyboard:** the skip link comes first in tab order, then the hero, then the page. The dock is last in the DOM and is reachable with one Shift+Tab from the top.
+- **Top bar:** fixed to the top, full width. Lockup left (links to `#top`), links centre, action right.
+  - At the top of the page it is transparent, the links sit in the `--raised` pill and the action is a secondary pill.
+  - After 8px of scroll the bar turns solid (`--bg`, hairline under it), and everything inside it goes flat: no fills, the link group loses its pill.
+- **Dock:** phones only (under 768px). Fixed bottom centre, 16px above the edge plus the safe-area inset, one pill on `--raised` with a 1px `--line-strong` border. Five labels fit a 360px phone.
+- **Current section:** white label with the small white mark under it, `aria-current="location"`. It is the section that crosses the middle of the screen (IntersectionObserver, no scroll listener). In the hero and in Client words nothing is marked.
+- **Hover:** white label, `--line` fill, 160ms. No rise, no bounce on click.
+- **First paint:** both are there from first paint and do not animate in; a nav that arrives late looks broken.
+- **Keyboard:** skip link first, then the top bar, then the page. On phones the dock is last in the DOM.
 
 ## 1. Hero: the name poster
 
 **Job:** pass the 10-second test. Name, role, what he does, one action.
+
+> **Changed 2026-11-11 (Dmytro).** As built, the hero is centred: the 3D mark (own code, it turns toward the cursor) in the middle of the screen, then the name on one line from 768px up (two lines on phones), tagline, subline, the two buttons, and the customers bar on its hairline. The lockup and the role label moved out: the lockup is in the top bar, and the role label was removed. React Bits Threads is no longer used. The layout below is the original plan, kept as a record.
 
 **Layout (desktop).** Full viewport height (`100svh`), content pinned to the bottom-left like a printed poster.
 

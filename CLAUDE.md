@@ -22,7 +22,7 @@ pnpm only.
 - **Content goes through `src/lib/content.ts`** (`t` = active locale copy, `facts`, `hrefOf`, `showClientQuote`, `formatWhen`). Components never hard-code copy. Aliases: `@/` → `src/`, `@content/` → `content/`.
 - `src/lib/pending.ts` holds everything waiting on Dmytro: **NEW** copy flags (`letsTalk`, `budgetFigures`, `curioBars`), screenshot and portrait paths (`null` renders a halftone placeholder with the same ratio and animation), and `caseStudyPagesLive` (hides `/work/*` links until those pages exist).
 - One job per library:
-  - React Bits Threads: `src/components/effects/threads.tsx` with the `hero-threads.tsx` wrapper (lazy-loaded, desktop only, capped at 15% by wrapper opacity). Currently unmounted: the hero's picture is the 3D mark.
+  - React Bits Threads: removed. The hero's picture is the 3D mark (`effects/mark-3d.tsx`, own code).
   - Magic UI NumberTicker: Stundio and Curio counters, in `ui/number-ticker.tsx`. It is adapted: the HTML ships the final value, and a `play` prop restarts the count.
   - Animate UI: icons, in `components/animate-ui/icons/`.
   - shadcn on Base UI: primitives in `components/ui/`. The button is rewritten to the design system's pill variants `primary` and `secondary`.
@@ -34,7 +34,9 @@ pnpm only.
   - Its width is capped by viewport height as well as width, so short screens keep the hero actions above the fold.
 - Bento tiles (`sections/work/`): `Tile` passes `{ playing, reduced }` from `usePlayTrigger`. The trigger is hover or focus on a fine pointer, and once at 60% in view on touch. Each tile owns exactly one animation and must render its finished state when `reduced`.
 - Entrances use `<Reveal>` (CSS rise and fade, once, stagger with `index` × 60ms). Titles and the H1 never animate.
-- Dock highlight: `useActiveSection`, an IntersectionObserver band at 50% viewport. `#top` and `#client` clear it.
+- Navigation: `SiteNav` is the fixed top bar: lockup, section links from md up, and a "Let's talk" action. `useScrolled` uses a sentinel and an IntersectionObserver, not a scroll listener. When scrolled, the bar turns solid and everything inside it goes transparent and square. `Dock` is the bottom pill for phones only.
+- `cn` uses `extendTailwindMerge` with the `pill` radius. Without it, `rounded-none` cannot override `rounded-pill`.
+- Section highlight: `useActiveSection`, an IntersectionObserver band at 50% viewport. `#top` and `#client` clear it.
 
 ## Layout and source-of-truth order
 
