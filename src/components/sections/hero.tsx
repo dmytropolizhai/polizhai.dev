@@ -6,7 +6,7 @@ import { t } from "@/lib/content";
 import { lazy, Suspense, useState, type MouseEvent } from "react";
 
 // WebGL shader code stays out of the first bundle (160 kB JS budget); the headline is the LCP, not the fluid.
-const Ferrofluid = lazy(() => import("@/components/effects/ferrofluid").then((m) => ({ default: m.Ferrofluid })));
+const LiquidEther = lazy(() => import("@/components/effects/liquid-ether").then((m) => ({ default: m.LiquidEther })));
 
 const saveData = typeof navigator !== "undefined" && (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
 
@@ -38,10 +38,18 @@ export function Hero() {
       {!saveData && (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 z-0 h-svh opacity-60 mask-[linear-gradient(to_bottom,black_55%,transparent)]"
+          className="pointer-events-none absolute inset-x-0 top-0 z-0 h-svh opacity-70 mask-[linear-gradient(to_bottom,black_60%,transparent)]"
         >
           <Suspense fallback={null}>
-            <Ferrofluid mouseInteraction={!overCanvas} clickPulse={!overCanvas} colors={["#ffffff", "#ffffff", "#ffffff"]} spikeHeight={1} sharpness={2.5} tilt={48} dpr={0.6} />
+            <LiquidEther
+              colors={["#5227FF", "#FF9FFC", "#B497CF"]}
+              mouseForce={overCanvas ? 0 : 20}
+              cursorSize={100}
+              persistence={0.75}
+              autoDemo={true}
+              autoSpeed={0.5}
+              autoIntensity={2.2}
+            />
           </Suspense>
         </div>
       )}

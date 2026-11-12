@@ -8,14 +8,18 @@ import { TileActions, TileBody, TileMeta } from "./project-parts";
 /** One shared style for every project's lead action, so no project is singled out. */
 const LEAD = "secondary";
 
-type Props = { id: ProjectId | null; onClose: () => void };
+type Props = {
+  id: ProjectId | null;
+  onClose: () => void;
+  finalFocusTarget?: (id: ProjectId) => HTMLElement | null;
+};
 
 /**
  * Project detail: name, kind and status, one-liner, role, stack, stats, links.
- * Opens from a card on the canvas. Focus goes back to that card on close (`finalFocus`), which also
- * covers a deep link (`#work-<id>`) where no card had focus.
+ * Opens from a card on the canvas or an entry in the Journey timeline. Focus goes back to that
+ * trigger on close (`finalFocus`), which also covers a deep link (`#work-<id>`) where no card had focus.
  */
-export function ProjectDialog({ id, onClose }: Props) {
+export function ProjectDialog({ id, onClose, finalFocusTarget }: Props) {
   // Keep the last project while the exit transition runs, so the content does not blank out.
   const shown = useRef<ProjectId | null>(id);
   if (id) shown.current = id;
@@ -24,7 +28,10 @@ export function ProjectDialog({ id, onClose }: Props) {
   return (
     <Dialog open={id !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
-        finalFocus={() => (current ? document.getElementById(`work-${current}`) : null) ?? true}
+        finalFocus={() => {
+          if (!current) return true;
+          return (finalFocusTarget ? finalFocusTarget(current) : document.getElementById(`work-${current}`)) ?? true;
+        }}
       >
         {current && <Body id={current} />}
       </DialogContent>

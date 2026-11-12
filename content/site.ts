@@ -277,13 +277,13 @@ export const facts = {
   },
 
   journey: {
-    "first-script": { when: null, status: "visible" },
+    "data-pipeline": { when: null, status: "visible" },
+    systems: { when: "2024", status: "visible" },
     curio: { when: "2025", status: "visible" },
-    "one-to-one": { when: "2026", status: "visible" },
-    stundio: { when: "2026", status: "visible" }, // year only: repo dates disagree
+    stundio: { when: "2026", status: "visible" },
+    prolifts: { when: "2026", status: "visible" },
+    numerologgi: { when: "2026", status: "visible" },
     freelance: { when: "2026", status: "visible" },
-    prolifts: { when: "2026-09", status: "visible" }, // launch month, confirmed by Dmytro
-    numerologgi: { when: "2026", status: "visible" }, // launched; repo created 2026-10-06
   },
 
   // Verified 2026-11-09: each share link resolves to this specialization on Coursera.
@@ -787,24 +787,33 @@ export const en = {
     heading: "Journey",
     intro: "The path, one project at a time.",
     entries: {
-      "first-script": { title: "First script", body: "A Google Maps scraper. I taught myself the rest." },
+      "data-pipeline": {
+        title: "Google Maps data pipeline",
+        body: "My first commercial code: scraping every coffee shop across major Canadian cities for an Upwork client, syncing massive datasets into Google Drive and Google Sheets.",
+      },
+      systems: {
+        title: "C++ and C# before AI",
+        body: "Writing low-level code in C++ and C# before LLMs existed. It built my understanding of memory, data structures, and how software actually executes under the hood.",
+      },
       curio: {
-        title: "Curio frontend",
-        body: "I rebuilt the frontend of a news feed in Next.js, for its founder. Page load time went down 10%.",
+        title: "Curio: turnkey frontend",
+        body: "Took a news platform from custom UI to Shadcn in Next.js. Delivered the entire frontend under key with multi-language support, cutting page load time by 10%.",
       },
-      "one-to-one": { title: "one-to-one", body: "A real-time chat app. I built the frontend, the backend and the deploy." },
       stundio: {
-        title: "Stundio",
-        body: "An open-source timetable app for students at Riga State Technical School. Over 400 of them use it every school day.",
+        title: "Stundio: replacing Edupage",
+        body: "The technical school's official timetable was unusable on phones. I built a fast open-source client—it spread through student chats with zero marketing and became a daily habit for hundreds of students.",
       },
-      freelance: { title: "Client work", body: "I build sites and apps for clients on my own, from design to deploy." },
       prolifts: {
-        title: "Prolifts goes live",
-        body: "The site for Pro-lifts SIA, an elevator company in Riga, in three languages.",
+        title: "Pro-lifts goes live",
+        body: "Turnkey corporate website for an elevator company in Riga. Delivered full Latvian legal compliance, 3 languages, and a Sanity CMS setup so their team updates content without touching code.",
       },
       numerologgi: {
-        title: "Numerologgi goes live",
-        body: "An online shop for a Riga business, with a CMS catalogue and payments through Stripe.",
+        title: "Numerologgi: shipped early",
+        body: "E-commerce store with Stripe payments and a CMS catalogue. The client needed it live before November; I finished the architecture, integrations, and launch by mid-October.",
+      },
+      freelance: {
+        title: "Full-stack for founders",
+        body: "One person covering product vision, design, architecture, and production deploy. Fast delivery, direct communication, and zero agency overhead.",
       },
     },
   },

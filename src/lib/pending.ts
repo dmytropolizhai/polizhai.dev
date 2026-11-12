@@ -39,7 +39,7 @@ export const shots = {
   projects: projectShots,
   /** Intrinsic size of every project shot, for `width`/`height` (no layout shift). */
   projectSize: { w: 960, h: 478 },
-  portrait: null as string | null, // 3:4, black and white
+  portrait: "/images/portrait.webp" as string | null, // 3:4, black and white
 };
 
 /** Case-study pages are not built yet; their links stay hidden until they are. */

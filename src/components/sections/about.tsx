@@ -14,9 +14,21 @@ export function About() {
       <div className="grid gap-x-6 gap-y-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-12">
-            <figure className="texture-grain aspect-[3/4] overflow-hidden bg-raised">
+            <figure className="texture-grain aspect-[3/4] overflow-hidden bg-raised border border-line">
               {shots.portrait ? (
-                <img src={shots.portrait} alt={t.a11y.portraitAlt} className="h-full w-full object-cover grayscale" />
+                <picture>
+                  <source srcSet="/images/portrait.avif" type="image/avif" />
+                  <source srcSet="/images/portrait.webp" type="image/webp" />
+                  <img
+                    src={shots.portrait}
+                    alt={t.a11y.portraitAlt}
+                    width={900}
+                    height={1200}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover grayscale contrast-[1.04]"
+                  />
+                </picture>
               ) : (
                 <div aria-hidden="true" className="flex h-full items-end p-4">
                   <span className="type-label relative z-(--z-content) text-fg-muted">portrait · 3:4</span>
