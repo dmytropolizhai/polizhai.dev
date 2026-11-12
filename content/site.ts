@@ -668,7 +668,7 @@ export const en = {
 
   hero: {
     headline: "Make it run, make it right.",
-    subline: "I design, build and launch web apps, from the first commit to the live site.",
+    subline: "Dmytro Polizhai — full-stack developer in Riga. I design, build and launch web apps, from the first commit to the live site.",
     seeWork: "See the work",
     customers: {
       label: "More than 5 happy customers",
