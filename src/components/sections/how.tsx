@@ -1,164 +1,168 @@
-import { useState } from "react";
-import { Mark } from "@/components/ui/mark";
+import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { t } from "@/lib/content";
 import { pendingCopy } from "@/lib/pending";
 
 /**
- * §3 How I work: 4-stage interactive Delivery Pipeline.
- * Replaces the static bento grid with an authored telemetry workflow.
+ * §3 How I work: the asymmetric 12-column hairline Proof Grid.
+ * Displays all 5 commercial outcome claims and structural proof blocks at once without widget friction.
  */
 export function How() {
   const c = t.how.cells;
   const figures = pendingCopy.budgetFigures;
-  const [activeStage, setActiveStage] = useState(0);
 
-  const stages = [
-    {
-      id: "design",
-      step: "01",
-      name: "Design & Scope",
-      title: c.launch.title,
-      body: c.launch.body,
-      note: "Direct collaboration with Dmytro. Zero project manager overhead or handoff latency.",
-      metrics: c.launch.figures,
-      tags: ["Direct Slack / Telegram", "Interactive Prototypes", "Scope Lock", "Milestones"],
-    },
-    {
-      id: "frontend",
-      step: "02",
-      name: "Frontend & Speed",
-      title: c.speed.title,
-      body: c.speed.body,
-      note: "Sub-second navigation budgets enforced in CI, zero cumulative layout shift.",
-      metrics: figures.show ? figures.items : [{ value: "< 1.8 s", label: "main content, budget" }],
-      tags: [...c.speed.stack, "Tailwind v4", "Vite", "Edge SSR"],
-    },
-    {
-      id: "cms",
-      step: "03",
-      name: "Content & CMS",
-      title: c.cms.title,
-      body: c.cms.body,
-      note: "Visual editing studio tailored to your exact schemas. Free multilingual support.",
-      metrics: [
-        c.cms.figure,
-        { value: "4", label: "languages supported free" },
-      ],
-      tags: [...c.cms.tools, "Multilingual (EN, LV, UK, RU)", "Asset Pipeline", "Draft Previews"],
-    },
-    {
-      id: "care",
-      step: "04",
-      name: "Deploy & Care",
-      title: c.support.title,
-      body: c.support.body,
-      note: "Direct author warranty with zero-downtime edge network and automated backups.",
-      metrics: c.support.phases,
-      tags: [...c.support.tags, "Cloudflare Edge", "Automated Backups", "SSL & DNS"],
-    },
+  const languages = [
+    { name: "Ukrainian", code: "UK", level: "Native" },
+    { name: "Russian", code: "RU", level: "Native" },
+    { name: "Latvian", code: "LV", level: "B1" },
+    { name: "English", code: "EN", level: "B1" },
   ];
-
-  const current = stages[activeStage] ?? stages[0]!;
 
   return (
     <Section id="how" title={t.how.heading} intro={t.how.intro}>
-      <div className="border border-line bg-surface">
-        {/* Stage Selection Rail */}
-        <div
-          role="tablist"
-          aria-label="Delivery stages"
-          className="grid grid-cols-2 border-b border-line lg:grid-cols-4"
+      <div className="grid grid-cols-1 border-t border-l border-line md:grid-cols-2 lg:grid-cols-12">
+        {/* Cell 1: Launch Speed & Solo Delivery */}
+        <Reveal
+          as="article"
+          className="flex flex-col border-r border-b border-line bg-bg p-(--space-8) md:col-span-2 lg:col-span-7"
         >
-          {stages.map((stage, idx) => {
-            const isActive = activeStage === idx;
-            return (
-              <button
-                key={stage.id}
-                role="tab"
-                id={`stage-tab-${stage.id}`}
-                aria-selected={isActive}
-                aria-controls={`stage-panel-${stage.id}`}
-                tabIndex={isActive ? 0 : -1}
-                onClick={() => setActiveStage(idx)}
-                onKeyDown={(e) => {
-                  if (e.key === "ArrowRight") {
-                    e.preventDefault();
-                    setActiveStage((idx + 1) % stages.length);
-                  } else if (e.key === "ArrowLeft") {
-                    e.preventDefault();
-                    setActiveStage((idx - 1 + stages.length) % stages.length);
-                  }
-                }}
-                className={`group relative flex flex-col justify-between p-(--space-6) text-left transition-colors duration-(--dur-micro) motion-reduce:transition-none ${
-                  idx < stages.length - 1 ? "border-r border-line" : ""
-                } ${idx === 1 ? "border-r-0 lg:border-r" : ""} ${
-                  idx < 2 ? "border-b border-line lg:border-b-0" : ""
-                } ${isActive ? "bg-raised text-fg" : "bg-surface text-fg-muted hover:bg-raised/50 hover:text-fg"}`}
-              >
-                {/* Active indicator bar */}
-                <div
-                  className={`absolute top-0 right-0 left-0 h-0.5 transition-colors duration-(--dur-micro) motion-reduce:transition-none ${
-                    isActive ? "bg-inverse" : "bg-transparent group-hover:bg-line-strong"
-                  }`}
-                  aria-hidden="true"
-                />
+          <h3 className="type-h3 text-fg">{c.launch.title}</h3>
+          <p className="type-body mt-(--space-3) max-w-[54ch] text-fg-muted">{c.launch.body}</p>
 
-                <div className="flex items-center justify-between">
-                  <span className="type-label font-mono text-fg-subtle">
-                    {stage.step} / 04
-                  </span>
-                  {isActive ? (
-                    <span className="flex items-center gap-1.5 type-label text-fg">
-                      <Mark className="text-fg" />
-                      <span>active</span>
-                    </span>
-                  ) : (
-                    <span className="type-label text-fg-subtle opacity-0 transition-opacity duration-(--dur-micro) group-hover:opacity-100">
-                      inspect
-                    </span>
-                  )}
+          <div className="mt-auto pt-(--space-8)">
+            <dl className="flex flex-wrap gap-x-10 gap-y-4">
+              {c.launch.figures.map((fig) => (
+                <div key={fig.label} className="flex flex-col-reverse">
+                  <dt className="type-label mt-1 text-fg-muted">{fig.label}</dt>
+                  <dd className="type-num text-[clamp(2rem,3.5vw,2.75rem)] leading-none text-fg whitespace-nowrap">
+                    {fig.value}
+                  </dd>
                 </div>
+              ))}
+            </dl>
 
-                <div className="mt-(--space-4)">
-                  <p className="type-h3 text-fg">{stage.name}</p>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Telemetry Readout Console */}
-        <div
-          id={`stage-panel-${current.id}`}
-          role="tabpanel"
-          aria-labelledby={`stage-tab-${current.id}`}
-          tabIndex={0}
-          className="grid gap-8 p-(--space-8) lg:grid-cols-12 lg:gap-12 lg:p-(--space-12)"
-        >
-          {/* Left Column: Stage Specification & Stack */}
-          <div className="flex flex-col justify-between lg:col-span-7">
-            <div>
-              <div className="flex items-center gap-2 type-label text-fg-subtle">
-                <span className="inline-block h-1.5 w-1.5 bg-inverse" aria-hidden="true" />
-                <span>STAGE {current.step} SPECIFICATION</span>
-              </div>
-
-              <h3 className="type-h3 mt-(--space-4) text-fg">{current.title}</h3>
-              <p className="type-body mt-(--space-4) max-w-[54ch] text-fg-muted">{current.body}</p>
-
-              <p className="type-small mt-(--space-6) border-l-2 border-line-strong pl-(--space-3) text-fg-subtle">
-                {current.note}
-              </p>
+            <div className="mt-(--space-6) border-t border-line pt-(--space-4)">
+              <p className="type-label mb-(--space-2) text-fg-subtle">DELIVERY PIPELINE</p>
+              <ol className="flex flex-wrap items-center gap-2 type-label text-fg">
+                {c.launch.stages.map((stage, idx) => (
+                  <li key={stage} className="flex items-center gap-2">
+                    <span className="border border-line-strong bg-raised px-2.5 py-1 font-mono text-fg">
+                      {stage}
+                    </span>
+                    {idx < c.launch.stages.length - 1 && (
+                      <span className="text-fg-subtle" aria-hidden="true">
+                        →
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ol>
             </div>
+          </div>
+        </Reveal>
 
-            <div className="mt-(--space-8) border-t border-line pt-(--space-6)">
-              <p className="type-label mb-(--space-3) text-fg-subtle">DELIVERABLES & ARCHITECTURE</p>
+        {/* Cell 2: CMS & Content Autonomy */}
+        <Reveal
+          as="article"
+          index={1}
+          className="flex flex-col border-r border-b border-line bg-surface p-(--space-8) md:col-span-1 lg:col-span-5"
+        >
+          <h3 className="type-h3 text-fg">{c.cms.title}</h3>
+          <p className="type-body mt-(--space-3) text-fg-muted">{c.cms.body}</p>
+
+          <div className="mt-auto pt-(--space-8)">
+            <dl>
+              <div className="flex flex-col-reverse">
+                <dt className="type-label mt-1 text-fg-muted">{c.cms.figure.label}</dt>
+                <dd className="type-num text-[clamp(2rem,3.5vw,2.75rem)] leading-none text-fg whitespace-nowrap">
+                  {c.cms.figure.value}
+                </dd>
+              </div>
+            </dl>
+
+            <div className="mt-(--space-6) border-t border-line pt-(--space-4)">
+              <p className="type-label mb-(--space-2) text-fg-subtle">VISUAL EDITING STUDIO</p>
               <ul className="flex flex-wrap gap-2">
-                {current.tags.map((tag) => (
+                {c.cms.tools.map((tool) => (
+                  <li
+                    key={tool}
+                    className="type-label border border-line-strong bg-raised px-2.5 py-1 text-fg"
+                  >
+                    {tool}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Cell 3: Performance & Conversion */}
+        <Reveal
+          as="article"
+          index={2}
+          className="flex flex-col border-r border-b border-line bg-bg p-(--space-8) md:col-span-1 lg:col-span-4"
+        >
+          <h3 className="type-h3 text-fg">{c.speed.title}</h3>
+          <p className="type-body mt-(--space-3) text-fg-muted">{c.speed.body}</p>
+
+          <div className="mt-auto pt-(--space-8)">
+            <dl className="flex flex-wrap gap-x-8 gap-y-4">
+              {(figures.show ? figures.items : [{ value: "< 1.8 s", label: "main content, budget" }]).map(
+                (fig) => (
+                  <div key={fig.label} className="flex flex-col-reverse">
+                    <dt className="type-label mt-1 text-fg-muted">{fig.label}</dt>
+                    <dd className="type-num text-[clamp(1.75rem,3vw,2.5rem)] leading-none text-fg whitespace-nowrap">
+                      {fig.value}
+                    </dd>
+                  </div>
+                ),
+              )}
+            </dl>
+
+            <div className="mt-(--space-6) border-t border-line pt-(--space-4)">
+              <p className="type-label mb-(--space-2) text-fg-subtle">CORE STACK</p>
+              <ul className="flex flex-wrap gap-2">
+                {c.speed.stack.map((item) => (
+                  <li
+                    key={item}
+                    className="type-label border border-line-strong bg-raised px-2.5 py-1 text-fg"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Cell 4: Warranty & Ongoing Care */}
+        <Reveal
+          as="article"
+          index={3}
+          className="flex flex-col border-r border-b border-line bg-surface p-(--space-8) md:col-span-1 lg:col-span-4"
+        >
+          <h3 className="type-h3 text-fg">{c.support.title}</h3>
+          <p className="type-body mt-(--space-3) text-fg-muted">{c.support.body}</p>
+
+          <div className="mt-auto pt-(--space-8)">
+            <dl className="grid grid-cols-2 gap-4">
+              {c.support.phases.map((phase) => (
+                <div key={phase.label} className="flex flex-col-reverse">
+                  <dt className="type-label mt-1 text-fg-muted">{phase.label}</dt>
+                  <dd className="type-num text-[clamp(1.75rem,3vw,2.5rem)] leading-none text-fg whitespace-nowrap">
+                    {phase.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
+            <div className="mt-(--space-6) border-t border-line pt-(--space-4)">
+              <p className="type-label mb-(--space-2) text-fg-subtle">AFTERCARE SCOPE</p>
+              <ul className="flex flex-wrap gap-2">
+                {c.support.tags.map((tag) => (
                   <li
                     key={tag}
-                    className="type-label border border-line-strong bg-raised px-3 py-1.5 text-fg"
+                    className="type-label border border-line-strong bg-raised px-2.5 py-1 text-fg"
                   >
                     {tag}
                   </li>
@@ -166,35 +170,45 @@ export function How() {
               </ul>
             </div>
           </div>
+        </Reveal>
 
-          {/* Right Column: Telemetry Proof Deck */}
-          <div className="flex flex-col justify-between border border-line bg-bg p-(--space-6) lg:col-span-5 lg:p-(--space-8)">
-            <div>
-              <div className="flex items-center justify-between border-b border-line pb-(--space-3) type-label text-fg-subtle">
-                <span>VERIFIED METRICS</span>
-                <span className="font-mono text-fg">LIVE BENCHMARK</span>
-              </div>
+        {/* Cell 5: Multilingual Setup */}
+        <Reveal
+          as="article"
+          index={4}
+          className="flex flex-col border-r border-b border-line bg-bg p-(--space-8) md:col-span-2 lg:col-span-4"
+        >
+          <h3 className="type-h3 text-fg">{c.languages.title}</h3>
+          <p className="type-body mt-(--space-3) text-fg-muted">{c.languages.body}</p>
 
-              <dl className="mt-(--space-6) space-y-6">
-                {current.metrics.map((metric) => (
-                  <div key={metric.label} className="flex flex-col-reverse">
-                    <dt className="type-label mt-1 text-fg-muted">{metric.label}</dt>
-                    <dd className="type-num text-[clamp(2.25rem,4vw,3.25rem)] leading-none tracking-[-0.035em] text-fg whitespace-nowrap">
-                      {metric.value}
-                    </dd>
-                  </div>
+          <div className="mt-auto pt-(--space-8)">
+            <dl className="flex flex-wrap gap-x-8 gap-y-4">
+              {c.languages.figures.map((fig) => (
+                <div key={fig.label} className="flex flex-col-reverse">
+                  <dt className="type-label mt-1 text-fg-muted">{fig.label}</dt>
+                  <dd className="type-num text-[clamp(1.75rem,3vw,2.5rem)] leading-none text-fg whitespace-nowrap">
+                    {fig.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
+            <div className="mt-(--space-6) border-t border-line pt-(--space-4)">
+              <p className="type-label mb-(--space-2) text-fg-subtle">NATIVE & B1 FLUENCY</p>
+              <ul className="grid grid-cols-2 gap-2">
+                {languages.map((lang) => (
+                  <li
+                    key={lang.code}
+                    className="flex items-center justify-between border border-line bg-raised px-2.5 py-1.5 type-label"
+                  >
+                    <span className="text-fg">{lang.name}</span>
+                    <span className="font-mono text-fg-subtle">{lang.level}</span>
+                  </li>
                 ))}
-              </dl>
-            </div>
-
-            <div className="mt-(--space-8) border-t border-line pt-(--space-4)">
-              <div className="flex items-center justify-between type-label text-fg-subtle">
-                <span>DELIVERY MODEL</span>
-                <span className="font-mono text-fg">ONE BUILDER · COMMIT TO DEPLOY</span>
-              </div>
+              </ul>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </Section>
   );

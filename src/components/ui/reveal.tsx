@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 type RevealProps = React.HTMLAttributes<HTMLElement> & {
   /** Stagger index; each step adds 60ms (landing-page.md, bento entrance). */
   index?: number;
-  as?: "div" | "li" | "span";
+  as?: "div" | "li" | "span" | "article";
 };
 
 /**
@@ -13,7 +13,7 @@ type RevealProps = React.HTMLAttributes<HTMLElement> & {
  * Reduced motion zeroes the tokens, so the content is simply there.
  */
 export function Reveal({ index = 0, as: Tag = "div", className, style, ...props }: RevealProps) {
-  const ref = useRef<HTMLDivElement & HTMLLIElement & HTMLSpanElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function Reveal({ index = 0, as: Tag = "div", className, style, ...props 
 
   return (
     <Tag
-      ref={ref}
+      ref={ref as never}
       data-revealed={revealed || undefined}
       className={cn("reveal", className)}
       style={{ ...style, "--reveal-delay": `${index * 60}ms` } as React.CSSProperties}

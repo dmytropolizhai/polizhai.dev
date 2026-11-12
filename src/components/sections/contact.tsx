@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { getCalApi } from "@calcom/embed-react";
 import { Calendar } from "lucide-react";
-import { Send } from "@/components/animate-ui/icons/send";
 import { buttonVariants } from "@/components/ui/button";
-import { CopyEmailButton } from "@/components/ui/copy-email-button";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section";
-import { ExternalNote, externalProps } from "@/components/ui/text-link";
+import { externalProps } from "@/components/ui/text-link";
 import { facts, hrefOf, t } from "@/lib/content";
 import { pendingCopy } from "@/lib/pending";
 
@@ -31,19 +29,17 @@ function RigaClock() {
   }, []);
   return (
     <p className="type-label text-right text-fg-muted">
-      {t.contact.localTimeLabel} · <time className="type-num" dateTime={now ?? undefined}>{now ?? "--:--"}</time>
+      {t.contact.localTimeLabel} · <time className="type-num" dateTime={now ?? undefined}>{now ?? "--:--"}</time> <span className="font-mono text-fg-subtle">EET</span>
     </p>
   );
 }
 
 /** §7 Contact: the last poster. Full height, grain, pinned bottom-left. One path, no form. */
 export function Contact() {
-  const [email, telegram, call] = facts.contact;
-  const telegramHref = hrefOf(telegram?.href);
+  const call = facts.contact.find((c) => c.id === "call");
   const callHref = hrefOf(call?.href);
-  const [sendHover, setSendHover] = useState(false);
   const poster = pendingCopy.letsTalk;
-  const calLink = callHref ? callHref.replace("https://cal.com/", "") : undefined;
+  const calLink = callHref ? callHref.replace("https://cal.com/", "") : "dmytropolizhai/briefing";
 
   useEffect(() => {
     if (!calLink) return;
@@ -61,14 +57,6 @@ export function Contact() {
       }
     })();
   }, [calLink]);
-
-  // Cleanly omit the call invitation when no booking link is active.
-  const contactBody = callHref
-    ? t.contact.body
-    : t.contact.body.replace(
-        /,\s*(or book a call|vai rezervējiet zvanu|или забронируйте звонок|або забронюйте дзвінок)/i,
-        "",
-      );
 
   return (
     <section
@@ -93,44 +81,18 @@ export function Contact() {
           </SectionTitle>
 
           <Reveal>
-            <p className="type-body mt-(--space-4) text-fg-muted">{contactBody}</p>
-            {email && (
-              <p className="mt-(--space-8)">
-                <a
-                  href={email.href}
-                  className="type-h3 break-all underline decoration-control decoration-1 underline-offset-[0.2em] hover:decoration-fg"
-                >
-                  {email.display}
-                </a>
-              </p>
-            )}
+            <p className="type-body mt-(--space-4) max-w-[54ch] text-fg-muted">{t.contact.body}</p>
             <div className="mt-(--space-8) flex flex-wrap items-center gap-3">
-              <CopyEmailButton label={t.a11y.copy.button} icon="copy" />
-              {telegramHref && (
-                <a
-                  href={telegramHref}
-                  {...externalProps(telegramHref)}
-                  className={buttonVariants({ variant: "secondary" })}
-                  onPointerEnter={() => setSendHover(true)}
-                  onPointerLeave={() => setSendHover(false)}
-                >
-                  <Send animate={sendHover} aria-hidden="true" />
-                  {t.contact.labels.telegram}
-                  <span className="font-normal text-fg-muted">{telegram?.display}</span>
-                  <ExternalNote href={telegramHref} />
-                </a>
-              )}
               {callHref && (
                 <a
                   href={callHref}
                   {...externalProps(callHref)}
-                  className={buttonVariants({ variant: "secondary" })}
+                  className={buttonVariants({ variant: "primary" })}
                   data-cal-link={calLink}
                   data-cal-config='{"layout":"month_view","theme":"dark"}'
                 >
-                  <Calendar aria-hidden="true" />
-                  {t.contact.labels.call}
-                  <ExternalNote href={callHref} />
+                  <Calendar className="size-4" aria-hidden="true" />
+                  <span>{t.contact.labels.call}</span>
                 </a>
               )}
             </div>

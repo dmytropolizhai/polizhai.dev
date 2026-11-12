@@ -111,7 +111,7 @@ function JourneyEntry({ id, reduced, displayDate, onSelectProject }: JourneyEntr
           </span>
         </div>
       )}
-      <p className={cn("type-body mt-2 transition-colors duration-(--dur-component)", lit ? "text-fg-muted" : "text-fg-subtle")}>
+      <p className={cn("type-body mt-2 max-w-[56ch] transition-colors duration-(--dur-component)", lit ? "text-fg-muted" : "text-fg-subtle")}>
         {copy.body}
       </p>
     </li>

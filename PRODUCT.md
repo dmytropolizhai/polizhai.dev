@@ -42,7 +42,7 @@ polizhai.dev is the personal-brand portfolio of Dmytro Polizhai, a full-stack de
 - No elevator or lift metaphor, no "lift shaft" wording, no floor concept, and no scroll-played Prolifts stage on the home page.
 - Showcase clients as confirmed: Prolifts, Numerologgi, Stundio (400+ daily users), Curio. Curio is described as "built for Curio's founder"; the owner is not named.
 - Voice: factual and specific, per `brand/strategy.md`. "Make it run, make it right" is his own motto.
-- Age: "I'm 18" appears once, in About, never as a hook.
+- Age: Removed. Never mention age or year on the site. Studying at RVT is stated factually.
 
 ## Evidence on Hand
 
@@ -59,7 +59,7 @@ polizhai.dev is the personal-brand portfolio of Dmytro Polizhai, a full-stack de
 - **Equal weight across projects.** No single project is singled out as the lead proof. Prolifts and the others are presented with the same prominence; the page does not promote one above the rest.
 - **Claims are precise and sourced.** Numbers come from verified data (commit counts, user counts, analytics); when a figure is unconfirmed, it is marked pending rather than rounded up.
 - **Motion and interaction serve the work.** The project canvas exists to let visitors browse proof; anything that does not explain or prove something is cut.
-- **Honest about age and stage.** Being 18 and studying is stated once, factually, and never used as a hook.
+- **Honest about background.** Studying programming at RVT and building real products is stated factually, with no age hook or junior framing.
 
 ## Accessibility & Inclusion
 

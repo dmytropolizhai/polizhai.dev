@@ -13,7 +13,7 @@ export function About() {
     <Section id="about" title={t.about.heading}>
       <div className="grid gap-x-6 gap-y-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-12">
+          <div className="lg:sticky lg:top-[calc(var(--nav-h)+1.5rem)]">
             <figure className="texture-grain aspect-[3/4] overflow-hidden bg-raised border border-line">
               {shots.portrait ? (
                 <picture>
@@ -60,9 +60,8 @@ export function About() {
           </Reveal>
 
           <Reveal className="mt-(--space-12)">
-            <p className="type-h3">{t.about.ageLine}</p>
-            <p className="type-body mt-(--space-4)">{t.about.originLine}</p>
-            <p className="type-small mt-2 text-fg-muted">{t.about.schoolLine}</p>
+            <p className="type-body text-fg">{t.about.originLine}</p>
+            <p className="type-small mt-2 text-fg-muted [text-wrap:pretty]">{t.about.schoolLine}</p>
           </Reveal>
 
           <div className="mt-(--space-16) grid gap-(--space-12) md:grid-cols-2 md:gap-6">
@@ -79,7 +78,6 @@ export function About() {
             </Reveal>
             <Reveal index={1}>
               <h3 className="type-label text-fg-muted">{t.about.certificates.heading}</h3>
-              <p className="type-small mt-1 text-fg-subtle">{t.about.certificates.note}</p>
               <ul className="mt-3">
                 {facts.certificates.map((c) => {
                   const href = hrefOf(c.href);
@@ -90,6 +88,7 @@ export function About() {
                   );
                 })}
               </ul>
+              <p className="type-small mt-3 text-fg-muted">{t.about.certificates.note}</p>
             </Reveal>
           </div>
         </div>

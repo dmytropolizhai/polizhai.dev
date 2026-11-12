@@ -1,8 +1,8 @@
 import { ArrowDown } from "@/components/animate-ui/icons/arrow-down";
 import { buttonVariants } from "@/components/ui/button";
-import { CopyEmailButton } from "@/components/ui/copy-email-button";
 import { ProjectExplorer } from "@/components/sections/work";
-import { t } from "@/lib/content";
+import { facts, hrefOf, t } from "@/lib/content";
+import { Calendar } from "lucide-react";
 import { useState, type MouseEvent } from "react";
 
 /**
@@ -25,12 +25,19 @@ function showCanvas(e: MouseEvent<HTMLAnchorElement>) {
 /** §1 The hero: the motto, a subline and two actions, then the full-bleed project canvas. */
 export function Hero() {
   const [arrowHover, setArrowHover] = useState(false);
+  const call = facts.contact.find((c) => c.id === "call");
+  const callHref = hrefOf(call?.href);
 
   return (
     <header id="top" className="texture-grain relative flex flex-col overflow-hidden">
       <div className="container-site relative z-(--z-content) flex flex-col items-center pt-[calc(var(--nav-h)+clamp(var(--space-8),6svh,var(--space-16)))] text-center">
         <h1 className="type-display type-display-poster max-w-[15em] text-[clamp(1.75rem,min(8.8vw,10.7svh),6rem)] text-fg">{t.hero.headline}</h1>
-        <p className="rise-in type-body mt-(--space-6) max-w-184 text-fg-muted">{t.hero.subline}</p>
+        <div className="rise-in mt-(--space-6) flex flex-col items-center gap-(--space-2)">
+          <p className="type-lede font-medium tracking-tight text-fg">
+            {t.hero.identity}
+          </p>
+          <p className="type-body max-w-[54ch] text-fg-muted">{t.hero.subline}</p>
+        </div>
         <div className="mt-(--space-8) flex flex-wrap justify-center gap-3">
           <a
             href="#work"
@@ -42,7 +49,17 @@ export function Hero() {
             {t.hero.seeWork}
             <ArrowDown animate={arrowHover} aria-hidden="true" />
           </a>
-          <CopyEmailButton label={t.common.emailMe} icon="mail" variant="primary" />
+          {callHref && (
+            <a
+              href={callHref}
+              className={buttonVariants({ variant: "primary" })}
+              data-cal-link="dmytropolizhai/briefing"
+              data-cal-config='{"layout":"month_view","theme":"dark"}'
+            >
+              <Calendar className="size-4" aria-hidden="true" />
+              <span>{t.contact.labels.call}</span>
+            </a>
+          )}
         </div>
       </div>
 

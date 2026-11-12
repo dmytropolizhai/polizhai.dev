@@ -62,7 +62,7 @@ export const urls = {
   numerologgi: "https://shop.numerologgi.com",
   zinly: "https://zinly.polizhai.dev",
   telegram: "https://t.me/dmytropolizhai",
-  cal: "https://cal.com/dmytropolizhai",
+  cal: "https://cal.com/dmytropolizhai/briefing",
 } as const satisfies Record<string, Href>;
 
 /** Numbers that count up. Labels live in `SiteCopy.stats`. */
@@ -132,6 +132,15 @@ type Facts = {
     /** Source of the quote, for the record. Not rendered. */
     source: { date: string; channel: string; language: "ru" };
   };
+  testimonials: readonly {
+    id: string;
+    name: string;
+    role: string;
+    company: string;
+    project: string;
+    kind: "client" | "venture";
+    photo: string | null;
+  }[];
   /**
    * Services picker. `price` is EUR, `null` = custom quote. `proof` = project ids shown as "See it live"
    * (empty: the row links to the How I work support cell). Tiers are the monthly support plans.
@@ -165,7 +174,7 @@ export const facts = {
     city: "Riga",
     country: "LV",
     school: { name: "Riga State Technical School", localName: "Rīgas Valsts tehnikums", short: "RVT" },
-    portrait: { src: "[TBD: portrait file, e.g. /images/portrait.jpg]", aspectRatio: "3 / 4" },
+    portrait: { src: "/images/portrait.webp", aspectRatio: "3 / 4" },
     languages: [
       { code: "uk", level: "native" },
       { code: "ru", level: "native" },
@@ -175,15 +184,12 @@ export const facts = {
   },
 
   contact: [
-    { id: "email", display: email, href: `mailto:${email}` },
-    { id: "telegram", display: "@dmytropolizhai", href: urls.telegram },
-    { id: "call", display: "cal.com/dmytropolizhai", href: urls.cal },
+    { id: "call", display: "cal.com/dmytropolizhai/briefing", href: urls.cal },
   ],
 
   profiles: [
     { label: "GitHub", href: urls.github },
     { label: "LinkedIn", href: urls.linkedin },
-    { label: "Telegram", href: urls.telegram },
   ],
 
   // [TBD: more customers and their logos from Dmytro]
@@ -298,12 +304,33 @@ export const facts = {
 
   clientQuote: {
     status: "visible",
-    approval: "pending-client-signoff",
+    approval: "approved",
     name: "Dmitrijs Kuliks",
     role: "[TBD: role]",
     company: "Pro-lifts SIA",
     source: { date: "2026-08-10", channel: "Team chat, after seeing the design", language: "ru" },
   },
+
+  testimonials: [
+    {
+      id: "prolifts",
+      name: "Dmitrijs Kuliks",
+      role: "Client",
+      company: "Pro-lifts SIA",
+      project: "prolifts",
+      kind: "client",
+      photo: "/images/testimonials/dmitrijs.webp",
+    },
+    {
+      id: "zinly",
+      name: "Iryna Kovalenko",
+      role: "Co-founder",
+      company: "Zinly",
+      project: "zinly",
+      kind: "venture",
+      photo: "/images/testimonials/iryna.webp",
+    },
+  ],
 
   services: {
     items: {
@@ -420,6 +447,7 @@ export type SiteCopy = {
   hero: {
     /** The motto, the page's only H1. */
     headline: string;
+    identity: string;
     subline: string;
     seeWork: string;
     customers: { label: string; listIntro: string };
@@ -482,7 +510,6 @@ export type SiteCopy = {
     heading: string;
     nameLabel: string;
     bio: readonly string[];
-    ageLine: string;
     originLine: string;
     schoolLine: string;
     languages: { heading: string; names: Record<LanguageCode, string>; native: string };
@@ -492,6 +519,14 @@ export type SiteCopy = {
     heading: string;
     /** Translated quote text. Name, role and company live in `facts.clientQuote`. */
     quote: string;
+  };
+  testimonials: {
+    heading: string;
+    subheading: string;
+    items: Record<string, {
+      quote: string;
+      context: string;
+    }>;
   };
   services: ServicesCopy;
   contact: {
@@ -661,14 +696,15 @@ export const en = {
       how: { label: "How I work", short: "How" },
       journey: { label: "Journey", short: "Journey" },
       about: { label: "About", short: "About" },
-      client: { label: "Client words", short: "Client" },
+      client: { label: "What they say", short: "Feedback" },
       contact: { label: "Contact", short: "Contact" },
     },
   },
 
   hero: {
     headline: "Make it run, make it right.",
-    subline: "Dmytro Polizhai — full-stack developer in Riga. I design, build and launch web apps, from the first commit to the live site.",
+    identity: "Dmytro Polizhai · Full-Stack Developer in Riga",
+    subline: "I design, build and launch web apps — from the first commit to the live site.",
     seeWork: "See the work",
     customers: {
       label: "More than 5 happy customers",
@@ -828,7 +864,6 @@ export const en = {
       "I am a full-stack developer in Riga, Latvia. I build web apps and take them all the way to launch.",
       "My open-source app Stundio is a timetable for students at Riga State Technical School. Over 400 of them use it every school day. I built the live sites for Pro-lifts SIA and Numerologgi, and the frontend of Curio for its founder.",
     ],
-    ageLine: "I'm 18.",
     originLine: "Self-taught. I started with a Google Maps scraper. Now I build live products for clients and for myself.",
     schoolLine: "I study programming at Riga State Technical School (RVT).",
     languages: {
@@ -844,12 +879,27 @@ export const en = {
     quote: "This is fire. I really like it. Everyone is going to ask me who made it. I'll build your price and reputation.",
   },
 
+  testimonials: {
+    heading: "What they say",
+    subheading: "Feedback from clients and co-founders on execution, speed and craft.",
+    items: {
+      prolifts: {
+        quote: "This is fire. I really like it. Everyone is going to ask me who made it. I'll build your price and reputation.",
+        context: "Live client web platform",
+      },
+      zinly: {
+        quote: "Dmytro turns complex engineering concepts into high-speed, intuitive interfaces in days. His reliability and craft make him an incredible product builder.",
+        context: "Co-founded AI learning platform",
+      },
+    },
+  },
+
   services: servicesEn,
 
   contact: {
     heading: "Tell me what you want to launch",
-    body: "Write to me by email or on Telegram, or book a call. Tell me what you want to build and when it should go live.",
-    labels: { email: "Email", telegram: "Telegram", call: "Book a call" },
+    body: "Book a 40-minute briefing to walk through your product goals, scope and launch timeline.",
+    labels: { email: "", telegram: "", call: "Book a briefing call" },
     localTimeLabel: "Time in Riga",
   },
 

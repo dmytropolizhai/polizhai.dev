@@ -361,7 +361,6 @@ Dates come from `facts.journey` and are formatted with `Intl.DateTimeFormat`. Da
 | Name line | poh-lee-**ZHAI** · Дмитро Поліжай | `type-lede`; "ZHAI" white and bold, the rest `--fg-muted`; the Cyrillic part in `type-small`, system font | `facts.person.phonetic`, `.phoneticStress`, `.ukrainian` |
 | Bio 1 | I am a full-stack developer in Riga, Latvia. I build web apps and take them all the way to launch. | `type-lede`, white | `about.bio[0]` |
 | Bio 2 | My open-source app Stundio is a timetable for students at Riga State Technical School. Over 400 of them use it every school day. I built the live sites for Pro-lifts SIA and Numerologgi, and the frontend of Curio for its founder. | `type-body`, `--fg-muted` | `about.bio[1]` |
-| Age | I'm 18. | `type-h3`, white, on its own line | `about.ageLine` |
 | Origin | Self-taught. I started with a Google Maps scraper. Now I build live products for clients and for myself. | `type-body` | `about.originLine` |
 | School | I study programming at Riga State Technical School (RVT). | `type-small`, `--fg-muted` | `about.schoolLine` |
 | Languages heading | Languages | `type-label`, `--fg-muted` | `about.languages.heading` |
@@ -372,7 +371,7 @@ Dates come from `facts.journey` and are formatted with `Intl.DateTimeFormat`. Da
 
 **The creative parts**
 
-- **"I'm 18." is set like a title.** Three words, wide and heavy, alone on a line, no adjective near it. A fact said that plainly reads as confidence. It appears here and nowhere else on the site.
+- **Name pronunciation guides.** Phonetic breakdown with bold primary stress, paired with Ukrainian Cyrillic orthography.
 - **The stress is typography.** In "poh-lee-ZHAI" the last syllable is white and bold and the first two are grey. You hear the name by looking at it.
 - **Riga strip.** Under the two columns, a row of three of your own Riga photos, black and white, square corners, 4:3, edge to edge of the container with 1px gaps. No captions. Leave the row out until the photos exist.
 
