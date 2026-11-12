@@ -249,7 +249,7 @@ This is the only project without the live mark. The page shows the difference be
 **Layout (desktop).** Standard `<Section id="how" title={t.how.heading} intro={t.how.intro}>` header, followed by a 12-column hairline grid (`border-t border-l border-line`):
 - Row 1: Cell 1 (`lg:col-span-7` on `--bg`) + Cell 2 (`lg:col-span-5` on `--surface`).
 - Row 2: Cell 3 (`lg:col-span-4` on `--bg`) + Cell 4 (`lg:col-span-4` on `--surface`) + Cell 5 (`lg:col-span-4` on `--bg`).
-- Tablet (`md`): 2-column grid where Cells 1 and 5 span 2 columns (`md:col-span-2`). Mobile: 1 column.
+- Tablet (`md`): 2-column grid where Cell 1 spans 2 columns (`md:col-span-2`) and Cells 2–5 sit in two paired rows. Mobile: 1 column.
 - Craft floor rules: no kickers or numbers above `<h3>` headings; `<h3>` leads each cell directly (`type-h3 text-fg`), followed tightly by `<p>` (`mt-(--space-3)`), with `mt-auto pt-(--space-8)` separating the bespoke proof artifact at the bottom. Every `<dl>` metric renders the large `type-num` `<dd>` visually above the `type-label` `<dt>`.
 
 | Element | Text | Style | Source |

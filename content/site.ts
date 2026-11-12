@@ -409,11 +409,12 @@ export type SiteCopy = {
         title: string;
         body: string;
         phases: readonly { value: string; label: string }[];
+        tags: readonly string[];
       };
       languages: {
         title: string;
         body: string;
-        badge: string;
+        figures: readonly { value: string; label: string }[];
       };
     };
   };
@@ -610,14 +611,18 @@ export const en = {
         title: "2 weeks free support, then monthly care",
         body: "Every launch includes two weeks of free support to make sure everything runs smoothly. Need ongoing updates, monitoring and new features after that? Stay covered on a predictable monthly subscription.",
         phases: [
-          { value: "2 wks", label: "free post-launch support" },
-          { value: "Monthly", label: "optional care subscription" },
+          { value: "2 wks", label: "free after launch" },
+          { value: "Monthly", label: "optional care plan" },
         ],
+        tags: ["Updates", "Monitoring", "Fixes"],
       },
       languages: {
         title: "Four languages, zero extra cost",
         body: "I talk directly with your team in Latvian, English, Ukrainian or Russian—and include full support for all four languages in your project for free.",
-        badge: "0 € multilingual setup",
+        figures: [
+          { value: "4", label: "languages supported" },
+          { value: "0 €", label: "multilingual setup" },
+        ],
       },
     },
   },
