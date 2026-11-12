@@ -14,6 +14,9 @@ export function Footer() {
           </p>
         </div>
         <ul className="type-small flex flex-wrap gap-x-6 gap-y-2">
+          <li>
+            <TextLink href={`mailto:${facts.helloEmail}`}>{facts.helloEmail}</TextLink>
+          </li>
           {facts.profiles.map((p) => (
             <li key={p.label}>
               <TextLink href={p.href}>{p.label}</TextLink>

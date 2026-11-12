@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { getCalApi } from "@calcom/embed-react";
+import { Calendar } from "lucide-react";
 import { Send } from "@/components/animate-ui/icons/send";
 import { buttonVariants } from "@/components/ui/button";
 import { CopyEmailButton } from "@/components/ui/copy-email-button";
@@ -29,7 +31,7 @@ function RigaClock() {
   }, []);
   return (
     <p className="type-label text-right text-fg-muted">
-      {t.contact.localTimeLabel} · <time className="type-num">{now ?? "--:--"}</time>
+      {t.contact.localTimeLabel} · <time className="type-num" dateTime={now ?? undefined}>{now ?? "--:--"}</time>
     </p>
   );
 }
@@ -41,6 +43,32 @@ export function Contact() {
   const callHref = hrefOf(call?.href);
   const [sendHover, setSendHover] = useState(false);
   const poster = pendingCopy.letsTalk;
+  const calLink = callHref ? callHref.replace("https://cal.com/", "") : undefined;
+
+  useEffect(() => {
+    if (!calLink) return;
+    (async function () {
+      try {
+        const cal = await getCalApi();
+        cal("ui", {
+          theme: "dark",
+          styles: { branding: { brandColor: "#ffffff" } },
+          hideEventTypeDetails: false,
+          layout: "month_view",
+        });
+      } catch {
+        // Fallback to direct navigation if Cal embed fails to load
+      }
+    })();
+  }, [calLink]);
+
+  // Cleanly omit the call invitation when no booking link is active.
+  const contactBody = callHref
+    ? t.contact.body
+    : t.contact.body.replace(
+        /,\s*(or book a call|vai rezervējiet zvanu|или забронируйте звонок|або забронюйте дзвінок)/i,
+        "",
+      );
 
   return (
     <section
@@ -48,14 +76,14 @@ export function Contact() {
       aria-labelledby="contact-title"
       className="texture-grain relative flex min-h-svh flex-col"
     >
-      <div className="container-site relative z-(--z-content) flex flex-1 flex-col pt-(--section-y)">
+      <div className="container-site relative z-(--z-content) flex flex-1 flex-col pt-(--section-y) pb-(--section-y)">
         <RigaClock />
 
         <div className="mt-auto pt-(--space-24)">
           {poster.show && (
             <p
               aria-hidden="true"
-              className="type-display text-[clamp(3rem,13vw,10rem)] whitespace-nowrap"
+              className="type-display text-[clamp(2.5rem,11.5vw,9rem)] tracking-[-0.06em] whitespace-nowrap"
             >
               {poster.text}
             </p>
@@ -65,7 +93,7 @@ export function Contact() {
           </SectionTitle>
 
           <Reveal>
-            <p className="type-body mt-(--space-4) text-fg-muted">{t.contact.body}</p>
+            <p className="type-body mt-(--space-4) text-fg-muted">{contactBody}</p>
             {email && (
               <p className="mt-(--space-8)">
                 <a
@@ -92,9 +120,15 @@ export function Contact() {
                   <ExternalNote href={telegramHref} />
                 </a>
               )}
-              {/* Hidden until the booking link exists (open item 8). */}
               {callHref && (
-                <a href={callHref} {...externalProps(callHref)} className={buttonVariants({ variant: "secondary" })}>
+                <a
+                  href={callHref}
+                  {...externalProps(callHref)}
+                  className={buttonVariants({ variant: "secondary" })}
+                  data-cal-link={calLink}
+                  data-cal-config='{"layout":"month_view","theme":"dark"}'
+                >
+                  <Calendar aria-hidden="true" />
                   {t.contact.labels.call}
                   <ExternalNote href={callHref} />
                 </a>

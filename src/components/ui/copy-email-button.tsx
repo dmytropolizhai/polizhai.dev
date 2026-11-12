@@ -48,7 +48,7 @@ export function CopyEmailButton({ label, icon, variant = "primary" }: CopyEmailB
         ) : (
           <Idle animate={hover && !reduced} aria-hidden="true" />
         )}
-        <span>{state === "copied" ? t.common.copied : label}</span>
+        <span>{state === "copied" ? t.common.copied : failedOnce ? t.common.emailMe : label}</span>
       </Button>
       <span role="status" aria-live="polite" className="sr-only">
         {state === "copied" ? t.a11y.copy.copied : state === "failed" ? t.a11y.copy.failed : ""}

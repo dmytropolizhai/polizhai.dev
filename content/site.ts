@@ -62,6 +62,7 @@ export const urls = {
   numerologgi: "https://shop.numerologgi.com",
   zinly: "https://zinly.polizhai.dev",
   telegram: "https://t.me/dmytropolizhai",
+  cal: "https://cal.com/dmytropolizhai",
 } as const satisfies Record<string, Href>;
 
 /** Numbers that count up. Labels live in `SiteCopy.stats`. */
@@ -88,6 +89,7 @@ type Facts = {
   asOf: string;
   siteUrl: string;
   email: string;
+  helloEmail: string;
   copyrightYear: number;
   person: {
     name: string;
@@ -148,6 +150,7 @@ export const facts = {
   asOf: "2026-11-09",
   siteUrl,
   email,
+  helloEmail: "hello@polizhai.dev",
   copyrightYear: 2026,
 
   person: {
@@ -174,7 +177,7 @@ export const facts = {
   contact: [
     { id: "email", display: email, href: `mailto:${email}` },
     { id: "telegram", display: "@dmytropolizhai", href: urls.telegram },
-    { id: "call", display: "[TBD: booking link]", href: "[TBD: booking link]" },
+    { id: "call", display: "cal.com/dmytropolizhai", href: urls.cal },
   ],
 
   profiles: [
