@@ -37,6 +37,9 @@ export type StackGroup = "app" | "content" | "forms" | "delivery" | "data" | "pl
 export type CaseStudySlug = "prolifts" | "stundio";
 export type ProjectStatus = "live" | "repo-only" | "hidden";
 export type ContactId = "email" | "telegram" | "call";
+export type ServiceId = "landing" | "ecommerce" | "webapp" | "support";
+export type TierId = "basic" | "standard" | "premium";
+export type PriceUnit = "once" | "month";
 
 // ---------------------------------------------------------------------------
 // Facts (never translated)
@@ -126,6 +129,14 @@ type Facts = {
     company: string;
     /** Source of the quote, for the record. Not rendered. */
     source: { date: string; channel: string; language: "ru" };
+  };
+  /**
+   * Services picker. `price` is EUR, `null` = custom quote. `proof` = project ids shown as "See it live"
+   * (empty: the row links to the How I work support cell). Tiers are the monthly support plans.
+   */
+  services: {
+    items: Record<ServiceId, { price: number | null; priceUnit: PriceUnit; proof: readonly string[] }>;
+    supportTiers: Record<TierId, { price: number; priceUnit: "month" }>;
   };
   caseStudies: Record<
     CaseStudySlug,
@@ -291,6 +302,20 @@ export const facts = {
     source: { date: "2026-08-10", channel: "Team chat, after seeing the design", language: "ru" },
   },
 
+  services: {
+    items: {
+      landing: { price: 600, priceUnit: "once", proof: ["prolifts", "curio"] },
+      ecommerce: { price: 1000, priceUnit: "once", proof: ["numerologgi"] },
+      webapp: { price: null, priceUnit: "once", proof: ["stundio"] },
+      support: { price: 100, priceUnit: "month", proof: [] },
+    },
+    supportTiers: {
+      basic: { price: 100, priceUnit: "month" },
+      standard: { price: 200, priceUnit: "month" },
+      premium: { price: 600, priceUnit: "month" },
+    },
+  },
+
   caseStudies: {
     prolifts: {
       stack: {
@@ -326,6 +351,10 @@ export type SectionId = (typeof facts.sections)[number];
 facts.dock satisfies readonly SectionId[];
 export type ProjectId = keyof typeof facts.projects;
 export type JourneyId = keyof typeof facts.journey;
+facts.services.items.landing.proof satisfies readonly ProjectId[];
+facts.services.items.ecommerce.proof satisfies readonly ProjectId[];
+facts.services.items.webapp.proof satisfies readonly ProjectId[];
+facts.services.items.support.proof satisfies readonly ProjectId[];
 
 // ---------------------------------------------------------------------------
 // Translatable copy
@@ -342,6 +371,29 @@ type CaseStudyCopy = {
   built: readonly string[];
   how: string;
   result: readonly string[];
+};
+
+/** NEW copy, needs Dmytro's OK (`pendingCopy.services`). Every locale is checked against this type. */
+export type ServicesCopy = {
+  heading: string;
+  intro: string;
+  /** Short prompt above the picker. */
+  pickPrompt: string;
+  items: Record<ServiceId, { name: string; outcome: string }>;
+  price: {
+    /** Contains `{price}`. */
+    from: string;
+    custom: string;
+    units: { month: string };
+    tier: string;
+  };
+  cta: string;
+  proofLabel: string;
+  support: {
+    tiers: Record<TierId, { name: string; includes: string }>;
+    /** Reuses the "2 weeks free support after launch" claim from How I work. */
+    freeNote: string;
+  };
 };
 
 export type SiteCopy = {
@@ -438,6 +490,7 @@ export type SiteCopy = {
     /** Translated quote text. Name, role and company live in `facts.clientQuote`. */
     quote: string;
   };
+  services: ServicesCopy;
   contact: {
     heading: string;
     body: string;
@@ -461,6 +514,109 @@ export type SiteCopy = {
     portraitAlt: string;
   };
 };
+
+// ---------------------------------------------------------------------------
+// Services copy (NEW, pending Dmytro's OK). All four locales; the registry below checks them.
+// ---------------------------------------------------------------------------
+
+const servicesEn = {
+  heading: 'Services',
+  intro: 'Four ways to start working together. Pick the closest one and we will adjust the details.',
+  pickPrompt: 'Pick one to start',
+  items: {
+    landing: { name: 'Landing page', outcome: 'One focused page that turns visitors into enquiries.' },
+    ecommerce: { name: 'Online shop', outcome: 'A catalogue and checkout your team can update itself.' },
+    webapp: { name: 'Web app', outcome: 'A custom tool or product built around your workflow.' },
+    support: { name: 'Monthly support', outcome: 'Updates, monitoring and fixes after launch.' },
+  },
+  price: { from: 'from {price} €', custom: 'Custom quote', units: { month: '/ month' }, tier: '{price} € / month' },
+  cta: 'Start with this',
+  proofLabel: 'See it live',
+  support: {
+    tiers: {
+      basic: { name: 'Basic', includes: 'Bug fixes and dependency updates.' },
+      standard: { name: 'Standard', includes: 'Fixes, updates and uptime monitoring.' },
+      premium: { name: 'Premium', includes: 'Everything in Standard, plus new features each month.' },
+    },
+    freeNote: 'Every launch includes 2 weeks of free support.',
+  },
+} satisfies ServicesCopy;
+
+const servicesLv = {
+  heading: 'Pakalpojumi',
+  intro: 'Četri veidi, kā sākt sadarbību. Izvēlieties tuvāko, un detaļas precizēsim.',
+  pickPrompt: 'Izvēlieties vienu, lai sāktu',
+  items: {
+    landing: { name: 'Vienas lapas vietne', outcome: 'Viena mērķtiecīga lapa, kas apmeklētājus pārvērš pieprasījumos.' },
+    ecommerce: { name: 'Interneta veikals', outcome: 'Katalogs un norēķini, ko jūsu komanda var atjaunināt pati.' },
+    webapp: { name: 'Tīmekļa lietotne', outcome: 'Individuāls rīks vai produkts, veidots ap jūsu darbplūsmu.' },
+    support: { name: 'Ikmēneša atbalsts', outcome: 'Atjauninājumi, uzraudzība un labojumi pēc palaišanas.' },
+  },
+  price: { from: 'no {price} €', custom: 'Cena pēc pieprasījuma', units: { month: '/ mēnesī' }, tier: '{price} € / mēnesī' },
+  cta: 'Sākt ar šo',
+  proofLabel: 'Skatīt darbībā',
+  support: {
+    tiers: {
+      basic: { name: 'Pamata', includes: 'Kļūdu labojumi un atkarību atjauninājumi.' },
+      standard: { name: 'Standarta', includes: 'Labojumi, atjauninājumi un pieejamības uzraudzība.' },
+      premium: { name: 'Premium', includes: 'Viss no Standarta plāna, plus jaunas funkcijas katru mēnesi.' },
+    },
+    freeNote: 'Katra palaišana ietver 2 nedēļas bezmaksas atbalsta.',
+  },
+} satisfies ServicesCopy;
+
+const servicesRu = {
+  heading: 'Услуги',
+  intro: 'Четыре способа начать работу. Выберите ближайший, а детали мы уточним.',
+  pickPrompt: 'Выберите один, чтобы начать',
+  items: {
+    landing: { name: 'Лендинг', outcome: 'Одна сфокусированная страница, которая превращает посетителей в заявки.' },
+    ecommerce: { name: 'Интернет-магазин', outcome: 'Каталог и оформление заказа, которые ваша команда обновляет сама.' },
+    webapp: { name: 'Веб-приложение', outcome: 'Индивидуальный инструмент или продукт под ваши процессы.' },
+    support: { name: 'Ежемесячная поддержка', outcome: 'Обновления, мониторинг и исправления после запуска.' },
+  },
+  price: { from: 'от {price} €', custom: 'Цена по запросу', units: { month: '/ месяц' }, tier: '{price} € / месяц' },
+  cta: 'Начать с этого',
+  proofLabel: 'Посмотреть вживую',
+  support: {
+    tiers: {
+      basic: { name: 'Базовый', includes: 'Исправление ошибок и обновление зависимостей.' },
+      standard: { name: 'Стандарт', includes: 'Исправления, обновления и мониторинг доступности.' },
+      premium: { name: 'Премиум', includes: 'Всё из тарифа Стандарт и новые функции каждый месяц.' },
+    },
+    freeNote: 'Каждый запуск включает 2 недели бесплатной поддержки.',
+  },
+} satisfies ServicesCopy;
+
+const servicesUk = {
+  heading: 'Послуги',
+  intro: 'Чотири способи почати роботу. Оберіть найближчий, а деталі ми уточнимо.',
+  pickPrompt: 'Оберіть один, щоб почати',
+  items: {
+    landing: { name: 'Лендінг', outcome: 'Одна сфокусована сторінка, що перетворює відвідувачів на заявки.' },
+    ecommerce: { name: 'Інтернет-магазин', outcome: 'Каталог і оформлення замовлення, які ваша команда оновлює сама.' },
+    webapp: { name: 'Вебзастосунок', outcome: 'Індивідуальний інструмент або продукт під ваші процеси.' },
+    support: { name: 'Щомісячна підтримка', outcome: 'Оновлення, моніторинг і виправлення після запуску.' },
+  },
+  price: { from: 'від {price} €', custom: 'Ціна за запитом', units: { month: '/ місяць' }, tier: '{price} € / місяць' },
+  cta: 'Почати з цього',
+  proofLabel: 'Подивитися наживо',
+  support: {
+    tiers: {
+      basic: { name: 'Базовий', includes: 'Виправлення помилок і оновлення залежностей.' },
+      standard: { name: 'Стандарт', includes: 'Виправлення, оновлення та моніторинг доступності.' },
+      premium: { name: 'Преміум', includes: 'Усе з тарифу Стандарт і нові функції щомісяця.' },
+    },
+    freeNote: 'Кожен запуск включає 2 тижні безкоштовної підтримки.',
+  },
+} satisfies ServicesCopy;
+
+export const servicesCopy = {
+  en: servicesEn,
+  lv: servicesLv,
+  ru: servicesRu,
+  uk: servicesUk,
+} satisfies Record<Locale, ServicesCopy>;
 
 // ---------------------------------------------------------------------------
 // English
@@ -675,6 +831,8 @@ export const en = {
     heading: "What a client says",
     quote: "This is fire. I really like it. Everyone is going to ask me who made it. I'll build your price and reputation.",
   },
+
+  services: servicesEn,
 
   contact: {
     heading: "Tell me what you want to launch",

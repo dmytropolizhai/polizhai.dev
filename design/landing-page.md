@@ -267,12 +267,49 @@ This is the only project without the live mark. The page shows the difference be
 | Cell 3 proof | Budget figures `< 1.8 s` (`main content, budget`) & `≤ 160 kB` (`JavaScript, budget`) + spec tags `Next.js`, `React`, `TypeScript` | `type-num` + `bg-raised` tags | `pendingCopy.budgetFigures`, `how.cells.speed.stack` |
 | Cell 4 title | 2 weeks free support, then monthly care | `type-h3` | `how.cells.support.title` |
 | Cell 4 body | Every launch includes two weeks of free support to make sure everything runs smoothly. Need ongoing updates, monitoring and new features after that? Stay covered on a predictable monthly subscription. | `type-body`, `--fg-muted` | `how.cells.support.body` |
-| Cell 4 proof | 2-column phase split: `2 wks` (`free post-launch support`) / `Monthly` (`optional care subscription`) | `type-num` + `type-label` | `how.cells.support.phases` |
+| Cell 4 proof | 2-column phase split: `2 wks` (`free after launch`) / `Monthly` (`optional care plan`) + spec tags `Updates`, `Monitoring`, `Fixes` | `type-num` + `bg-raised` tags | `how.cells.support.phases`, `how.cells.support.tags` |
 | Cell 5 title | Four languages, zero extra cost | `type-h3` | `how.cells.languages.title` |
 | Cell 5 body | I talk directly with your team in Latvian, English, Ukrainian or Russian—and include full support for all four languages in your project for free. | `type-body`, `--fg-muted` | `how.cells.languages.body` |
-| Cell 5 proof | `2×2` hairline language matrix (`Ukrainian · UK`, `Russian · RU`, `Latvian · LV`, `English · EN`) + `▰ 0 € multilingual setup` | hairline matrix + `Mark` | `facts.person.languages`, `about.languages.names`, `how.cells.languages.badge` |
+| Cell 5 proof | Figures `4` (`languages supported`) & `0 €` (`multilingual setup`) + `2×2` hairline language matrix (`Ukrainian · UK`, `Russian · RU`, `Latvian · LV`, `English · EN`) | `type-num` + hairline matrix | `how.cells.languages.figures`, `facts.person.languages`, `about.languages.names` |
 
 **Motion:** each cell rises in once as it enters (`Reveal` with staggered delay).
+
+## 3b. Services: the picker
+
+> **Added 2026-11-12.** New section after How I work, `src/components/sections/services.tsx`. All copy is NEW and pending Dmytro's OK (`pendingCopy.services`; off → the section is not rendered). Not in `facts.sections` / the nav yet (open decision).
+
+**Job:** turn "what would this cost me" into one choice. The visitor picks the closest kind of build, sees what it gets them, its starting price and the live work that proves it, then goes to Contact.
+
+**Layout.** `<section id="services">`, `container-site`, `--section-y` padding, `min-h-svh` from `lg` up so it reads as a full poster (no pin, no sticky, no scroll hijack). Header is the shared `SectionHeader` (`type-h2` title, `type-lede` intro).
+- **Desktop (`lg`):** 12-column grid inside a `<fieldset>`. Rows in columns 1–8, the detail panel in columns 9–12, top-aligned with the first row and sharing its top hairline. Grid rows are `auto` (prompt), four `auto` (services) and a `1fr` filler, so a taller panel (support tiers) grows the filler and never stretches the rows.
+- **Mobile (below `lg`):** one column. The same single panel moves directly under the selected row (accordion) through CSS `order`; nothing is duplicated in the DOM.
+- Rows: hairline `border-t` (last row also `border-b`), `--space-6` vertical padding. A reserved mark slot on the left, then the name and the from-price stacked under it, so every row is the same height in every locale. Names may wrap to two lines (RU/LV run about 20% longer); nothing truncates.
+- No kickers or numbers above headings, square corners, pill only on the button.
+
+| Element | Text | Style | Source |
+|---|---|---|---|
+| Title | Services | `type-h2` | `services.heading` |
+| Intro | Four ways to start working together. Pick the closest one and we will adjust the details. | `type-lede`, `--fg-muted` | `services.intro` |
+| Prompt | Pick one to start | `type-label`, `--fg-muted`; hidden (space kept) after the first pick | `services.pickPrompt` |
+| Row name ×4 | Landing page / Online shop / Web app / Monthly support | `type-display` at `clamp(2rem, 5.2vw, 4.5rem)`, 800, 125% width, white; the biggest type after the H1 | `services.items[id].name` |
+| Row price ×4 | from 600 € / from 1,000 € / Custom quote / from 100 € / month | `type-small type-num`, `--fg-muted`, white when selected or hovered | `servicePriceLabel(id)` |
+| Selected marker | the mark | `.mark`, white, in the reserved slot | — |
+| Panel outcome | e.g. One focused page that turns visitors into enquiries. | `type-lede`, white, max 28ch | `services.items[id].outcome` |
+| Panel price | e.g. from 600 € | `type-h3 type-num`, 800, wide | `servicePriceLabel(id)` |
+| Proof label + links | See it live · Prolifts, Curio (landing) / Numerologgi (ecommerce) / Stundio (webapp) | `type-label` + text links with the live mark | `services.proofLabel`, `serviceProof(id)`, `facts.projects[id].name` |
+| Support tiers (support only) | Basic / Standard / Premium, includes line, 100 / 200 / 600 € / month | hairline `<table>`: name bold 15px, includes `type-small` `--fg-muted`, price `type-small type-num` right | `tierIds`, `services.support.tiers[tier]`, `tierPriceLabel(tier)` |
+| Free note (support only) | Every launch includes 2 weeks of free support. | `type-small`, `--fg-muted` | `services.support.freeNote` |
+| How link (support only) | 2 weeks free support, then monthly care → `#how` | text link | `how.cells.support.title` |
+| CTA | Start with this → `#contact` | primary pill (the one white button in view) | `services.cta` |
+
+**Behaviour.**
+- Rows are native radio inputs (visually hidden) in labels: one tab stop, arrow keys move the selection, the focus ring (2px white, inset) sits on the row. The first service is preselected, so the panel is never empty.
+- "See it live" links are the existing deep link `#work-<id>` (as in Journey): the canvas scrolls into view, centres the card and opens its dialog. Clicking a link whose hash is already set replays `hashchange`, so the dialog reopens.
+- The CTA only scrolls to Contact. Contact has no form, so the chosen service is not carried over.
+
+**Motion:** one moving thing, the panel swap: the new panel content rises and fades in over `--dur-component` with `--motion-arrive` (the `rise-in` keyframes), only after the visitor's first pick. The section enters once with `Reveal`. Titles and row names never animate. Reduced motion: no animation.
+
+**States:** default (first row selected, prompt visible), hover (row fills `--surface`, price turns white), focus (white ring on the row), selected (mark, white price, panel). No empty, loading or error state: everything is static data.
 
 ## 4. Journey: the rail
 

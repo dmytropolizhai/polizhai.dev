@@ -72,10 +72,11 @@ The owner of Curio is never named. Prodamus and prices never appear.
   - Budget figures (`pendingCopy.budgetFigures`): `< 1.8 s` (`main content, budget`), `≤ 160 kB` (`JavaScript, budget`)
   - Stack: `Next.js` · `React` · `TypeScript`
 - Cell 4 (`how.cells.support`) — **2 weeks free support, then monthly care**: Every launch includes two weeks of free support to make sure everything runs smoothly. Need ongoing updates, monitoring and new features after that? Stay covered on a predictable monthly subscription.
-  - Phases: `2 wks` (`free post-launch support`), `Monthly` (`optional care subscription`)
+  - Phases: `2 wks` (`free after launch`), `Monthly` (`optional care plan`)
+  - Tags: `Updates` · `Monitoring` · `Fixes`
 - Cell 5 (`how.cells.languages`) — **Four languages, zero extra cost**: I talk directly with your team in Latvian, English, Ukrainian or Russian—and include full support for all four languages in your project for free.
+  - Figures: `4` (`languages supported`), `0 €` (`multilingual setup`)
   - Languages (`facts.person.languages` + `about.languages.names`): Ukrainian (`uk`) · Russian (`ru`) · Latvian (`lv`) · English (`en`)
-  - Badge: `0 € multilingual setup`
 
 ## Journey
 

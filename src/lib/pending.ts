@@ -18,6 +18,8 @@ export const pendingCopy = {
   },
   /** NEW: the "Outcome" line in each project dialog, `work.projects[id].outcome` (moved off the canvas card face, 2026-11-12). Off → the dialog drops it. */
   projectOutcome: { show: true },
+  /** NEW: the whole Services picker copy, `services.*` in all four locales (`servicesCopy`). Off → the section is not rendered. */
+  services: { show: true },
 } as const;
 
 /**

@@ -8,6 +8,7 @@ import { Contact } from "@/components/sections/contact";
 import { Hero } from "@/components/sections/hero";
 import { How } from "@/components/sections/how";
 import { Journey } from "@/components/sections/journey";
+import { Services } from "@/components/sections/services";
 import { t } from "@/lib/content";
 
 /** The landing page: a stack of posters (design/landing-page.md). The dock is last in the DOM. */
@@ -24,6 +25,7 @@ export function App() {
       <Hero />
       <main id="main" tabIndex={-1} className="outline-none">
         <How />
+        <Services />
         <Journey />
         <About />
         <ClientQuote />
