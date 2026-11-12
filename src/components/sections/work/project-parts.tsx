@@ -4,15 +4,16 @@ import { Status } from "@/components/ui/status";
 import { TagList } from "@/components/ui/tag";
 import { ExternalNote, TextLink, externalProps } from "@/components/ui/text-link";
 import { facts, hrefOf, t } from "@/lib/content";
-import { caseStudyPagesLive } from "@/lib/pending";
+import { caseStudyPagesLive, pendingCopy } from "@/lib/pending";
 import { cn } from "@/lib/utils";
 
 /** Kind label left, live marker right. */
 export function TileMeta({ id }: { id: ProjectId }) {
+  const { status } = facts.projects[id];
   return (
     <div className="flex items-center justify-between gap-4">
       <span className="type-label text-fg-muted">{t.work.projects[id].kindLabel}</span>
-      <Status status={facts.projects[id].status} />
+      {status !== "hidden" && <Status status={status} />}
     </div>
   );
 }
@@ -25,16 +26,24 @@ export function TileBody({ id, oneLinerClass = "text-fg-muted" }: { id: ProjectI
       <p className={cn("type-body mt-3", oneLinerClass)}>{copy.oneLiner}</p>
       <p className="type-small mt-2 text-fg-muted">{copy.role}</p>
       {"note" in copy && copy.note && <p className="type-small mt-1 text-fg-subtle">{copy.note}</p>}
-      <div className="mt-5">
-        <TagList items={facts.projects[id].stack} />
-      </div>
+      {pendingCopy.projectOutcome.show && (
+        <div className="mt-5 border-t border-line pt-4">
+          <p className="type-label text-fg-muted">{t.work.outcomeLabel}</p>
+          <p className="type-body mt-1">{copy.outcome}</p>
+        </div>
+      )}
+      {facts.projects[id].stack.length > 0 && (
+        <div className="mt-5">
+          <TagList items={facts.projects[id].stack} />
+        </div>
+      )}
     </>
   );
 }
 
 /**
  * Actions from `facts.projects[id].links`. The first becomes a pill (`lead`), the rest underlined
- * links. Only Prolifts gets the white pill; the dialog never shows a white button for every project.
+ * links. The dialog uses one shared style for all projects, so none is singled out.
  */
 export function TileActions({ id, lead }: { id: ProjectId; lead: "primary" | "secondary" | "link" }) {
   const links = facts.projects[id].links

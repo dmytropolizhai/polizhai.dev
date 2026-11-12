@@ -210,6 +210,15 @@
     line-height: 0.88;
   }
 
+  /* Hero H1 only (2026-11-12, Dmytro): the poster voice from design-system.md section 4.
+     .type-display itself stays softened (Contact poster line); this modifier restores 900 / 125% / upper. */
+  .type-display-poster {
+    line-height: 0.92;
+    font-stretch: var(--width-wide);
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
   .type-h2 {
     font-size: var(--text-h2);
     line-height: 1.02;

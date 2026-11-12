@@ -44,6 +44,14 @@ Everything else in the strategy still holds: voice, "one job per library", the m
 | Hero: 3D mark above the name, with an H1. Selected work is a bento grid, the signature element. | Hero: no H1 and no 3D mark. Background is the lazy WebGL ferrofluid (React Bits). Under the tagline, subline and buttons sits the **project canvas**, a draggable panel of tilted project cards. It is the signature element and replaces the bento grid. |
 | No tilt, no sideways motion, 0px corners everywhere | The canvas is the **one named exception** to all three. See §6, §8 and §9 Project canvas. |
 
+**2026-11-12, decided by Dmytro (new hero):**
+
+| Was | Now |
+|---|---|
+| Hero: no H1; tagline, subline, "Email me" and "See the work" over a rounded `--raised` canvas panel inside the container | Hero: the motto "Make it run, make it right." is the page's **H1** (`type-display` plus the hero-only `type-display-poster` modifier: 900, 125% width, uppercase, capped at 6rem, centred, static, the LCP), then the subline and two pills: "See the work" (secondary) and "Email me" (primary, copies the address). No eyebrow. **Changed 2026-11-12 (Dmytro):** H1 back to the heavy poster voice of section 4; "Let's talk" pill replaced by "Email me" because the nav already carries "Let's talk". |
+| Canvas: a rounded panel (`--radius-panel`, `--raised` fill), "Explore the projects" as a visible `<h2>` | Canvas: **full-bleed** under the band, no frame, no fill, about 85svh tall; the `<h2>` is visually hidden. Top and bottom edges fade into the page. |
+| Seven light "paper" cards (`--canvas-card`) with name, one-liner and outcome | **Five equal cards** (Prolifts, Stundio, Curio, Numerologgi, Zinly) in a loose ring around an empty centre. Each is **rounded Liquid Glass**: white-tinted, blurred, with a specular rim, a pointer glare and a soft shadow, holding an inset screenshot and a caption plate (kind, name, host with the live mark). One-liner and outcome moved to the dialog. This is a second named exception beside tilt and free drag. |
+
 ## 1. Principles
 
 1. **Poster first.** Each section opens with one huge line of type. The type is the image.
@@ -136,10 +144,10 @@ Loading:
 
 ## 6. Shape
 
-- Corners: 0 on cards, media, panels, images, dialogs. `--radius` is 0, so every shadcn primitive is square by default. One named exception: the project canvas panel uses `--radius-panel` (1.25rem, `rounded-panel`). Decided by Dmytro, 2026-11-11.
+- Corners: 0 on cards, media, panels, images, dialogs. `--radius` is 0, so every shadcn primitive is square by default. One named exception: the project canvas cards are rounded glass (8.75cqw, 28px on a 320px card; the inset screenshot and caption plate use the outer radius minus the inset, so the curves stay concentric). Decided by Dmytro, 2026-11-12; until then it was the canvas panel at `--radius-panel`, and the canvas now has no panel.
 - Pills (`--round-pill`): buttons, tags, the dock and its items. In the shadcn button, set `rounded-pill` in the variant, because the default radius is now 0.
 - Borders: 1px. Hairlines use `--line`. Meaningful borders use `--control`.
-- Depth: none. No shadows. Layers are separated by a 1px line and a step up the grey ramp (`bg` → `surface` → `raised`).
+- Depth: none. No shadows. Layers are separated by a 1px line and a step up the grey ramp (`bg` → `surface` → `raised`). Named exception: the canvas glass cards (blur, specular rim, soft offset shadow; §9 Project canvas).
 - The 30° lean (`--shear`) belongs to the mark and shapes cut from it. Do not skew cards, buttons, images or text. The canvas cards are rotated (about 42°), not skewed; see §9 Project canvas.
 
 ## 7. Texture and imagery
@@ -201,8 +209,8 @@ The secondary border is decoration (`--line-strong`, 1.7:1). The button is ident
 **Project card.** `--surface`, 1px `--line`, square. Media 16:10 on top, then: meta row (type label left, live marker right), `type-h3` title, one or two lines of body in `--fg-muted`, tags, actions. Card buttons are secondary, so a grid of cards never shows a row of white buttons. On hover the border goes to `--control`. Nothing moves.
 
 **Project canvas.** The signature element, in the hero, replacing the bento grid. It is the single named exception to no tilt, vertical-only motion and 0px corners (Dmytro, 2026-11-11).
-- **Panel:** `id="work"`, fill `--raised`, radius `--radius-panel` (1.25rem), `overflow-clip`, height `clamp(28rem, 80svh, 48rem)`. Title "Explore the projects" top left as the section `<h2>`.
-- **Cards:** one per visible project, fill `--canvas-card` (`#d9d9d9`), black text (project name and kind label), rotated about 42°. Each card is a button. Position, size, rotation and depth are set per project in code.
+- **Canvas** (2026-11-12): `<section id="work">`, full-bleed (outside `container-site`), no frame and no fill, `overflow-clip`, height `clamp(32rem, 85svh, 60rem)`. Its `<h2>` ("Explore the projects") is visually hidden. The bottom 48px fades into `--bg` through an overlay (not a mask: a mask would make the canvas a backdrop root and blind the glass). The top edge has no fade, because the band above carries grain and a `--bg` fade drew a seam.
+- **Cards** (2026-11-12): one per visible project, five, all 320 × 322 layout units, rotated −5° to +5°, in a loose ring around an empty centre. Each card is a button made of **Liquid Glass** (`.glass-card` in `src/index.css`): fill white 10%, `backdrop-filter: blur(18px) saturate(1.8)`, a 1px rim gradient (white 55% top-left → 14% → 6% bottom-right), inset highlights (`0 1px 0` white 50%, `0 -1px 0` white 10%, a soft top sheen), shadow `0 24px 48px -16px` black 60%. Inside: the screenshot inset by 3cqw (16:10, AVIF then WebP), then a caption plate (black 55%, blur 8px; 4.75:1 for white text even over a white screenshot behind it) with the kind label, the name and the host with the live mark, in white. A radial glare follows the pointer on fine pointers (`--mx`, `--my`); it is a fixed top-left sheen otherwise and under reduced motion. Hover lifts the card 4px and brightens the glare. Without `backdrop-filter`, the card is solid `--raised` and the plate `--surface`. No hue on the glass; the screenshots carry the only colour.
 - **Motion:** free 2D drag with inertia, wrapping in both directions. The world scales to 0.97 while pressed, on the system spring (380 / 38). Cards lean up to ±4° with drag velocity. Touch pans horizontally only, so the page still scrolls.
 - **Reduced motion:** static layout, 1:1 drag, no inertia, no lean, no intro.
 - Everything else on the page keeps the rules above. Spec: `design/landing-page.md`, section 2.
@@ -240,7 +248,7 @@ The "one job per library" map from the strategy stays. Only the colours change.
 | Aceternity `timeline` | Journey | Replace the purple-blue fill with white. Titles in `--fg-subtle` until lit. |
 | Animate UI | Icons (lucide set: mail, copy, check, arrow-down, send) | Stroke in `currentColor`. They animate on the hover of their button, and are still under reduced motion. The underline sweep (white, 2px, 560ms) is own CSS. |
 | shadcn | Base primitives, including the Dialog | Tokens from `tokens.css`. Square by default; buttons get `rounded-pill`. |
-| Own code | Project canvas in the hero | `use-pan-canvas.ts` (one rAF loop, lerp plus friction, per-card modulo wrap) and `project-canvas.tsx`. Cards on `--canvas-card`. No gallery library. |
+| Own code | Project canvas in the hero | `use-pan-canvas.ts` (one rAF loop, lerp plus friction, per-card modulo wrap) and `project-canvas.tsx`. Glass cards (`.glass-card`, 2026-11-12). No gallery library. |
 | Own code | Hero 3D mark | Unmounted (2026-11-11). The code stays in `mark-3d.tsx`. |
 
 ## 11. Accessibility

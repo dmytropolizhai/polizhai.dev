@@ -66,6 +66,10 @@ Changed 2026-11-11 (Dmytro): a top bar joins the dock. Spec in `design-system.md
 
 > **Changed again 2026-11-11 (Dmytro, project canvas).** The hero has no H1 and no 3D mark any more. The background is the lazy WebGL ferrofluid (React Bits port); `Mark3D` still exists but is unmounted. The hero now holds the tagline, subline, the two buttons and the "Explore the projects" canvas (panel `id="work"`, see section 2). The canvas is the hero's one moving thing. The ferrofluid ignores the pointer while it is over the panel. Where the text below mentions the 3D mark, the H1, the name poster or the Threads lines, it is the original plan, kept as a record. Open question for Dmytro: the plan does not say whether the customers bar stays in the hero.
 
+> **Changed again 2026-11-12 (Dmytro).** The H1 is heavy and wide (`type-display-poster`: 900, 125%, uppercase, hero only). The second pill is "Email me" (`CopyEmailButton`, primary, `common.emailMe`) instead of "Let's talk", which stays in the nav only.
+>
+> **Changed 2026-11-12 (Dmytro, new hero).** The hero has an H1 again: the motto "Make it run, make it right." (`hero.headline`, was `hero.tagline`) in `type-display` capped at 6rem, centred and static; it is the LCP. Under it the subline, then two pills: "See the work" (secondary; scrolls the canvas to fill the viewport) and "Let's talk" (primary, `#contact`, label from `pendingCopy.letsTalk`). The eyebrow (`hero.eyebrow`) is deleted and "Email me" left the hero. The canvas below runs full-bleed with no panel. See section 2.
+
 **Layout (desktop).** Full viewport height (`100svh`), content pinned to the bottom-left like a printed poster.
 
 ```
@@ -124,8 +128,10 @@ Changed 2026-11-11 (Dmytro): a top bar joins the dock. Spec in `design-system.md
 
 ### The canvas
 
-- **Panel.** `id="work"`, `--raised` fill, `--radius-panel` (1.25rem), `overflow-clip`, height `clamp(28rem, 80svh, 48rem)`, inside the hero's `container-site`. The title "Explore the projects" (`work.canvasTitle`) is the panel's `<h2>`, top left, not clickable. It is **NEW** copy: lv/ru/uk wording needs your OK.
-- **Cards.** One per project that is not hidden: six cards. Each is a button (`#work-<id>`) with `--canvas-card` (`#d9d9d9`) fill, black text (project name and `kindLabel`), rotated about 42°. Position, size, rotation and depth (parallax 0.9 to 1.1) per project live in a `LAYOUT` record keyed by `ProjectId`. When a screenshot exists, the card face shows it.
+> **Changed 2026-11-12 (Dmytro).** No panel: the canvas is full-bleed with no frame and no fill, and the cards are rounded Liquid Glass instead of light paper. The two bullets below replace the old Panel and Cards bullets.
+
+- **Canvas.** `<section id="work">`, full-bleed under the hero band (outside `container-site`), no frame, no fill, `overflow-clip`, height `clamp(32rem, 85svh, 60rem)`, so at 1440×900 and 1280×720 the cards peek at the fold. "Explore the projects" (`work.canvasTitle`) is a visually hidden `<h2>`. It is **NEW** copy: lv/ru/uk wording needs your OK. The bottom edge fades into the page.
+- **Cards.** One per visible project: five, equal size, in a loose ring around an empty centre (two above, one at each side, one below), so no project leads. Each is a button (`#work-<id>`) of rounded Liquid Glass: inset screenshot (`/shots/<id>.avif`, WebP fallback, 16:10), then a caption plate with `kindLabel`, the name and the host (`facts.projects[id].display`) with the live mark. One-liner and outcome are in the dialog only. Position, rotation (±5°), depth (0.95 to 1.04), first-screen flag and crop live in a `LAYOUT` record keyed by `VisibleProjectId`.
 - **Drag.** Free 2D drag on fine pointers, with inertia (lerp plus friction). The canvas wraps in both directions: every card wraps on its own, so six cards are six DOM nodes with no clones. A drag past 5px suppresses the click that follows it.
 - **Feel.** The world scales to 0.97 while pressed (system spring, stiffness 380, damping 38). Cards lean up to ±4° with drag velocity. The cards scatter in once when the panel enters the view. A "Drag" / "View" cursor pill shows on fine hover pointers only (`work.cursor.drag`, `work.cursor.view`, **NEW**).
 - **Touch.** `touch-action: pan-y`: vertical swipes scroll the page, horizontal swipes pan the canvas. No wheel hijacking.
@@ -234,39 +240,39 @@ This is the only project without the live mark. The page shows the difference be
 
 **Needs from you:** a full-page screenshot of pro-lifts.lv (about 1200px wide); two phone screenshots of Stundio; a screenshot of curio.today; three Numerologgi screens (catalogue, product, checkout). They show on the cards and in the dialogs.
 
-## 3. How I work: the spec sheet
+## 3. How I work: the proof grid
 
-**Job:** answer "will he disappear" and "who maintains it" before they are asked.
+> **Changed 2026-11-12 (Dmytro).** Replaced the 4-row sticky spec sheet with an asymmetric 12-column hairline Proof Grid (`how.cells.*`) where each cell pairs a commercial outcome claim with a bespoke structural proof block at the bottom of the cell.
 
-**Layout (desktop).** Two columns. The left column (5 of 12) is sticky: corner labels, title and intro stay on screen while the right column (7 of 12) scrolls through four rows. On phones it is one column and nothing sticks.
+**Job:** answer "how fast will this launch", "will I pay for every text edit", "is it built to convert", "who maintains it after launch", and "can we work in our language" before they are asked.
 
-The rows look like a printed spec sheet: a hairline on top, the row title in wide heavy type on the left, the body on the right. No icons, no cards.
+**Layout (desktop).** Standard `<Section id="how" title={t.how.heading} intro={t.how.intro}>` header, followed by a 12-column hairline grid (`border-t border-l border-line`):
+- Row 1: Cell 1 (`lg:col-span-7` on `--bg`) + Cell 2 (`lg:col-span-5` on `--surface`).
+- Row 2: Cell 3 (`lg:col-span-4` on `--bg`) + Cell 4 (`lg:col-span-4` on `--surface`) + Cell 5 (`lg:col-span-4` on `--bg`).
+- Tablet (`md`): 2-column grid where Cells 1 and 5 span 2 columns (`md:col-span-2`). Mobile: 1 column.
+- Craft floor rules: no kickers or numbers above `<h3>` headings; `<h3>` leads each cell directly (`type-h3 text-fg`), followed tightly by `<p>` (`mt-(--space-3)`), with `mt-auto pt-(--space-8)` separating the bespoke proof artifact at the bottom. Every `<dl>` metric renders the large `type-num` `<dd>` visually above the `type-label` `<dt>`.
 
 | Element | Text | Style | Source |
 |---|---|---|---|
-| Corner labels | polizhai / how | | |
 | Title | How I work | `type-h2` | `how.heading` |
 | Intro | What you can expect when we work together. | `type-lede` | `how.intro` |
-| Row 1 title | One person, the whole build | `type-h3` | `how.rows[0].title` |
-| Row 1 body | I do the design, frontend, backend and deploy myself. You talk to the person who writes the code. | `type-body`, `--fg-muted` | `how.rows[0].body` |
-| Row 2 title | Fast and easy to use | | `how.rows[1].title` |
-| Row 2 body | I set a speed budget before I build. This site aims to show its main content in under 1.8 seconds, with under 160 kB of JavaScript. It works with a keyboard and with reduced motion. | | `how.rows[1].body` |
-| Row 3 title | You edit the content | | `how.rows[2].title` |
-| Row 3 body | When a site needs it, I add a CMS, such as Sanity or Payload. Your team can then change text and images without me. | | `how.rows[2].body` |
-| Row 4 title | Checked before every deploy | | `how.rows[3].title` |
-| Row 4 body | On Prolifts, GitHub Actions runs lint, type checks and a build before each deploy. The site is live and still gets updates. | | `how.rows[3].body` |
-| Closing line | I can talk to your team in Latvian, English, Ukrainian or Russian. | `type-lede`, full width, on its own hairline | `how.languagesLine` |
+| Cell 1 title | Live in weeks, not agency months | `type-h3` | `how.cells.launch.title` |
+| Cell 1 body | I handle design, frontend, backend and deploy myself. You don't pay for project managers or handoff delays—your product goes from start to live customers in 2–4 weeks. | `type-body`, `--fg-muted` | `how.cells.launch.body` |
+| Cell 1 proof | Figures `2–4 wks` (`from start to live`) & `0` (`agency middlemen`) + 4-stage pipeline strip (`Design → Frontend → Backend → Deploy`) | `type-num` + hairline boxes | `how.cells.launch.figures`, `how.cells.launch.stages` |
+| Cell 2 title | Stop paying developers for text edits | `type-h3` | `how.cells.cms.title` |
+| Cell 2 body | I set up a modern CMS (Sanity or Payload) around your workflow. Your team changes text, photos, prices and catalogue items in minutes—without paying a developer invoice. | `type-body`, `--fg-muted` | `how.cells.cms.body` |
+| Cell 2 proof | Figure `0 €` (`per content or price update`) + spec tags `Sanity`, `Payload CMS` | `type-num` + `bg-raised` tags | `how.cells.cms.figure`, `how.cells.cms.tools` |
+| Cell 3 title | Modern tech that turns clicks into leads | `type-h3` | `how.cells.speed.title` |
+| Cell 3 body | Slow sites burn ad spend before visitors even see your offer. I use a modern stack (Next.js, React, TypeScript) built to load under 1.8 seconds, rank in search, and convert traffic into sales. | `type-body`, `--fg-muted` | `how.cells.speed.body` |
+| Cell 3 proof | Budget figures `< 1.8 s` (`main content, budget`) & `≤ 160 kB` (`JavaScript, budget`) + spec tags `Next.js`, `React`, `TypeScript` | `type-num` + `bg-raised` tags | `pendingCopy.budgetFigures`, `how.cells.speed.stack` |
+| Cell 4 title | 2 weeks free support, then monthly care | `type-h3` | `how.cells.support.title` |
+| Cell 4 body | Every launch includes two weeks of free support to make sure everything runs smoothly. Need ongoing updates, monitoring and new features after that? Stay covered on a predictable monthly subscription. | `type-body`, `--fg-muted` | `how.cells.support.body` |
+| Cell 4 proof | 2-column phase split: `2 wks` (`free post-launch support`) / `Monthly` (`optional care subscription`) | `type-num` + `type-label` | `how.cells.support.phases` |
+| Cell 5 title | Four languages, zero extra cost | `type-h3` | `how.cells.languages.title` |
+| Cell 5 body | I talk directly with your team in Latvian, English, Ukrainian or Russian—and include full support for all four languages in your project for free. | `type-body`, `--fg-muted` | `how.cells.languages.body` |
+| Cell 5 proof | `2×2` hairline language matrix (`Ukrainian · UK`, `Russian · RU`, `Latvian · LV`, `English · EN`) + `▰ 0 € multilingual setup` | hairline matrix + `Mark` | `facts.person.languages`, `about.languages.names`, `how.cells.languages.badge` |
 
-**The creative part.** Row 2 makes a claim about this very page, so the page shows the numbers. Next to the body, two figures in wide heavy type: **1.8 s** and **160 kB**, each with a small label under it. They are the budget, not a live measurement, and the labels say so.
-
-| Element | Text | Status |
-|---|---|---|
-| Figure label 1 | main content, budget | **NEW**, needs your OK |
-| Figure label 2 | JavaScript, budget | **NEW**, needs your OK |
-
-If you do not want new copy, drop the two figures; the row works without them.
-
-**Motion:** each row rises in once as it enters. The sticky column does not animate.
+**Motion:** each cell rises in once as it enters (`Reveal` with staggered delay).
 
 ## 4. Journey: the rail
 
@@ -401,7 +407,7 @@ Small and factual, under a hairline.
 | Where | What | Library |
 |---|---|---|
 | Hero background | Ferrofluid, lazy WebGL, ignores the pointer over the canvas panel | React Bits `Ferrofluid` (port) |
-| Hero project canvas | Draggable panel with six tilted cards, inertia, wrap in both directions, press scale and velocity lean | Own code (`use-pan-canvas.ts`) |
+| Hero project canvas | Full-bleed draggable surface with five tilted Liquid Glass cards, inertia, wrap in both directions, press scale, velocity lean and a pointer glare | Own code (`use-pan-canvas.ts`) |
 | Hero customers | Slow logo loop, only with six or more logos | React Bits `LogoLoop` |
 | Dock | Rise 2px on hover, mark under the current section | SmoothUI `dock` |
 | Stundio and Curio stats (in the project dialog) | Count up | Magic UI `NumberTicker` |
@@ -409,7 +415,7 @@ Small and factual, under a hairline.
 | Journey | White rail fills, entries light up, mark at the end | Aceternity `timeline` |
 | Every section | Content rises 14px and fades in, once | CSS |
 
-Nothing moves sideways except the project canvas, which is the one named exception (tilted cards, free 2D drag, `--radius-panel`; decided by Dmytro, 2026-11-11). Titles never animate. Under reduced motion everything above is static and complete.
+Nothing moves sideways except the project canvas, which is the one named exception (tilted cards and free 2D drag, decided by Dmytro 2026-11-11; rounded Liquid Glass cards, 2026-11-12). Titles never animate. Under reduced motion everything above is static and complete.
 
 ## Open items
 

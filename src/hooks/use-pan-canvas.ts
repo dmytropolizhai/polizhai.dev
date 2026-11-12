@@ -87,7 +87,7 @@ export function usePanCanvas<Id extends string>({ layout, tile, reduced, onPress
   opts.current = { layout, tile, reduced, onPressChange };
 
   /** The engine instance; created once the panel mounts. */
-  const engine = useRef<{ centre: (id: Id) => void; write: () => void } | null>(null);
+  const engine = useRef<{ centre: (id: Id) => void; write: () => void; relayout: () => void } | null>(null);
 
   const cardRef = useCallback((id: Id) => {
     let cb = refCallbacks.current.get(id);
@@ -220,7 +220,9 @@ export function usePanCanvas<Id extends string>({ layout, tile, reduced, onPress
         lean += (goal - lean) * (1 - (1 - 0.2) ** f);
       } else lean = 0;
 
-      if (intro >= 0 && intro < 1) intro = Math.min(1, (now - introStart) / 1000 / T.intro.duration);
+      // Clamped at 0: the rAF timestamp can precede the performance.now() taken when the intro started,
+      // and a negative value would read as "not started", stopping the loop with every card scattered.
+      if (intro >= 0 && intro < 1) intro = clamp((now - introStart) / 1000 / T.intro.duration, 0, 1);
 
       if (settled()) {
         current.x = target.x;
@@ -257,7 +259,14 @@ export function usePanCanvas<Id extends string>({ layout, tile, reduced, onPress
       }
       start();
     };
-    engine.current = { centre: centreCard, write };
+    /** A different layout or tile (a media-query switch): re-measure, return to the rest view, repaint. */
+    const relayout = () => {
+      measure(size.w, size.h);
+      velocity.x = velocity.y = 0;
+      target.x = target.y = current.x = current.y = 0;
+      write();
+    };
+    engine.current = { centre: centreCard, write, relayout };
 
     // --- Pointer ---------------------------------------------------------------------------------
 
@@ -403,6 +412,16 @@ export function usePanCanvas<Id extends string>({ layout, tile, reduced, onPress
     };
     // The engine is built once per panel; options that change are read through `opts`.
   }, []);
+
+  // A changed layout or tile re-measures the wrap period. Not on mount: the engine measures itself then.
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    engine.current?.relayout();
+  }, [layout, tile]);
 
   // Switching reduced motion on mid-session drops the intro and the lean at once.
   useEffect(() => {

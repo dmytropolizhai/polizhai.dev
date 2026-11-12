@@ -3,14 +3,12 @@ import { Lockup } from "@/components/ui/lockup";
 import { Mark } from "@/components/ui/mark";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { useScrolled } from "@/hooks/use-scrolled";
-import { facts, t } from "@/lib/content";
-import { pendingCopy } from "@/lib/pending";
+import { facts, letsTalkLabel, t } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 const CLEAR = ["top", "client"] as const;
 /** The action button covers Contact, so the bar links stop at About. */
 const LINKS = facts.dock.filter((id) => id !== "contact");
-const ACTION_LABEL = pendingCopy.letsTalk.show ? pendingCopy.letsTalk.text : t.nav.sections.contact.label;
 
 /**
  * Top bar: lockup · section links · action (Dmytro, 2026-11-11).
@@ -29,15 +27,17 @@ export function SiteNav() {
         data-scrolled={scrolled || undefined}
         className={cn(
           "fixed inset-x-0 top-0 z-(--z-dock) border-b transition-[background-color,border-color] duration-(--dur-component) ease-move",
-          scrolled ? "border-line bg-bg" : "border-transparent bg-transparent",
+          // Transparent at the top: the empty parts of the bar let the pointer through to the hero
+          // canvas beneath it (drag works up to the edge). The solid bar, once scrolled, blocks as it looks.
+          scrolled ? "border-line bg-bg" : "pointer-events-none border-transparent bg-transparent",
         )}
       >
         <div className="container-site flex h-(--nav-h) items-center justify-between gap-4">
-          <a href="#top" className="inline-flex min-h-11 shrink-0 items-center">
+          <a href="#top" className="pointer-events-auto inline-flex min-h-11 shrink-0 items-center">
             <Lockup className="h-[18px] w-auto" />
           </a>
 
-          <nav aria-label={t.nav.label} className="hidden md:block">
+          <nav aria-label={t.nav.label} className="pointer-events-auto hidden md:block">
             <ul
               className={cn(
                 "flex h-(--dock-h) items-center border p-1 transition-[background-color,border-color,border-radius] duration-(--dur-component) ease-move",
@@ -77,11 +77,11 @@ export function SiteNav() {
             aria-current={active === "contact" ? "location" : undefined}
             className={cn(
               buttonVariants({ variant: "secondary", size: "sm" }),
-              "transition-[background-color,border-color,border-radius,color] duration-(--dur-component)",
+              "pointer-events-auto transition-[background-color,border-color,border-radius,color] duration-(--dur-component)",
               scrolled && "bg-transparent hover:bg-transparent",
             )}
           >
-            {ACTION_LABEL}
+            {letsTalkLabel}
           </a>
         </div>
       </header>

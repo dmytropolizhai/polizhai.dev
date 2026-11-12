@@ -38,10 +38,10 @@ Full section list, in page order: Top · Selected work · How I work · Journey 
 
 ## Selected work
 
-Rationale: live proof first, deepest first. The section is one bento grid; Prolifts is its largest tile. Every tile states exactly what you did.
+Rationale: live proof first. The hero holds one full-bleed draggable canvas with five equal cards (Prolifts, Stundio, Curio, Numerologgi, Zinly); no project is larger or placed first (decided 2026-11-12). Every card states exactly what you did.
 
 - Heading: Selected work
-- Intro: Live products first. Every card links to the site or the code.
+- Intro: Live products first. Every card links to the live site.
 - Secondary line: Live first. Motion only where it helps.
 
 | Project | Label | One-liner | Role line |
@@ -50,8 +50,9 @@ Rationale: live proof first, deepest first. The section is one bento grid; Proli
 | Stundio | Open source | An unofficial timetable app for students at Riga State Technical School. On web, Android and Linux. | I wrote 442 of its 545 commits. Stat: 400+ students every school day. |
 | Curio | Built for Curio's founder | A feed of short news stories. I rebuilt its frontend in Next.js, with support for several languages. | I wrote 830 of 830 commits in the frontend repository. Page load time went down 10% (site analytics). Stat: 10% lower page load time. |
 | Numerologgi | Client shop | An online shop for planners, with a CMS catalogue and card payments. | I wrote all 113 commits. Link: Visit the live site (shop.numerologgi.com) |
-| one-to-one | Code | A private one-to-one chat in real time, with email code sign-in. It runs on Socket.IO, Redis, Postgres and Docker. | I wrote all 212 commits, across frontend, backend and CI. Note: Archived. There is no live site, but the code is public. |
-| DNF (side project) | Side project | A timer app for Rubik's cube speedsolvers. | My own side project, built with Angular. |
+| Zinly | Co-founded app | An AI learning app that reads a student's calendar and fills every free gap with a short lesson. | I co-founded it with Iryna Kovalenko and built the website. Outcome: Short text, audio and video lessons that fit the minutes a student already has free. Note: Early access opens in summer 2027. (NEW, needs Dmytro's OK) |
+| one-to-one (hidden from the canvas, 2026-11-12) | Code | A private one-to-one chat in real time, with email code sign-in. It runs on Socket.IO, Redis, Postgres and Docker. | I wrote all 212 commits, across frontend, backend and CI. Note: Archived. There is no live site, but the code is public. |
+| DNF (hidden from the canvas, 2026-11-12) | Side project | A timer app for Rubik's cube speedsolvers. | My own side project, built with Angular. |
 
 Link labels: Visit the live site · Open the app · Project site · Read the case study · Source on GitHub · Email me about a project. Status badges: Live · Code only.
 
@@ -59,13 +60,22 @@ The owner of Curio is never named. Prodamus and prices never appear.
 
 ## How I work
 
+- Heading: How I work
 - Intro: What you can expect when we work together.
-1. One person, the whole build: I do the design, frontend, backend and deploy myself. You talk to the person who writes the code.
-2. Fast and easy to use: I set a speed budget before I build. This site aims to show its main content in under 1.8 seconds, with under 160 kB of JavaScript. It works with a keyboard and with reduced motion.
-3. You edit the content: When a site needs it, I add a CMS, such as Sanity or Payload. Your team can then change text and images without me.
-4. Checked before every deploy: On Prolifts, GitHub Actions runs lint, type checks and a build before each deploy. The site is live and still gets updates.
-
-Languages line: I can talk to your team in Latvian, English, Ukrainian or Russian.
+- Cell 1 (`how.cells.launch`) — **Live in weeks, not agency months**: I handle design, frontend, backend and deploy myself. You don't pay for project managers or handoff delays—your product goes from start to live customers in 2–4 weeks.
+  - Figures: `2–4 wks` (`from start to live`), `0` (`agency middlemen`)
+  - Stages: `Design` · `Frontend` · `Backend` · `Deploy`
+- Cell 2 (`how.cells.cms`) — **Stop paying developers for text edits**: I set up a modern CMS (Sanity or Payload) around your workflow. Your team changes text, photos, prices and catalogue items in minutes—without paying a developer invoice.
+  - Figure: `0 €` (`per content or price update`)
+  - Tools: `Sanity` · `Payload CMS`
+- Cell 3 (`how.cells.speed`) — **Modern tech that turns clicks into leads**: Slow sites burn ad spend before visitors even see your offer. I use a modern stack (Next.js, React, TypeScript) built to load under 1.8 seconds, rank in search, and convert traffic into sales.
+  - Budget figures (`pendingCopy.budgetFigures`): `< 1.8 s` (`main content, budget`), `≤ 160 kB` (`JavaScript, budget`)
+  - Stack: `Next.js` · `React` · `TypeScript`
+- Cell 4 (`how.cells.support`) — **2 weeks free support, then monthly care**: Every launch includes two weeks of free support to make sure everything runs smoothly. Need ongoing updates, monitoring and new features after that? Stay covered on a predictable monthly subscription.
+  - Phases: `2 wks` (`free post-launch support`), `Monthly` (`optional care subscription`)
+- Cell 5 (`how.cells.languages`) — **Four languages, zero extra cost**: I talk directly with your team in Latvian, English, Ukrainian or Russian—and include full support for all four languages in your project for free.
+  - Languages (`facts.person.languages` + `about.languages.names`): Ukrainian (`uk`) · Russian (`ru`) · Latvian (`lv`) · English (`en`)
+  - Badge: `0 € multilingual setup`
 
 ## Journey
 

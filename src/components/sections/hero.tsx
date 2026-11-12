@@ -3,21 +3,38 @@ import { buttonVariants } from "@/components/ui/button";
 import { CopyEmailButton } from "@/components/ui/copy-email-button";
 import { ProjectExplorer } from "@/components/sections/work";
 import { t } from "@/lib/content";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, type MouseEvent } from "react";
 
 // WebGL shader code stays out of the first bundle (160 kB JS budget); the headline is the LCP, not the fluid.
 const Ferrofluid = lazy(() => import("@/components/effects/ferrofluid").then((m) => ({ default: m.Ferrofluid })));
 
 const saveData = typeof navigator !== "undefined" && (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
 
-/** §1 The name poster: tagline and actions over the ferrofluid, then the draggable project canvas. */
+/**
+ * "See the work": bring the canvas into view so it fills the screen under the top bar (centred in
+ * that space when it fits, top-aligned under the bar when it does not), then hand it keyboard focus.
+ */
+function showCanvas(e: MouseEvent<HTMLAnchorElement>) {
+  const canvas = document.getElementById("work");
+  if (!canvas) return; // the plain #work anchor still works
+  e.preventDefault();
+  const nav = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const box = canvas.getBoundingClientRect();
+  const room = window.innerHeight - nav;
+  const top = window.scrollY + box.top - nav - Math.max(0, (room - box.height) / 2);
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top, behavior: reduced ? "instant" : "smooth" });
+  canvas.focus({ preventScroll: true });
+}
+
+/** §1 The hero: the motto, a subline and two actions over the ferrofluid, then the full-bleed project canvas. */
 export function Hero() {
   const [arrowHover, setArrowHover] = useState(false);
-  // The fluid ignores the pointer while it is over the project panel (dragging there is not a gesture for it).
+  // The fluid ignores the pointer while it is over the canvas (dragging there is not a gesture for it).
   const [overCanvas, setOverCanvas] = useState(false);
 
   return (
-    <header id="top" className="texture-grain relative flex min-h-svh flex-col overflow-hidden">
+    <header id="top" className="texture-grain relative flex flex-col overflow-hidden">
       {!saveData && (
         <div
           aria-hidden="true"
@@ -28,28 +45,27 @@ export function Hero() {
           </Suspense>
         </div>
       )}
-      <div className="container-site relative z-(--z-content) flex flex-1 flex-col pt-[calc(var(--nav-h)+var(--space-32))] pb-[calc(var(--dock-h)+2.5rem)] md:pb-(--space-8)">
-        <div className="@container flex flex-col items-center text-center">
-          <div className="mt-(--space-6) flex flex-col items-center">
-            <p className="type-lede">{t.hero.tagline}</p>
-            <p className="rise-in type-body mt-(--space-3) max-w-184 text-fg-muted">{t.hero.subline}</p>
-            <div className="mt-(--space-6) flex flex-wrap justify-center gap-3">
-              <CopyEmailButton label={t.common.emailMe} icon="mail" />
-              <a
-                href="#work"
-                className={buttonVariants({ variant: "secondary" })}
-                onPointerEnter={() => setArrowHover(true)}
-                onPointerLeave={() => setArrowHover(false)}
-              >
-                {t.hero.seeWork}
-                <ArrowDown animate={arrowHover} aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-        </div>
 
-        <ProjectExplorer onHoverChange={setOverCanvas} className="mt-(--space-16)" />
+      <div className="container-site relative z-(--z-content) flex flex-col items-center pt-[calc(var(--nav-h)+clamp(var(--space-8),6svh,var(--space-16)))] text-center">
+        <h1 className="type-display type-display-poster max-w-[15em] text-[clamp(1.75rem,min(8.8vw,10.7svh),6rem)] text-fg">{t.hero.headline}</h1>
+        <p className="rise-in type-body mt-(--space-6) max-w-184 text-fg-muted">{t.hero.subline}</p>
+        <div className="mt-(--space-8) flex flex-wrap justify-center gap-3">
+          <a
+            href="#work"
+            onClick={showCanvas}
+            className={buttonVariants({ variant: "secondary" })}
+            onPointerEnter={() => setArrowHover(true)}
+            onPointerLeave={() => setArrowHover(false)}
+          >
+            {t.hero.seeWork}
+            <ArrowDown animate={arrowHover} aria-hidden="true" />
+          </a>
+          <CopyEmailButton label={t.common.emailMe} icon="mail" variant="primary" />
+        </div>
       </div>
+
+      {/* Full-bleed: outside container-site, edge to edge of the viewport. */}
+      <ProjectExplorer onHoverChange={setOverCanvas} className="relative mt-(--space-4) sm:mt-[clamp(var(--space-4),3svh,var(--space-12))] overflow-visible z-(--z-content)" />
     </header>
   );
 }

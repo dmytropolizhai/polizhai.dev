@@ -57,6 +57,7 @@ export const urls = {
   oneToOneRepo: "https://github.com/dmytropolizhai/one-to-one",
   dnfRepo: "https://github.com/dmytropolizhai/dnf",
   numerologgi: "https://shop.numerologgi.com",
+  zinly: "https://zinly.polizhai.dev",
   telegram: "https://t.me/dmytropolizhai",
 } as const satisfies Record<string, Href>;
 
@@ -76,6 +77,8 @@ type ProjectFacts = {
   stats: readonly StatId[];
   links: readonly Link[];
   caseStudy: CaseStudySlug | null;
+  /** Host shown on the project card. */
+  display: string;
 };
 
 type Facts = {
@@ -191,6 +194,7 @@ export const facts = {
         { kind: "caseStudy", href: "/work/prolifts" },
       ],
       caseStudy: "prolifts",
+      display: "pro-lifts.lv",
     },
     stundio: {
       name: "Stundio",
@@ -204,6 +208,7 @@ export const facts = {
         { kind: "source", href: urls.stundioRepo },
       ],
       caseStudy: "stundio",
+      display: "stundio.lv",
     },
     curio: {
       name: "Curio",
@@ -216,6 +221,7 @@ export const facts = {
         { kind: "source", href: urls.curioRepo },
       ],
       caseStudy: null,
+      display: "curio.today",
     },
     numerologgi: {
       name: "Numerologgi",
@@ -225,24 +231,37 @@ export const facts = {
       stats: [],
       links: [{ kind: "visit", href: urls.numerologgi }],
       caseStudy: null,
+      display: "shop.numerologgi.com",
+    },
+    zinly: {
+      name: "Zinly",
+      status: "live",
+      kind: "own",
+      stack: [], // pending from Dmytro: the stack is not known yet
+      stats: [],
+      links: [{ kind: "visit", href: urls.zinly }],
+      caseStudy: null,
+      display: "zinly.polizhai.dev",
     },
     "one-to-one": {
       name: "one-to-one",
-      status: "repo-only",
+      status: "hidden",
       kind: "code",
       stack: ["Next.js 16", "Socket.IO", "Redis 7", "Postgres 17", "Docker Compose", "GitHub Actions"],
       stats: [],
       links: [{ kind: "source", href: urls.oneToOneRepo }],
       caseStudy: null,
+      display: "github.com/dmytropolizhai/one-to-one",
     },
     dnf: {
       name: "DNF",
-      status: "repo-only",
+      status: "hidden",
       kind: "side",
       stack: ["Angular", "Tailwind"],
       stats: [],
       links: [{ kind: "source", href: urls.dnfRepo }],
       caseStudy: null,
+      display: "github.com/dmytropolizhai/dnf",
     },
   },
 
@@ -344,8 +363,8 @@ export type SiteCopy = {
     sections: Record<SectionId, { label: string; short: string }>;
   };
   hero: {
-    eyebrow: string;
-    tagline: string;
+    /** The motto, the page's only H1. */
+    headline: string;
     subline: string;
     seeWork: string;
     customers: { label: string; listIntro: string };
@@ -356,7 +375,7 @@ export type SiteCopy = {
     intro: string;
     secondaryLine: string;
     sideProjectsHeading: string;
-    /** Title of the draggable project canvas in the hero. */
+    /** Accessible name of the draggable project canvas in the hero (a visually hidden heading). */
     canvasTitle: string;
     /** Cursor pill over the canvas: on empty space, and over a card. */
     cursor: { drag: string; view: string };
@@ -368,8 +387,35 @@ export type SiteCopy = {
   how: {
     heading: string;
     intro: string;
-    rows: readonly { title: string; body: string }[];
-    languagesLine: string;
+    cells: {
+      launch: {
+        title: string;
+        body: string;
+        figures: readonly { value: string; label: string }[];
+        stages: readonly string[];
+      };
+      cms: {
+        title: string;
+        body: string;
+        figure: { value: string; label: string };
+        tools: readonly string[];
+      };
+      speed: {
+        title: string;
+        body: string;
+        stack: readonly string[];
+      };
+      support: {
+        title: string;
+        body: string;
+        phases: readonly { value: string; label: string }[];
+      };
+      languages: {
+        title: string;
+        body: string;
+        badge: string;
+      };
+    };
   };
   journey: {
     heading: string;
@@ -461,8 +507,7 @@ export const en = {
   },
 
   hero: {
-    eyebrow: "Full-stack developer · Riga",
-    tagline: "Make it run, make it right.",
+    headline: "Make it run, make it right.",
     subline: "I design, build and launch web apps, from the first commit to the live site.",
     seeWork: "See the work",
     customers: {
@@ -512,6 +557,14 @@ export const en = {
         role: "I wrote all 113 commits.",
         outcome: "Planners sell online, with card payments and a catalogue the owner edits.",
       },
+      // NEW, needs Dmytro's OK: the whole zinly entry.
+      zinly: {
+        kindLabel: "Co-founded app",
+        oneLiner: "An AI learning app that reads a student's calendar and fills every free gap with a short lesson.",
+        role: "I co-founded it with Iryna Kovalenko and built the website.",
+        outcome: "Short text, audio and video lessons that fit the minutes a student already has free.",
+        note: "Early access opens in summer 2027.",
+      },
       "one-to-one": {
         kindLabel: "Code",
         oneLiner:
@@ -532,25 +585,41 @@ export const en = {
   how: {
     heading: "How I work",
     intro: "What you can expect when we work together.",
-    rows: [
-      {
-        title: "One person, the whole build",
-        body: "I do the design, frontend, backend and deploy myself. You talk to the person who writes the code.",
+    cells: {
+      launch: {
+        title: "Live in weeks, not agency months",
+        body: "I handle design, frontend, backend and deploy myself. You don't pay for project managers or handoff delays—your product goes from start to live customers in 2–4 weeks.",
+        figures: [
+          { value: "2–4 wks", label: "from start to live" },
+          { value: "0", label: "agency middlemen" },
+        ],
+        stages: ["Design", "Frontend", "Backend", "Deploy"],
       },
-      {
-        title: "Fast and easy to use",
-        body: "I set a speed budget before I build. This site aims to show its main content in under 1.8 seconds, with under 160 kB of JavaScript. It works with a keyboard and with reduced motion.",
+      cms: {
+        title: "Stop paying developers for text edits",
+        body: "I set up a modern CMS (Sanity or Payload) around your workflow. Your team changes text, photos, prices and catalogue items in minutes—without paying a developer invoice.",
+        figure: { value: "0 €", label: "per content or price update" },
+        tools: ["Sanity", "Payload CMS"],
       },
-      {
-        title: "You edit the content",
-        body: "When a site needs it, I add a CMS, such as Sanity or Payload. Your team can then change text and images without me.",
+      speed: {
+        title: "Modern tech that turns clicks into leads",
+        body: "Slow sites burn ad spend before visitors even see your offer. I use a modern stack (Next.js, React, TypeScript) built to load under 1.8 seconds, rank in search, and convert traffic into sales.",
+        stack: ["Next.js", "React", "TypeScript"],
       },
-      {
-        title: "Checked before every deploy",
-        body: "On Prolifts, GitHub Actions runs lint, type checks and a build before each deploy. The site is live and still gets updates.",
+      support: {
+        title: "2 weeks free support, then monthly care",
+        body: "Every launch includes two weeks of free support to make sure everything runs smoothly. Need ongoing updates, monitoring and new features after that? Stay covered on a predictable monthly subscription.",
+        phases: [
+          { value: "2 wks", label: "free post-launch support" },
+          { value: "Monthly", label: "optional care subscription" },
+        ],
       },
-    ],
-    languagesLine: "I can talk to your team in Latvian, English, Ukrainian or Russian.",
+      languages: {
+        title: "Four languages, zero extra cost",
+        body: "I talk directly with your team in Latvian, English, Ukrainian or Russian—and include full support for all four languages in your project for free.",
+        badge: "0 € multilingual setup",
+      },
+    },
   },
 
   journey: {

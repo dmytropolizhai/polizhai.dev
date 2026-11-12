@@ -5,15 +5,8 @@ import { facts, stats, t } from "@/lib/content";
 import { useRef } from "react";
 import { TileActions, TileBody, TileMeta } from "./project-parts";
 
-/** Which action leads: Prolifts gets the one white pill, a code-only project a plain link. */
-const LEAD = {
-  prolifts: "primary",
-  stundio: "secondary",
-  curio: "secondary",
-  numerologgi: "secondary",
-  "one-to-one": "secondary",
-  dnf: "link",
-} as const satisfies Record<ProjectId, "primary" | "secondary" | "link">;
+/** One shared style for every project's lead action, so no project is singled out. */
+const LEAD = "secondary";
 
 type Props = { id: ProjectId | null; onClose: () => void };
 
@@ -61,7 +54,7 @@ function Body({ id }: { id: ProjectId }) {
           ))}
         </dl>
       )}
-      <TileActions id={id} lead={LEAD[id]} />
+      <TileActions id={id} lead={LEAD} />
     </>
   );
 }

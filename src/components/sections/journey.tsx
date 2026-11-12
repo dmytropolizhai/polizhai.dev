@@ -3,7 +3,7 @@ import { motion, useInView, useMotionValueEvent, useReducedMotion, useScroll } f
 import { useRef, useState } from "react";
 import { Mark } from "@/components/ui/mark";
 import { Section } from "@/components/ui/section";
-import { facts, formatWhen, t } from "@/lib/content";
+import { facts, formatWhen, t, visibleProjects } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,7 +26,7 @@ function groupByDate(): { when: string | null; entries: Entry[] }[] {
   return groups;
 }
 
-const projectIds = new Set<string>(Object.keys(facts.projects));
+const projectIds = new Set<string>(visibleProjects);
 
 function JourneyEntry({ id, when, reduced }: Entry & { reduced: boolean }) {
   const ref = useRef<HTMLLIElement>(null);
