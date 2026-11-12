@@ -34,7 +34,7 @@ export function SiteNav() {
       >
         <div className="container-site flex h-(--nav-h) items-center justify-between gap-4">
           <a href="#top" className="pointer-events-auto inline-flex min-h-11 shrink-0 items-center">
-            <Lockup className="h-[18px] w-auto" />
+            <Lockup className="h-6 w-auto" />
           </a>
 
           <nav aria-label={t.nav.label} className="pointer-events-auto hidden md:block">
