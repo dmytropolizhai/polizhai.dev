@@ -33,12 +33,15 @@ export function SiteNav() {
           scrolled ? "border-line bg-bg" : "pointer-events-none border-transparent bg-transparent",
         )}
       >
-        <div className="container-site flex h-(--nav-h) items-center justify-between gap-4">
-          <Link href="#top" className="pointer-events-auto inline-flex min-h-11 shrink-0 items-center">
+        <div className="container-site flex h-(--nav-h) items-center justify-between gap-4 md:grid md:grid-cols-[1fr_auto_1fr]">
+          <Link
+            href="#top"
+            className="pointer-events-auto inline-flex min-h-11 shrink-0 items-center justify-self-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
+          >
             <Lockup className="h-6 w-auto" />
           </Link>
 
-          <nav aria-label={t.nav.label} className="pointer-events-auto hidden md:block">
+          <nav aria-label={t.nav.label} className="pointer-events-auto hidden justify-self-center md:block">
             <ul
               className={cn(
                 "flex h-(--dock-h) items-center border p-1 transition-[background-color,border-color,border-radius] duration-(--dur-component) ease-move",
@@ -53,8 +56,8 @@ export function SiteNav() {
                       href={`#${id}`}
                       aria-current={current ? "location" : undefined}
                       className={cn(
-                        "relative flex h-11 items-center px-4 text-sm font-bold text-fg-muted transition-[color,background-color,border-radius] duration-(--dur-micro) ease-move hover:text-fg",
-                        scrolled ? "rounded-none" : "rounded-pill hover:bg-line",
+                        "relative flex h-11 items-center px-3 text-sm font-bold whitespace-nowrap text-fg-muted transition-[color,background-color,border-radius] duration-(--dur-micro) ease-move hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse lg:px-4",
+                        scrolled ? "rounded-none hover:bg-raised" : "rounded-pill hover:bg-line",
                         current && "text-fg",
                       )}
                     >
@@ -78,11 +81,18 @@ export function SiteNav() {
             aria-current={active === "contact" ? "location" : undefined}
             className={cn(
               buttonVariants({ variant: "secondary", size: "sm" }),
-              "pointer-events-auto transition-[background-color,border-color,border-radius,color] duration-(--dur-component)",
-              scrolled && "bg-transparent hover:bg-transparent",
+              "pointer-events-auto relative justify-self-end transition-[background-color,border-color,border-radius,color] duration-(--dur-component) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
+              scrolled && "rounded-none border-transparent bg-transparent hover:bg-raised hover:text-fg",
+              active === "contact" && "text-fg",
             )}
           >
             {letsTalkLabel}
+            {active === "contact" && (
+              <>
+                <Mark className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.75rem]" />
+                <span className="sr-only">, {t.a11y.currentSection}</span>
+              </>
+            )}
           </Link>
         </div>
       </header>

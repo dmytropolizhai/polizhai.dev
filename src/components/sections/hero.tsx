@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { ArrowDown } from "@/components/animate-ui/icons/arrow-down";
+import { BookCallButton } from "@/components/ui/book-call-button";
 import { buttonVariants } from "@/components/ui/button";
 import { ProjectExplorer } from "@/components/sections/projects";
-import { hrefOf } from "@/lib/content";
 import { useSiteContent } from "@/lib/content-context";
-import { Calendar } from "lucide-react";
 import { useState, type MouseEvent } from "react";
 
 /**
@@ -26,10 +25,8 @@ function showCanvas(e: MouseEvent<HTMLAnchorElement>) {
 
 /** §1 The hero: the motto, a subline and two actions, then the full-bleed project canvas. */
 export function Hero() {
-  const { facts, t } = useSiteContent();
+  const { t } = useSiteContent();
   const [arrowHover, setArrowHover] = useState(false);
-  const call = facts.contact.find((c) => c.id === "call");
-  const callHref = hrefOf(call?.href);
 
   return (
     <header id="top" className="texture-grain relative flex flex-col overflow-hidden">
@@ -52,17 +49,7 @@ export function Hero() {
             {t.hero.seeWork}
             <ArrowDown animate={arrowHover} aria-hidden="true" />
           </Link>
-          {callHref && (
-            <Link
-              href={callHref}
-              className={buttonVariants({ variant: "primary" })}
-              data-cal-link="dmytropolizhai/briefing"
-              data-cal-config='{"layout":"month_view","theme":"dark"}'
-            >
-              <Calendar className="size-4" aria-hidden="true" />
-              <span>{t.contact.labels.call}</span>
-            </Link>
-          )}
+          <BookCallButton />
         </div>
       </div>
 

@@ -1,12 +1,7 @@
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getCalApi } from "@calcom/embed-react";
-import { Calendar } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { BookCallButton } from "@/components/ui/book-call-button";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section";
-import { externalProps } from "@/components/ui/text-link";
-import { hrefOf } from "@/lib/content";
 import { useSiteContent } from "@/lib/content-context";
 
 const rigaTime = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Riga", hour: "2-digit", minute: "2-digit" });
@@ -38,28 +33,8 @@ function RigaClock() {
 
 /** §7 Contact: the last poster. Full height, grain, pinned bottom-left. One path, no form. */
 export function Contact() {
-  const { facts, pendingCopy, t } = useSiteContent();
-  const call = facts.contact.find((c) => c.id === "call");
-  const callHref = hrefOf(call?.href);
+  const { pendingCopy, t } = useSiteContent();
   const poster = pendingCopy.letsTalk;
-  const calLink = callHref ? callHref.replace("https://cal.com/", "") : "dmytropolizhai/briefing";
-
-  useEffect(() => {
-    if (!calLink) return;
-    (async function () {
-      try {
-        const cal = await getCalApi();
-        cal("ui", {
-          theme: "dark",
-          styles: { branding: { brandColor: "#ffffff" } },
-          hideEventTypeDetails: false,
-          layout: "month_view",
-        });
-      } catch {
-        // Fallback to direct navigation if Cal embed fails to load
-      }
-    })();
-  }, [calLink]);
 
   return (
     <section
@@ -86,18 +61,7 @@ export function Contact() {
           <Reveal>
             <p className="type-body mt-(--space-4) max-w-[54ch] text-fg-muted">{t.contact.body}</p>
             <div className="mt-(--space-8) flex flex-wrap items-center gap-3">
-              {callHref && (
-                <Link
-                  href={callHref}
-                  {...externalProps(callHref)}
-                  className={buttonVariants({ variant: "primary" })}
-                  data-cal-link={calLink}
-                  data-cal-config='{"layout":"month_view","theme":"dark"}'
-                >
-                  <Calendar className="size-4" aria-hidden="true" />
-                  <span>{t.contact.labels.call}</span>
-                </Link>
-              )}
+              <BookCallButton />
             </div>
           </Reveal>
         </div>
