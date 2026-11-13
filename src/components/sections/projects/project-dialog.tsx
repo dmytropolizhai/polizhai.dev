@@ -1,7 +1,7 @@
 import type { ProjectId } from "@content/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { NumberTicker } from "@/components/ui/number-ticker";
-import { facts, stats, t } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 import { useRef } from "react";
 import { TileActions, TileBody, TileMeta } from "./project-parts";
 
@@ -40,7 +40,9 @@ export function ProjectDialog({ id, onClose, finalFocusTarget }: Props) {
 }
 
 function Body({ id }: { id: ProjectId }) {
-  const project = facts.projects[id];
+  const { projectsById } = useSiteContent();
+  const project = projectsById[id];
+  if (!project) return null;
   return (
     <>
       <DialogHeader>
@@ -51,12 +53,12 @@ function Body({ id }: { id: ProjectId }) {
       {project.stats.length > 0 && (
         <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4 border-t border-line pt-5">
           {project.stats.map((stat) => (
-            <div key={stat}>
+            <div key={stat.id}>
               <dd className="type-h3 type-num">
-                <NumberTicker value={stats[stat].value} play />
-                {stats[stat].suffix}
+                <NumberTicker value={stat.value} play />
+                {stat.suffix}
               </dd>
-              <dt className="type-small mt-1 text-fg-muted">{t.stats[stat]}</dt>
+              <dt className="type-small mt-1 text-fg-muted">{stat.label}</dt>
             </div>
           ))}
         </dl>

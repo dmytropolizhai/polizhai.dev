@@ -204,7 +204,7 @@ export const facts = {
 
   projects: {
     prolifts: {
-      name: "Prolifts",
+      name: "PRO-LIFTS",
       status: "live",
       kind: "client",
       stack: ["Next.js 16", "Sanity", "next-intl", "GitHub Actions"],
@@ -523,6 +523,10 @@ export type SiteCopy = {
   testimonials: {
     heading: string;
     subheading: string;
+    kinds: {
+      client: string;
+      venture: string;
+    };
     items: Record<string, {
       quote: string;
       context: string;
@@ -882,14 +886,18 @@ export const en = {
   testimonials: {
     heading: "What they say",
     subheading: "Feedback from clients and co-founders on execution, speed and craft.",
+    kinds: {
+      client: "Client",
+      venture: "Co-founder",
+    },
     items: {
       prolifts: {
         quote: "This is fire. I really like it. Everyone is going to ask me who made it. I'll build your price and reputation.",
-        context: "Live client web platform",
+        context: "Three-language company site & CMS",
       },
       zinly: {
         quote: "Dmytro turns complex engineering concepts into high-speed, intuitive interfaces in days. His reliability and craft make him an incredible product builder.",
-        context: "Co-founded AI learning platform",
+        context: "AI learning app for students",
       },
     },
   },

@@ -5,17 +5,8 @@ import { Mark } from "@/components/ui/mark";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeader } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
-import {
-  facts,
-  serviceIds,
-  serviceProof,
-  servicePriceLabel,
-  showServices,
-  t,
-  tierIds,
-  tierPriceLabel,
-  type ServiceId,
-} from "@/lib/content";
+import type { ServiceId } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 import { cn } from "@/lib/utils";
 
 const HEADING_ID = "services-title";
@@ -34,6 +25,7 @@ const ROW_START = ["lg:row-start-2", "lg:row-start-3", "lg:row-start-4", "lg:row
  * The one moving thing is the panel swap; titles never animate.
  */
 export function Services() {
+  const { serviceIds, servicePriceLabel, services, showServices, t } = useSiteContent();
   const [selected, setSelected] = useState<ServiceId>(serviceIds[0] ?? "landing");
   // The prompt stays until the visitor picks something themselves.
   const [touched, setTouched] = useState(false);
@@ -41,6 +33,7 @@ export function Services() {
 
   const s = t.services;
   const selectedIndex = serviceIds.indexOf(selected);
+  const selectedItem = services.items.find((item) => item.id === selected);
 
   return (
     <section
@@ -66,7 +59,8 @@ export function Services() {
             {s.pickPrompt}
           </p>
 
-          {serviceIds.map((id, i) => {
+          {services.items.map((item, i) => {
+            const id = item.id;
             const checked = id === selected;
             return (
               <label
@@ -75,7 +69,7 @@ export function Services() {
                 className={cn(
                   "group flex cursor-pointer items-baseline border-t border-line py-(--space-6) [--row-fs:clamp(2rem,5.2vw,4.5rem)] transition-colors duration-(--dur-micro) ease-move lg:col-span-8 lg:col-start-1",
                   ROW_START[i],
-                  i === serviceIds.length - 1 && "border-b",
+                  i === services.items.length - 1 && "border-b",
                   !checked && "hover:bg-surface",
                   "has-[input:focus-visible]:outline-2 has-[input:focus-visible]:-outline-offset-2 has-[input:focus-visible]:outline-inverse",
                 )}
@@ -97,7 +91,7 @@ export function Services() {
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col gap-y-(--space-2)">
                   <span className="type-display min-w-0 text-(length:--row-fs) font-extrabold [font-stretch:var(--width-wide)] text-fg [overflow-wrap:anywhere]">
-                    {s.items[id].name}
+                    {item.name}
                   </span>
                   <span
                     className={cn(
@@ -115,7 +109,7 @@ export function Services() {
           <div
             id={PANEL_ID}
             role="region"
-            aria-label={s.items[selected].name}
+            aria-label={selectedItem?.name ?? s.items[selected].name}
             style={{ order: (selectedIndex + 1) * 2 + 1 }}
             className="pt-(--space-2) pb-(--space-12) lg:col-span-4 lg:col-start-9 lg:row-[2/7] lg:self-start lg:border-t lg:border-line lg:pt-(--space-8) lg:pb-0"
           >
@@ -135,13 +129,15 @@ export function Services() {
 }
 
 function ServicePanel({ id, className }: { id: ServiceId; className?: string }) {
+  const { projectsById, servicePriceLabel, serviceProof, services, t, tierPriceLabel } = useSiteContent();
   const s = t.services;
+  const item = services.items.find((entry) => entry.id === id);
   const proof = serviceProof(id);
 
   return (
     <div className={cn("flex flex-col gap-(--space-8)", className)}>
       <div>
-        <p className="type-lede max-w-[28ch] text-fg">{s.items[id].outcome}</p>
+        <p className="type-lede max-w-[28ch] text-fg">{item?.outcome ?? s.items[id].outcome}</p>
         <p className="type-h3 type-num mt-(--space-4) [font-stretch:var(--width-wide)] font-extrabold text-fg">
           {servicePriceLabel(id)}
         </p>
@@ -151,14 +147,14 @@ function ServicePanel({ id, className }: { id: ServiceId; className?: string }) 
         <div>
           <table className="w-full border-collapse text-left">
             <tbody>
-              {tierIds.map((tier) => (
-                <tr key={tier} className="border-t border-line last:border-b">
+              {services.supportTiers.map((tier) => (
+                <tr key={tier.id} className="border-t border-line last:border-b">
                   <th scope="row" className="py-(--space-3) pr-(--space-4) align-top font-normal">
-                    <span className="block text-[0.9375rem] font-bold text-fg">{s.support.tiers[tier].name}</span>
-                    <span className="type-small mt-(--space-1) block text-fg-muted">{s.support.tiers[tier].includes}</span>
+                    <span className="block text-[0.9375rem] font-bold text-fg">{tier.name}</span>
+                    <span className="type-small mt-(--space-1) block text-fg-muted">{tier.includes}</span>
                   </th>
                   <td className="type-small type-num py-(--space-3) text-right align-top whitespace-nowrap text-fg">
-                    {tierPriceLabel(tier)}
+                    {tierPriceLabel(tier.id)}
                   </td>
                 </tr>
               ))}
@@ -174,14 +170,18 @@ function ServicePanel({ id, className }: { id: ServiceId; className?: string }) 
           <div>
             <p className="type-label text-fg-muted">{s.proofLabel}</p>
             <ul className="mt-(--space-1) flex flex-wrap gap-x-(--space-6)">
-              {proof.map((pid) => (
-                <li key={pid}>
-                  <TextLink href={`#work-${pid}`} onClick={replayHash} className="gap-(--space-2)">
-                    {facts.projects[pid].status === "live" && <Mark />}
-                    {facts.projects[pid].name}
-                  </TextLink>
-                </li>
-              ))}
+              {proof.map((pid) => {
+                const proj = projectsById[pid];
+                if (!proj) return null;
+                return (
+                  <li key={pid}>
+                    <TextLink href={`#work-${pid}`} onClick={replayHash} className="gap-(--space-2)">
+                      {proj.status === "live" && <Mark />}
+                      {proj.name}
+                    </TextLink>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )

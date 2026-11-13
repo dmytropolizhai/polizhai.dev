@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { facts, t } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { Mark } from "@/components/ui/mark";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 const CLEAR = ["top", "client"] as const;
 
 export function Dock() {
+  const { facts, t } = useSiteContent();
   const active = useActiveSection(facts.dock, CLEAR);
 
   return (

@@ -39,8 +39,8 @@ export const visibleProjects = (Object.keys(facts.projects) as ProjectId[]).filt
 export const letsTalkLabel = pendingCopy.letsTalk.show ? pendingCopy.letsTalk.text : t.nav.sections.contact.label;
 
 /** A usable href, or null when the value is still a `[TBD: ...]` gap. */
-export const hrefOf = (href: Href | Tbd | null | undefined): Href | null =>
-  href == null || isTbd(href) ? null : href;
+export const hrefOf = (href: string | Tbd | null | undefined): Href | null =>
+  href == null || isTbd(href) ? null : (href as Href);
 
 export const isExternal = (href: string) => href.startsWith("https://");
 

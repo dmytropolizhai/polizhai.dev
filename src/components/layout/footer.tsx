@@ -1,9 +1,10 @@
 import { Lockup } from "@/components/ui/lockup";
 import { TextLink } from "@/components/ui/text-link";
-import { facts, t } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 
 /** §8 Footer: small and factual, then the lockup at container width, the dock floating over it. */
 export function Footer() {
+  const { facts, t } = useSiteContent();
   return (
     <footer className="container-site pb-[calc(var(--dock-h)+1rem)]">
       <div className="flex flex-col gap-6 border-t border-line pt-(--space-8) md:flex-row md:items-start md:justify-between">

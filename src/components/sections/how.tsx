@@ -1,13 +1,13 @@
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
-import { t } from "@/lib/content";
-import { pendingCopy } from "@/lib/pending";
+import { useSiteContent } from "@/lib/content-context";
 
 /**
  * §3 How I work: the asymmetric 12-column hairline Proof Grid.
  * Displays all 5 commercial outcome claims and structural proof blocks at once without widget friction.
  */
 export function How() {
+  const { t, pendingCopy } = useSiteContent();
   const c = t.how.cells;
   const figures = pendingCopy.budgetFigures;
 

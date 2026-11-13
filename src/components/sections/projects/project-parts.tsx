@@ -4,38 +4,43 @@ import { buttonVariants } from "@/components/ui/button";
 import { Status } from "@/components/ui/status";
 import { TagList } from "@/components/ui/tag";
 import { ExternalNote, TextLink, externalProps } from "@/components/ui/text-link";
-import { facts, hrefOf, t } from "@/lib/content";
-import { caseStudyPagesLive, pendingCopy } from "@/lib/pending";
+import { hrefOf } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
+import { caseStudyPagesLive } from "@/lib/pending";
 import { cn } from "@/lib/utils";
 
 /** Kind label left, live marker right. */
 export function TileMeta({ id }: { id: ProjectId }) {
-  const { status } = facts.projects[id];
+  const { projectsById } = useSiteContent();
+  const project = projectsById[id];
+  if (!project) return null;
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="type-label text-fg-muted">{t.work.projects[id].kindLabel}</span>
-      {status !== "hidden" && <Status status={status} />}
+      <span className="type-label text-fg-muted">{project.kindLabel}</span>
+      {project.status !== "hidden" && <Status status={project.status} />}
     </div>
   );
 }
 
 /** One-liner, role, optional note, tags. */
 export function TileBody({ id, oneLinerClass = "text-fg-muted" }: { id: ProjectId; oneLinerClass?: string }) {
-  const copy = t.work.projects[id];
+  const { pendingCopy, projectsById, t } = useSiteContent();
+  const project = projectsById[id];
+  if (!project) return null;
   return (
     <>
-      <p className={cn("type-body mt-3", oneLinerClass)}>{copy.oneLiner}</p>
-      <p className="type-small mt-2 text-fg-muted">{copy.role}</p>
-      {"note" in copy && copy.note && <p className="type-small mt-1 text-fg-subtle">{copy.note}</p>}
+      <p className={cn("type-body mt-3", oneLinerClass)}>{project.oneLiner}</p>
+      <p className="type-small mt-2 text-fg-muted">{project.role}</p>
+      {project.note && <p className="type-small mt-1 text-fg-subtle">{project.note}</p>}
       {pendingCopy.projectOutcome.show && (
         <div className="mt-5 border-t border-line pt-4">
           <p className="type-label text-fg-muted">{t.work.outcomeLabel}</p>
-          <p className="type-body mt-1">{copy.outcome}</p>
+          <p className="type-body mt-1">{project.outcome}</p>
         </div>
       )}
-      {facts.projects[id].stack.length > 0 && (
+      {project.stack.length > 0 && (
         <div className="mt-5">
-          <TagList items={facts.projects[id].stack} />
+          <TagList items={project.stack} />
         </div>
       )}
     </>
@@ -47,7 +52,10 @@ export function TileBody({ id, oneLinerClass = "text-fg-muted" }: { id: ProjectI
  * links. The dialog uses one shared style for all projects, so none is singled out.
  */
 export function TileActions({ id, lead }: { id: ProjectId; lead: "primary" | "secondary" | "link" }) {
-  const links = facts.projects[id].links
+  const { projectsById, t } = useSiteContent();
+  const project = projectsById[id];
+  if (!project) return null;
+  const links = project.links
     .map((l) => ({ kind: l.kind, href: hrefOf(l.href) }))
     .filter((l): l is { kind: typeof l.kind; href: NonNullable<typeof l.href> } => l.href !== null)
     .filter((l) => caseStudyPagesLive || l.kind !== "caseStudy");

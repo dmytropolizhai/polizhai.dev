@@ -6,13 +6,14 @@ import { buttonVariants } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section";
 import { externalProps } from "@/components/ui/text-link";
-import { facts, hrefOf, t } from "@/lib/content";
-import { pendingCopy } from "@/lib/pending";
+import { hrefOf } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 
 const rigaTime = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Riga", hour: "2-digit", minute: "2-digit" });
 
 /** Live time in Riga. Ships empty and fills on mount, so a prerendered page is never wrong. */
 function RigaClock() {
+  const { t } = useSiteContent();
   const [now, setNow] = useState<string | null>(null);
   useEffect(() => {
     const tick = () => setNow(rigaTime.format(new Date()));
@@ -37,6 +38,7 @@ function RigaClock() {
 
 /** §7 Contact: the last poster. Full height, grain, pinned bottom-left. One path, no form. */
 export function Contact() {
+  const { facts, pendingCopy, t } = useSiteContent();
   const call = facts.contact.find((c) => c.id === "call");
   const callHref = hrefOf(call?.href);
   const poster = pendingCopy.letsTalk;

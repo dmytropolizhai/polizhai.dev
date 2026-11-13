@@ -1,13 +1,15 @@
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
-import { facts, hrefOf, t } from "@/lib/content";
-import { shots } from "@/lib/pending";
+import { hrefOf } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 
 /** §5 About: the human layer. Sticky 3:4 portrait left (5/12), text right (7/12). */
 export function About() {
+  const { facts, portrait, t } = useSiteContent();
   const { person } = facts;
   const [head, stress] = splitStress(person.phonetic, person.phoneticStress);
+  const isRemotePortrait = portrait?.startsWith("http");
 
   return (
     <Section id="about" title={t.about.heading}>
@@ -15,12 +17,10 @@ export function About() {
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-[calc(var(--nav-h)+1.5rem)]">
             <figure className="texture-grain aspect-[3/4] overflow-hidden bg-raised border border-line">
-              {shots.portrait ? (
-                <picture>
-                  <source srcSet="/images/portrait.avif" type="image/avif" />
-                  <source srcSet="/images/portrait.webp" type="image/webp" />
+              {portrait ? (
+                isRemotePortrait ? (
                   <img
-                    src={shots.portrait}
+                    src={portrait}
                     alt={t.a11y.portraitAlt}
                     width={900}
                     height={1200}
@@ -28,7 +28,21 @@ export function About() {
                     decoding="async"
                     className="h-full w-full object-cover grayscale contrast-[1.04]"
                   />
-                </picture>
+                ) : (
+                  <picture>
+                    <source srcSet="/images/portrait.avif" type="image/avif" />
+                    <source srcSet="/images/portrait.webp" type="image/webp" />
+                    <img
+                      src={portrait}
+                      alt={t.a11y.portraitAlt}
+                      width={900}
+                      height={1200}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover grayscale contrast-[1.04]"
+                    />
+                  </picture>
+                )
               ) : (
                 <div aria-hidden="true" className="flex h-full items-end p-4">
                   <span className="type-label relative z-(--z-content) text-fg-muted">portrait · 3:4</span>

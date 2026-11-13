@@ -5,7 +5,7 @@ import { Copy } from "@/components/animate-ui/icons/copy";
 import { Mail } from "@/components/animate-ui/icons/mail";
 import { Button } from "@/components/ui/button";
 import { useCopy } from "@/hooks/use-copy";
-import { facts, t } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 
 type CopyEmailButtonProps = {
   /** Visible label before copying. */
@@ -21,6 +21,7 @@ type CopyEmailButtonProps = {
  * Icons: Animate UI (lucide set). The check draws itself when copied.
  */
 export function CopyEmailButton({ label, icon, variant = "primary" }: CopyEmailButtonProps) {
+  const { facts, t } = useSiteContent();
   const { state, copy } = useCopy(facts.email);
   const [hover, setHover] = useState(false);
   const reduced = useReducedMotion() ?? false;

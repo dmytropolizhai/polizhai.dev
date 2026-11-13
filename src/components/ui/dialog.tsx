@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { XIcon } from "lucide-react";
 
-import { t } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 import { cn } from "@/lib/utils";
 
 /**
@@ -16,6 +16,7 @@ function Dialog(props: DialogPrimitive.Root.Props) {
 }
 
 function DialogContent({ className, children, ...props }: DialogPrimitive.Popup.Props) {
+  const { t } = useSiteContent();
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Backdrop

@@ -4,12 +4,10 @@ import { Lockup } from "@/components/ui/lockup";
 import { Mark } from "@/components/ui/mark";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { useScrolled } from "@/hooks/use-scrolled";
-import { facts, letsTalkLabel, t } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 import { cn } from "@/lib/utils";
 
 const CLEAR = ["top", "client"] as const;
-/** The action button covers Contact, so the bar links stop at About. */
-const LINKS = facts.dock.filter((id) => id !== "contact");
 
 /**
  * Top bar: lockup · section links · action (Dmytro, 2026-11-11).
@@ -18,6 +16,8 @@ const LINKS = facts.dock.filter((id) => id !== "contact");
  * Links live here from md up; phones keep the bottom dock for them.
  */
 export function SiteNav() {
+  const { facts, letsTalkLabel, t } = useSiteContent();
+  const links = facts.dock.filter((id) => id !== "contact");
   const { scrolled, sentinel } = useScrolled();
   const active = useActiveSection(facts.dock, CLEAR);
 
@@ -45,7 +45,7 @@ export function SiteNav() {
                 scrolled ? "rounded-none border-transparent bg-transparent" : "rounded-pill border-line-strong bg-raised",
               )}
             >
-              {LINKS.map((id) => {
+              {links.map((id) => {
                 const current = active === id;
                 return (
                   <li key={id}>

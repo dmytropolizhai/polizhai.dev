@@ -2,7 +2,8 @@ import Link from "next/link";
 import { ArrowDown } from "@/components/animate-ui/icons/arrow-down";
 import { buttonVariants } from "@/components/ui/button";
 import { ProjectExplorer } from "@/components/sections/projects";
-import { facts, hrefOf, t } from "@/lib/content";
+import { hrefOf } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 import { Calendar } from "lucide-react";
 import { useState, type MouseEvent } from "react";
 
@@ -25,6 +26,7 @@ function showCanvas(e: MouseEvent<HTMLAnchorElement>) {
 
 /** §1 The hero: the motto, a subline and two actions, then the full-bleed project canvas. */
 export function Hero() {
+  const { facts, t } = useSiteContent();
   const [arrowHover, setArrowHover] = useState(false);
   const call = facts.contact.find((c) => c.id === "call");
   const callHref = hrefOf(call?.href);

@@ -3,7 +3,9 @@ import { motion, useInView, useReducedMotion, useScroll, useTransform } from "mo
 import { lazy, Suspense, useRef, useState } from "react";
 import { Mark } from "@/components/ui/mark";
 import { Section } from "@/components/ui/section";
-import { facts, formatWhen, t, visibleProjects } from "@/lib/content";
+import { formatWhen } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
+import type { ResolvedJourneyEntry } from "@/sanity/lib/fetch";
 import { cn } from "@/lib/utils";
 
 // Lazy-load the project dialog on first user interaction to protect initial bundle budget.
@@ -17,21 +19,17 @@ const ProjectDialog = lazy(() =>
  * Entries above the middle of the screen are lit. The rail ends in the mark. Dates stick on desktop.
  */
 
-type Entry = { id: JourneyId; when: string | null };
-
 /** Consecutive entries with the same date share one sticky date. */
-function groupByDate(): { when: string | null; entries: Entry[] }[] {
-  const groups: { when: string | null; entries: Entry[] }[] = [];
-  for (const [id, value] of Object.entries(facts.journey) as [JourneyId, (typeof facts.journey)[JourneyId]][]) {
-    if (value.status !== "visible") continue;
+function groupByDate(entries: readonly ResolvedJourneyEntry[]): { when: string | null; entries: ResolvedJourneyEntry[] }[] {
+  const groups: { when: string | null; entries: ResolvedJourneyEntry[] }[] = [];
+  for (const entry of entries) {
+    if (entry.status !== "visible") continue;
     const last = groups.at(-1);
-    if (last && last.when === value.when) last.entries.push({ id, when: value.when });
-    else groups.push({ when: value.when, entries: [{ id, when: value.when }] });
+    if (last && last.when === entry.when) last.entries.push(entry);
+    else groups.push({ when: entry.when, entries: [entry] });
   }
   return groups;
 }
-
-const projectIds = new Set<string>(visibleProjects);
 
 function formatJourneyDate(when: string | null): string {
   if (!when) return "Origin";
@@ -49,20 +47,20 @@ const proofBadges: Partial<Record<JourneyId, { label: string; live?: boolean }>>
   freelance: { label: "Open for projects" },
 };
 
-type JourneyEntryProps = Entry & {
+type JourneyEntryProps = {
+  entry: ResolvedJourneyEntry;
+  isProject: boolean;
   reduced: boolean;
   displayDate: string;
   onSelectProject: (id: ProjectId) => void;
 };
 
-function JourneyEntry({ id, reduced, displayDate, onSelectProject }: JourneyEntryProps) {
+function JourneyEntry({ entry, isProject, reduced, displayDate, onSelectProject }: JourneyEntryProps) {
   const ref = useRef<HTMLLIElement>(null);
   // Lit once its top has passed the middle of the screen, including when it is far above it.
   const passed = useInView(ref, { margin: "100000px 0px -50% 0px" });
   const lit = reduced || passed;
-  const copy = t.journey.entries[id];
-  const isProject = projectIds.has(id);
-  const proof = proofBadges[id];
+  const proof = proofBadges[entry.id as JourneyId];
 
   return (
     <li ref={ref} className="relative pb-(--space-12) last:pb-0">
@@ -80,14 +78,14 @@ function JourneyEntry({ id, reduced, displayDate, onSelectProject }: JourneyEntr
         {isProject ? (
           <button
             type="button"
-            id={`journey-project-${id}`}
-            onClick={() => onSelectProject(id as ProjectId)}
+            id={`journey-project-${entry.id}`}
+            onClick={() => onSelectProject(entry.id as ProjectId)}
             className="cursor-pointer text-left underline decoration-control decoration-1 underline-offset-[0.2em] transition-colors hover:decoration-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
           >
-            {copy.title}
+            {entry.title}
           </button>
         ) : (
-          copy.title
+          entry.title
         )}
       </h3>
       {proof && (
@@ -112,13 +110,14 @@ function JourneyEntry({ id, reduced, displayDate, onSelectProject }: JourneyEntr
         </div>
       )}
       <p className={cn("type-body mt-2 max-w-[56ch] transition-colors duration-(--dur-component)", lit ? "text-fg-muted" : "text-fg-subtle")}>
-        {copy.body}
+        {entry.body}
       </p>
     </li>
   );
 }
 
 export function Journey() {
+  const { journey, t, visibleProjects } = useSiteContent();
   const railRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion() ?? false;
   const { scrollYProgress } = useScroll({ target: railRef, offset: ["start center", "end center"] });
@@ -126,7 +125,8 @@ export function Journey() {
   const [activeProject, setActiveProject] = useState<ProjectId | null>(null);
   const [dialogMounted, setDialogMounted] = useState(false);
 
-  const groups = groupByDate();
+  const projectIds = new Set<string>(visibleProjects);
+  const groups = groupByDate(journey);
 
   const handleSelectProject = (id: ProjectId) => {
     setDialogMounted(true);
@@ -165,10 +165,11 @@ export function Journey() {
                   </time>
                 </div>
                 <ol aria-label={displayDate} className="m-0 list-none p-0 md:col-span-3 md:pl-10">
-                  {group.entries.map((e) => (
+                  {group.entries.map((entry) => (
                     <JourneyEntry
-                      key={e.id}
-                      {...e}
+                      key={entry.id}
+                      entry={entry}
+                      isProject={projectIds.has(entry.id)}
                       displayDate={displayDate}
                       reduced={reduced}
                       onSelectProject={handleSelectProject}

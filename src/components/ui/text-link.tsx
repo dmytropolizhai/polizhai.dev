@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { isExternal, t } from "@/lib/content";
+import { isExternal } from "@/lib/content";
+import { useSiteContent } from "@/lib/content-context";
 import { cn } from "@/lib/utils";
 
 type TextLinkProps = Omit<React.ComponentPropsWithoutRef<typeof Link>, "href"> & { href: string };
@@ -9,6 +10,7 @@ type TextLinkProps = Omit<React.ComponentPropsWithoutRef<typeof Link>, "href"> &
  * External links open in a new tab and say so to screen readers.
  */
 export function TextLink({ href, className, children, ...props }: TextLinkProps) {
+  const { t } = useSiteContent();
   const external = isExternal(href);
   return (
     <Link
@@ -32,5 +34,6 @@ export function externalProps(href: string) {
 }
 
 export function ExternalNote({ href }: { href: string }) {
+  const { t } = useSiteContent();
   return isExternal(href) ? <span className="sr-only"> ({t.a11y.externalLink})</span> : null;
 }

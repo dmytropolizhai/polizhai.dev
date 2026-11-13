@@ -65,7 +65,6 @@
     descent-override: 22%;
   }
 
-
   main {
     /* The dock never covers the last line. */
     padding-bottom: calc(var(--dock-h) + 2rem + env(safe-area-inset-bottom));
@@ -321,4 +320,25 @@
 .mark3d-right {
   left: calc(86.495% - var(--mark-edge-len) / 2);
   background: hsl(0 0% var(--tone-right));
+}
+
+@theme inline {
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+    }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+    }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
