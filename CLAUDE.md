@@ -4,20 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-The **polizhai.dev** rebuild: personal-brand portfolio of Dmytro Polizhai, "Full-Stack Developer". A single-page React 19 + Vite 8 + TypeScript app (Tailwind 4, shadcn on Base UI, motion), deployed as a static site on Cloudflare Pages. Planning docs (research, brand, design, content) live beside the app and are its source of truth.
+The **polizhai.dev** rebuild: personal-brand portfolio of Dmytro Polizhai, "Full-Stack Developer". A React 19 + Next.js 16 (App Router) + TypeScript app (Tailwind 4, shadcn on Base UI, motion), prerendered to static HTML (`output: "export"`) and deployed on Cloudflare Pages. The Cloudflare build output directory is `out`, not `dist`. Planning docs (research, brand, design, content) live beside the app and are its source of truth.
 
 ## Commands
 
 pnpm only.
 
-- `pnpm dev`: Vite dev server
-- `pnpm build`: `tsc -b && vite build` (strict TS with `noUncheckedIndexedAccess`; this is the only check, there is no lint or test setup yet)
-- `pnpm typecheck`: types only
+- `pnpm dev`: Next dev server
+- `pnpm build`: `next build` (prerenders `/` into `out/`; strict TS with `noUncheckedIndexedAccess` via `tsconfig.json`; there is no lint or test setup yet)
+- `pnpm typecheck`: `tsc --noEmit`, types only
 - `pnpm dlx shadcn@latest add <item>`: add registry components (`@magicui/...`, `@animate-ui/...`, React Bits URLs). After adding, check the import of `cn`: shadcn once resolved it to the npm package `cn`, which is wrong; it must be `@/lib/utils`. Strip `'use client'` and unused `React` imports.
 
 ## App architecture
 
-- `index.html` → `src/main.tsx` → `src/App.tsx`: Hero, `<main>` (How, Journey, About, ClientQuote, Contact), Footer, Dock. The dock is last in the DOM by design. There is no Work section: the hero holds the H1 (`t.hero.headline`, the motto), subline, two buttons and the full-bleed project canvas (`<section id="work">`).
+- `src/app/layout.tsx` (server: `<html>`, global CSS, `metadata` and `viewport` from the old `index.html` head) → `src/app/page.tsx` (server, renders `<App />`) → `src/App.tsx` (`'use client'`): Hero, `<main>` (How, Journey, About, ClientQuote, Contact), Footer, Dock. The dock is last in the DOM by design. There is no Work section: the hero holds the H1 (`t.hero.headline`, the motto), subline, two buttons and the full-bleed project canvas (`<section id="work">`).
 - `src/index.css` imports Tailwind, `@fontsource-variable/archivo/wdth.css` (both axes; the wide titles need it) and `design/tokens.css`. Token classes (`type-*`, `.mark`, `texture-*`) and utilities (`bg-surface`, `text-fg-muted`, `ease-move`, `rounded-pill`, `rounded-panel`) come from there; the stock Tailwind palette is removed. `index.css` adds only `container-site`, `.reveal`, `.rise-in`, the `.glass-*` card block (canvas cards) and the `.mark3d*` block (`.highlight-sweep` is removed).
 - **Content goes through `src/lib/content.ts`** (`t` = active locale copy, `facts`, `hrefOf`, `showClientQuote`, `formatWhen`). Components never hard-code copy. Aliases: `@/` → `src/`, `@content/` → `content/`.
 - `src/lib/pending.ts` holds everything waiting on Dmytro: **NEW** copy flags (`letsTalk`, `budgetFigures`, `projectOutcome`; `curioBars` is removed), screenshot base paths (`shots.projects[id]` → `/shots/<id>.avif` + `.webp`) and the portrait path (`null` renders a halftone placeholder with the same ratio), and `caseStudyPagesLive` (hides `/work/*` links until those pages exist). `lib/content.ts` also exports `VisibleProjectId`, `visibleProjects` and `letsTalkLabel`.

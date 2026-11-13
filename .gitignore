@@ -2,3 +2,8 @@ node_modules
 dist
 *.local
 .idea
+
+.next
+next-env.d.ts
+*.tsbuildinfo
+out

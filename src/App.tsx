@@ -1,3 +1,5 @@
+'use client'
+
 import { MotionConfig } from "motion/react";
 import { Dock } from "@/components/layout/dock";
 import { Footer } from "@/components/layout/footer";
