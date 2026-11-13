@@ -2,6 +2,12 @@ name = "portfolio"
 pages_build_output_dir = "out"
 compatibility_date = "2026-10-01"
 
+[vars]
+NEXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAAGAAQs-opuyapm04"
+NEXT_PUBLIC_SANITY_PROJECT_ID = "06qapm3t"
+NEXT_PUBLIC_SANITY_DATASET = "production"
+SANITY_ORG_ID = "ovDlIXy8Y"
+
 # Workers AI binding for fallback LLM inference.
 # Note for local dev: Workers AI has no local simulator in workerd and runs remotely.
 # Local execution with this binding requires `wrangler login` or CLOUDFLARE_API_TOKEN.
