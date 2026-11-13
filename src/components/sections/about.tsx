@@ -26,7 +26,7 @@ export function About() {
                     height={1200}
                     loading="lazy"
                     decoding="async"
-                    className="h-full w-full object-cover grayscale contrast-[1.04]"
+                    className="h-full w-full object-cover contrast-[1.04]"
                   />
                 ) : (
                   <picture>
