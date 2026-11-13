@@ -9,3 +9,6 @@ next-env.d.ts
 out
 .sanity
 *.env
+.dev.vars
+functions/_generated/
+.wrangler/

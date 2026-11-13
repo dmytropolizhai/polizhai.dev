@@ -1,0 +1,37 @@
+# Local development variables for Cloudflare Pages Functions (wrangler pages dev)
+# Copy this file to .dev.vars for local development
+
+# Groq Cloud API key
+GROQ_API_KEY=gsk_dev_dummy_key_replace_with_real_or_use_mock
+
+# Primary LLM model on Groq
+GROQ_MODEL=openai/gpt-oss-120b
+
+# Cloudflare Account & AI Gateway IDs (optional for local dev)
+CF_ACCOUNT_ID=
+AI_GATEWAY_ID=
+
+# Workers AI fallback model
+WORKERS_AI_MODEL=@cf/meta/llama-3.3-70b-instruct-fp8-fast
+
+# Turnstile Cloudflare dummy testing secret key (always passes)
+# Corresponding client site test key: 1x00000000000000000000AA
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+
+# Session signing secret for pa_sess HMAC-SHA256 cookie
+SESSION_SECRET=dev_session_secret_change_me_to_32_random_bytes
+
+# Telegram Bot Token & Chat ID
+TELEGRAM_BOT_TOKEN=123456789:AAFDummyTokenForLocalDevTesting
+TELEGRAM_CHAT_ID=123456789
+TELEGRAM_WEBHOOK_SECRET=
+
+# Extra allowed origins
+ALLOWED_ORIGINS=http://localhost:8788,http://127.0.0.1:8788
+
+# Unanswered question alert toggle
+NOTIFY_UNANSWERED=off
+
+# Dev-only upstream mock overrides (for scripts/mock-upstreams.ts on port 8790)
+# GROQ_BASE_URL=http://127.0.0.1:8790/groq/openai/v1
+# TELEGRAM_API_BASE=http://127.0.0.1:8790/telegram

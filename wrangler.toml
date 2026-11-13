@@ -1,0 +1,18 @@
+name = "polizhai-dev"
+pages_build_output_dir = "out"
+compatibility_date = "2024-11-01"
+
+# Workers AI binding for fallback LLM inference.
+# Note for local dev: Workers AI has no local simulator in workerd and runs remotely.
+# Local execution with this binding requires `wrangler login` or CLOUDFLARE_API_TOKEN.
+# For offline local dev without Cloudflare credentials, temporarily comment this out.
+[ai]
+binding = "AI"
+
+# Optional KV namespace for distributed rate limiting across isolates.
+# When enabled in Cloudflare Dashboard or via CLI:
+# 1. Create a KV namespace: wrangler kv namespace create RATE_KV
+# 2. Uncomment the block below and replace <kv_namespace_id> with the returned ID
+# [[kv_namespaces]]
+# binding = "RATE_KV"
+# id = "<kv_namespace_id>"
