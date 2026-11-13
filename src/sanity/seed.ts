@@ -124,6 +124,7 @@ async function seed() {
 
     letsTalkEnabled: pendingCopy.letsTalk.show,
     letsTalkText: pendingCopy.letsTalk.text,
+    showAssistant: pendingCopy.assistant.show,
     contactHeading: en.contact.heading,
     contactBody: en.contact.body,
     contactCallLabel: en.contact.labels.call,

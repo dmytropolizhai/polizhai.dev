@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AssistantTrigger } from "@/components/assistant/assistant-trigger";
 import { buttonVariants } from "@/components/ui/button";
 import { Lockup } from "@/components/ui/lockup";
 import { Mark } from "@/components/ui/mark";
@@ -81,6 +82,7 @@ export function SiteNav() {
 
           {/* Dock surface at the top; on scroll it drops its fill like everything else in the bar. */}
           <div className="flex items-center gap-1.5 justify-self-end md:gap-2">
+            <AssistantTrigger scrolled={scrolled} />
             <LanguageSwitcher scrolled={scrolled} />
             <Link
               href="#contact"

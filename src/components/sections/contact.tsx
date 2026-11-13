@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAssistant } from "@/components/assistant/assistant-context";
 import { BookCallButton } from "@/components/ui/book-call-button";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section";
@@ -33,7 +34,8 @@ function RigaClock() {
 
 /** §7 Contact: the last poster. Full height, grain, pinned bottom-left. One path, no form. */
 export function Contact() {
-  const { pendingCopy, t } = useSiteContent();
+  const { pendingCopy, showAssistant, t } = useSiteContent();
+  const { openAssistant } = useAssistant();
   const poster = pendingCopy.letsTalk;
 
   return (
@@ -63,6 +65,17 @@ export function Contact() {
             <div className="mt-(--space-8) flex flex-wrap items-center gap-3">
               <BookCallButton />
             </div>
+            {showAssistant && (
+              <p className="mt-(--space-4) text-sm text-fg-muted">
+                <button
+                  type="button"
+                  onClick={openAssistant}
+                  className="cursor-pointer underline decoration-line-strong underline-offset-4 transition-colors duration-(--dur-micro) ease-move hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
+                >
+                  {t.assistant.contactLine}
+                </button>
+              </p>
+            )}
           </Reveal>
         </div>
       </div>

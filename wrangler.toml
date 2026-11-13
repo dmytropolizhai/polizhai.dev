@@ -1,6 +1,6 @@
-name = "polizhai-dev"
+name = "portfolio"
 pages_build_output_dir = "out"
-compatibility_date = "2024-11-01"
+compatibility_date = "2026-10-01"
 
 # Workers AI binding for fallback LLM inference.
 # Note for local dev: Workers AI has no local simulator in workerd and runs remotely.

@@ -546,6 +546,36 @@ export type SiteCopy = {
     stackGroups: Record<StackGroup, string>;
   };
   caseStudies: Record<CaseStudySlug, CaseStudyCopy>;
+  assistant: {
+    navButton: string;
+    contactLine: string;
+    title: string;
+    greeting: string;
+    languagesHint: string;
+    disclaimer: string;
+    placeholder: string;
+    send: string;
+    stop: string;
+    reset: string;
+    prompts: readonly [string, string, string, string];
+    handoff: {
+      button: string;
+      title: string;
+      name: string;
+      contact: string;
+      message: string;
+      privacy: string;
+      submit: string;
+      sent: string;
+      contactInvalid: string;
+    };
+    error: {
+      offline: string;
+      limit: string;
+      tooLong: string;
+      sendFailed: string;
+    };
+  };
   a11y: {
     skipLink: string;
     currentSection: string;
@@ -554,6 +584,11 @@ export type SiteCopy = {
     customersList: string;
     timeline: string;
     portraitAlt: string;
+    assistant: {
+      open: string;
+      log: string;
+      thinking: string;
+    };
   };
 };
 
@@ -1011,6 +1046,43 @@ export const en = {
     },
   },
 
+  assistant: {
+    navButton: "Ask AI",
+    contactLine: "Quick question? Ask the assistant.",
+    title: "Assistant",
+    greeting:
+      "Hi. I'm an AI assistant. I answer from what's on this site: projects, services and how Dmytro works. If I don't know, I'll pass your question to him.",
+    languagesHint: "Write in English, Latvian, Russian or Ukrainian.",
+    disclaimer: "AI answers can be wrong. The site is the source of truth.",
+    placeholder: "Type your question",
+    send: "Send",
+    stop: "Stop",
+    reset: "New chat",
+    prompts: [
+      "What do you build?",
+      "Show me a live project",
+      "How does a project start?",
+      "How can I reach Dmytro?",
+    ],
+    handoff: {
+      button: "Send to Dmytro",
+      title: "Message Dmytro",
+      name: "Name (optional)",
+      contact: "Email or Telegram",
+      message: "Your message",
+      privacy: "Your message and this chat go to Dmytro on Telegram. Nothing else is stored.",
+      submit: "Send",
+      sent: "Sent. Dmytro will reply to the contact you left.",
+      contactInvalid: "Add an email or a Telegram username.",
+    },
+    error: {
+      offline: "The assistant is offline. Write on Telegram or book a call.",
+      limit: "That's the limit for now. Try again later or write on Telegram.",
+      tooLong: "That message is too long. Keep it under 1000 characters.",
+      sendFailed: "Couldn't send. Try again or write on Telegram.",
+    },
+  },
+
   a11y: {
     skipLink: "Skip to main content",
     currentSection: "current section",
@@ -1023,6 +1095,11 @@ export const en = {
     customersList: "Some of my customers",
     timeline: "Journey timeline",
     portraitAlt: "Portrait of Dmytro Polizhai",
+    assistant: {
+      open: "Open the AI assistant",
+      log: "Conversation",
+      thinking: "The assistant is writing",
+    },
   },
 } satisfies SiteCopy;
 
@@ -1381,6 +1458,43 @@ export const lv = {
     },
   },
 
+  assistant: {
+    navButton: "Jautāt AI",
+    contactLine: "Ātrs jautājums? Jautājiet asistentam.",
+    title: "Asistents",
+    greeting:
+      "Sveiki! Esmu AI asistents. Atbildu pēc šīs lapas satura: projekti, pakalpojumi un Dmytro darba process. Ja nezināšu atbildi, nodošu jautājumu viņam.",
+    languagesHint: "Rakstiet angliski, latviski, krieviski vai ukrainiski.",
+    disclaimer: "AI atbildes var būt kļūdainas. Noteicošais ir lapas saturs.",
+    placeholder: "Ierakstiet jautājumu",
+    send: "Sūtīt",
+    stop: "Apturēt",
+    reset: "Jauna saruna",
+    prompts: [
+      "Ko jūs izstrādājat?",
+      "Parādiet strādājošu projektu",
+      "Kā sākas projekts?",
+      "Kā sazināties ar Dmytro?",
+    ],
+    handoff: {
+      button: "Nosūtīt Dmytro",
+      title: "Ziņa Dmytro",
+      name: "Vārds (nav obligāts)",
+      contact: "E-pasts vai Telegram",
+      message: "Jūsu ziņa",
+      privacy: "Jūsu ziņa un šī saruna tiks nosūtīta Dmytro Telegram. Nekas cits netiek saglabāts.",
+      submit: "Sūtīt",
+      sent: "Nosūtīts. Dmytro atbildēs uz norādīto kontaktu.",
+      contactInvalid: "Norādiet e-pastu vai Telegram lietotājvārdu.",
+    },
+    error: {
+      offline: "Asistents nav pieejams. Rakstiet Telegram vai piesakiet zvanu.",
+      limit: "Pagaidām limits ir sasniegts. Mēģiniet vēlāk vai rakstiet Telegram.",
+      tooLong: "Ziņa ir par garu. Līdz 1000 rakstzīmēm.",
+      sendFailed: "Neizdevās nosūtīt. Mēģiniet vēlreiz vai rakstiet Telegram.",
+    },
+  },
+
   a11y: {
     skipLink: "Pāriet uz galveno saturu",
     currentSection: "pašreizējā sadaļa",
@@ -1393,6 +1507,11 @@ export const lv = {
     customersList: "Daži no maniem klientiem",
     timeline: "Gaitas laika josla",
     portraitAlt: "Dmytro Polizhai portrets",
+    assistant: {
+      open: "Atvērt AI asistentu",
+      log: "Saruna",
+      thinking: "Asistents raksta",
+    },
   },
 } satisfies SiteCopy;
 
@@ -1746,6 +1865,43 @@ export const ru = {
     },
   },
 
+  assistant: {
+    navButton: "Спросить AI",
+    contactLine: "Короткий вопрос? Спросите ассистента.",
+    title: "Ассистент",
+    greeting:
+      "Здравствуйте. Я AI-ассистент. Отвечаю по материалам этого сайта: проекты, услуги, как работает Дмитрий. Если не знаю ответа, передам вопрос ему.",
+    languagesHint: "Можно писать на английском, латышском, русском или украинском.",
+    disclaimer: "AI может ошибаться. Главный источник — сам сайт.",
+    placeholder: "Напишите вопрос",
+    send: "Отправить",
+    stop: "Стоп",
+    reset: "Новый чат",
+    prompts: [
+      "Что вы разрабатываете?",
+      "Покажите живой проект",
+      "С чего начинается проект?",
+      "Как связаться с Дмитрием?",
+    ],
+    handoff: {
+      button: "Передать Дмитрию",
+      title: "Сообщение Дмитрию",
+      name: "Имя (необязательно)",
+      contact: "Email или Telegram",
+      message: "Ваше сообщение",
+      privacy: "Сообщение и этот чат уйдут Дмитрию в Telegram. Больше ничего не сохраняется.",
+      submit: "Отправить",
+      sent: "Отправлено. Дмитрий ответит на указанный контакт.",
+      contactInvalid: "Укажите email или ник в Telegram.",
+    },
+    error: {
+      offline: "Ассистент недоступен. Напишите в Telegram или запишитесь на звонок.",
+      limit: "Лимит пока исчерпан. Попробуйте позже или напишите в Telegram.",
+      tooLong: "Слишком длинное сообщение. До 1000 символов.",
+      sendFailed: "Не удалось отправить. Попробуйте ещё раз или напишите в Telegram.",
+    },
+  },
+
   a11y: {
     skipLink: "Перейти к основному содержимому",
     currentSection: "текущий раздел",
@@ -1758,6 +1914,11 @@ export const ru = {
     customersList: "Некоторые из моих клиентов",
     timeline: "Хронология пути",
     portraitAlt: "Портрет Dmytro Polizhai",
+    assistant: {
+      open: "Открыть AI-ассистента",
+      log: "Диалог",
+      thinking: "Ассистент печатает",
+    },
   },
 } satisfies SiteCopy;
 
@@ -2111,6 +2272,43 @@ export const uk = {
     },
   },
 
+  assistant: {
+    navButton: "Запитати AI",
+    contactLine: "Коротке питання? Запитайте асистента.",
+    title: "Асистент",
+    greeting:
+      "Вітаю. Я AI-асистент. Відповідаю за матеріалами цього сайту: проєкти, послуги, як працює Дмитро. Якщо не знаю відповіді, передам питання йому.",
+    languagesHint: "Можна писати англійською, латиською, російською або українською.",
+    disclaimer: "AI може помилятися. Головне джерело — сам сайт.",
+    placeholder: "Напишіть питання",
+    send: "Надіслати",
+    stop: "Стоп",
+    reset: "Новий чат",
+    prompts: [
+      "Що ви розробляєте?",
+      "Покажіть живий проєкт",
+      "З чого починається проєкт?",
+      "Як зв'язатися з Дмитром?",
+    ],
+    handoff: {
+      button: "Передати Дмитру",
+      title: "Повідомлення Дмитру",
+      name: "Ім'я (необов'язково)",
+      contact: "Email або Telegram",
+      message: "Ваше повідомлення",
+      privacy: "Повідомлення і цей чат підуть Дмитру в Telegram. Більше нічого не зберігається.",
+      submit: "Надіслати",
+      sent: "Надіслано. Дмитро відповість на вказаний контакт.",
+      contactInvalid: "Вкажіть email або нік у Telegram.",
+    },
+    error: {
+      offline: "Асистент недоступний. Напишіть у Telegram або запишіться на дзвінок.",
+      limit: "Ліміт поки вичерпано. Спробуйте пізніше або напишіть у Telegram.",
+      tooLong: "Задовге повідомлення. До 1000 символів.",
+      sendFailed: "Не вдалося надіслати. Спробуйте ще раз або напишіть у Telegram.",
+    },
+  },
+
   a11y: {
     skipLink: "Перейти до основного вмісту",
     currentSection: "поточний розділ",
@@ -2123,6 +2321,11 @@ export const uk = {
     customersList: "Деякі з моїх клієнтів",
     timeline: "Хронологія шляху",
     portraitAlt: "Портрет Dmytro Polizhai",
+    assistant: {
+      open: "Відкрити AI-асистента",
+      log: "Діалог",
+      thinking: "Асистент друкує",
+    },
   },
 } satisfies SiteCopy;
 

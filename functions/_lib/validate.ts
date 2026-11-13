@@ -28,7 +28,7 @@ const VALID_LANGS = new Set(["en", "lv", "ru", "uk", "other"]);
 const VALID_PROVIDERS = new Set(["groq", "workers-ai", "none"]);
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TELEGRAM_HANDLE_RE = /^@?[a-zA-Z][a-zA-Z0-9_]{4,31}$/;
+const TELEGRAM_HANDLE_RE = /^@[a-zA-Z][a-zA-Z0-9_]{4,31}$/;
 const TELEGRAM_URL_RE = /^(?:https?:\/\/)?t\.me\/[a-zA-Z][a-zA-Z0-9_]{4,31}\/?$/;
 const PHONE_RE = /^\+?[0-9 ()-]{7,20}$/;
 

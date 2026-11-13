@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MotionConfig } from "motion/react";
+import { AssistantProvider } from "@/components/assistant/assistant-context";
 import { Dock } from "@/components/layout/dock";
 import { Footer } from "@/components/layout/footer";
 import { SiteNav } from "@/components/layout/site-nav";
@@ -20,24 +21,26 @@ export function PortfolioShell() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <Link
-        href="#main"
-        className="sr-only z-(--z-overlay) rounded-pill bg-inverse px-6 py-3 font-bold text-on-inverse focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
-      >
-        {t.a11y.skipLink}
-      </Link>
-      <SiteNav />
-      <Hero />
-      <main id="main" tabIndex={-1} className="outline-none">
-        <How />
-        <Services />
-        <Journey />
-        <About />
-        <ClientQuote />
-        <Contact />
-      </main>
-      <Footer />
-      <Dock />
+      <AssistantProvider>
+        <Link
+          href="#main"
+          className="sr-only z-(--z-overlay) rounded-pill bg-inverse px-6 py-3 font-bold text-on-inverse focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+        >
+          {t.a11y.skipLink}
+        </Link>
+        <SiteNav />
+        <Hero />
+        <main id="main" tabIndex={-1} className="outline-none">
+          <How />
+          <Services />
+          <Journey />
+          <About />
+          <ClientQuote />
+          <Contact />
+        </main>
+        <Footer />
+        <Dock />
+      </AssistantProvider>
     </MotionConfig>
   );
 }

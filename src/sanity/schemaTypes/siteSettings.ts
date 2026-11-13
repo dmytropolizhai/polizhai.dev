@@ -149,6 +149,7 @@ export const siteSettingsType = defineType({
     // Contact, Nav & Footer
     defineField({ name: "letsTalkEnabled", title: "Use 'Let's talk' Label", type: "boolean", initialValue: true, group: "contact" }),
     defineField({ name: "letsTalkText", title: "Let's Talk Label", type: "string", group: "contact" }),
+    defineField({ name: "showAssistant", title: "Show AI Assistant", type: "boolean", initialValue: false, group: "contact" }),
     defineField({ name: "contactHeading", title: "Contact Heading", type: "string", group: "contact" }),
     defineField({ name: "contactBody", title: "Contact Body", type: "text", rows: 2, group: "contact" }),
     defineField({ name: "contactCallLabel", title: "Book Call Label", type: "string", group: "contact" }),

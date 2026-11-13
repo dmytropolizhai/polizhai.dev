@@ -123,6 +123,7 @@ export type ResolvedSiteContent = {
     };
     projectOutcome: { show: boolean };
     services: { show: boolean };
+    assistant: { show: boolean };
   };
 };
 
@@ -237,6 +238,7 @@ function buildDefaultContent(locale: Locale = defaultLocale): ResolvedSiteConten
       budgetFigures: { ...defaultPendingCopy.budgetFigures },
       projectOutcome: { ...defaultPendingCopy.projectOutcome },
       services: { ...defaultPendingCopy.services },
+      assistant: { ...defaultPendingCopy.assistant },
     },
   };
 }
@@ -284,6 +286,7 @@ export async function getSiteContent(locale: Locale = defaultLocale): Promise<Re
         budgetFigures: { ...fallback.pendingCopy.budgetFigures },
         projectOutcome: { ...fallback.pendingCopy.projectOutcome },
         services: { ...fallback.pendingCopy.services },
+        assistant: { ...fallback.pendingCopy.assistant },
       },
     };
 
@@ -387,6 +390,9 @@ export async function getSiteContent(locale: Locale = defaultLocale): Promise<Re
       }
       if (settings.letsTalkText) {
         next.pendingCopy.letsTalk.text = settings.letsTalkText;
+      }
+      if (typeof settings.showAssistant === "boolean") {
+        next.pendingCopy.assistant.show = settings.showAssistant;
       }
       if (settings.contactHeading) next.t.contact.heading = settings.contactHeading;
       if (settings.contactBody) next.t.contact.body = settings.contactBody;

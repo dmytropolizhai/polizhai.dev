@@ -20,6 +20,8 @@ export const pendingCopy = {
   projectOutcome: { show: true },
   /** NEW: the whole Services picker copy, `services.*` in all four locales (`servicesCopy`). Off → the section is not rendered. */
   services: { show: true },
+  /** NEW: AI assistant panel + triggers. Also gated by NEXT_PUBLIC_TURNSTILE_SITE_KEY at build time. */
+  assistant: { show: true },
 } as const;
 
 /**

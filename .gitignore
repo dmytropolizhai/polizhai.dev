@@ -12,3 +12,4 @@ out
 .dev.vars
 functions/_generated/
 .wrangler/
+.wrangler-local/

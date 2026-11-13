@@ -16,6 +16,7 @@ type SiteContentContextValue = ResolvedSiteContent & {
   letsTalkLabel: string;
   showClientQuote: boolean;
   showServices: boolean;
+  showAssistant: boolean;
   serviceIds: readonly ServiceId[];
   tierIds: readonly TierId[];
   servicePriceLabel: (id: ServiceId) => string;
@@ -60,6 +61,8 @@ export function useSiteContent(): SiteContentContextValue {
       data.facts.clientQuote.status === "visible" && data.facts.clientQuote.approval === "approved";
 
     const showServices = data.services.show;
+    const showAssistant =
+      data.pendingCopy.assistant.show && Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
     const serviceIds = data.services.items.map((s) => s.id);
     const tierIds = data.services.supportTiers.map((tier) => tier.id);
 
@@ -90,6 +93,7 @@ export function useSiteContent(): SiteContentContextValue {
       letsTalkLabel,
       showClientQuote,
       showServices,
+      showAssistant,
       serviceIds,
       tierIds,
       servicePriceLabel,
