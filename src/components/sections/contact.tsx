@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getCalApi } from "@calcom/embed-react";
 import { Calendar } from "lucide-react";
@@ -84,7 +85,7 @@ export function Contact() {
             <p className="type-body mt-(--space-4) max-w-[54ch] text-fg-muted">{t.contact.body}</p>
             <div className="mt-(--space-8) flex flex-wrap items-center gap-3">
               {callHref && (
-                <a
+                <Link
                   href={callHref}
                   {...externalProps(callHref)}
                   className={buttonVariants({ variant: "primary" })}
@@ -93,7 +94,7 @@ export function Contact() {
                 >
                   <Calendar className="size-4" aria-hidden="true" />
                   <span>{t.contact.labels.call}</span>
-                </a>
+                </Link>
               )}
             </div>
           </Reveal>

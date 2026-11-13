@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { ArrowDown } from "@/components/animate-ui/icons/arrow-down";
 import { buttonVariants } from "@/components/ui/button";
-import { ProjectExplorer } from "@/components/sections/work";
+import { ProjectExplorer } from "@/components/sections/projects";
 import { facts, hrefOf, t } from "@/lib/content";
 import { Calendar } from "lucide-react";
 import { useState, type MouseEvent } from "react";
@@ -39,7 +40,7 @@ export function Hero() {
           <p className="type-body max-w-[54ch] text-fg-muted">{t.hero.subline}</p>
         </div>
         <div className="mt-(--space-8) flex flex-wrap justify-center gap-3">
-          <a
+          <Link
             href="#work"
             onClick={showCanvas}
             className={buttonVariants({ variant: "secondary" })}
@@ -48,9 +49,9 @@ export function Hero() {
           >
             {t.hero.seeWork}
             <ArrowDown animate={arrowHover} aria-hidden="true" />
-          </a>
+          </Link>
           {callHref && (
-            <a
+            <Link
               href={callHref}
               className={buttonVariants({ variant: "primary" })}
               data-cal-link="dmytropolizhai/briefing"
@@ -58,7 +59,7 @@ export function Hero() {
             >
               <Calendar className="size-4" aria-hidden="true" />
               <span>{t.contact.labels.call}</span>
-            </a>
+            </Link>
           )}
         </div>
       </div>

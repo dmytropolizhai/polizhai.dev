@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { isExternal, t } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
-type TextLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string };
+type TextLinkProps = Omit<React.ComponentPropsWithoutRef<typeof Link>, "href"> & { href: string };
 
 /**
  * Design system §9 Link: white, 1px underline in --control at 0.25em; underline turns white on hover.
@@ -10,7 +11,7 @@ type TextLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string };
 export function TextLink({ href, className, children, ...props }: TextLinkProps) {
   const external = isExternal(href);
   return (
-    <a
+    <Link
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={cn(
@@ -21,7 +22,7 @@ export function TextLink({ href, className, children, ...props }: TextLinkProps)
     >
       {children}
       {external && <span className="sr-only"> ({t.a11y.externalLink})</span>}
-    </a>
+    </Link>
   );
 }
 

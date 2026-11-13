@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 // Lazy-load the project dialog on first user interaction to protect initial bundle budget.
 const ProjectDialog = lazy(() =>
-  import("@/components/sections/work/project-dialog").then((m) => ({ default: m.ProjectDialog })),
+  import("@/components/sections/projects/project-dialog").then((m) => ({ default: m.ProjectDialog })),
 );
 
 /**

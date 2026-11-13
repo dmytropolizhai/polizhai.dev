@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { facts, t } from "@/lib/content";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { Mark } from "@/components/ui/mark";
@@ -23,7 +24,7 @@ export function Dock() {
           const current = active === id;
           return (
             <li key={id}>
-              <a
+              <Link
                 href={`#${id}`}
                 aria-current={current ? "location" : undefined}
                 className={cn(
@@ -40,7 +41,7 @@ export function Dock() {
                     <span className="sr-only">, {t.a11y.currentSection}</span>
                   </>
                 )}
-              </a>
+              </Link>
             </li>
           );
         })}

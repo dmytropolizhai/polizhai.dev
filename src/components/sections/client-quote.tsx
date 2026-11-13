@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
@@ -89,7 +90,7 @@ export function ClientQuote() {
                 </div>
 
                 {liveHref ? (
-                  <a
+                  <Link
                     href={liveHref}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -101,7 +102,7 @@ export function ClientQuote() {
                       className="size-3.5 text-fg-subtle transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       aria-hidden="true"
                     />
-                  </a>
+                  </Link>
                 ) : (
                   <span className="type-label inline-flex min-h-[44px] items-center gap-1.5 border border-line bg-surface px-3 py-2 font-mono text-fg-subtle">
                     {projectFacts?.display ?? projectFacts?.name ?? "Project"}

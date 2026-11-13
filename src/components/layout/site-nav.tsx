@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Lockup } from "@/components/ui/lockup";
 import { Mark } from "@/components/ui/mark";
@@ -33,9 +34,9 @@ export function SiteNav() {
         )}
       >
         <div className="container-site flex h-(--nav-h) items-center justify-between gap-4">
-          <a href="#top" className="pointer-events-auto inline-flex min-h-11 shrink-0 items-center">
+          <Link href="#top" className="pointer-events-auto inline-flex min-h-11 shrink-0 items-center">
             <Lockup className="h-6 w-auto" />
-          </a>
+          </Link>
 
           <nav aria-label={t.nav.label} className="pointer-events-auto hidden md:block">
             <ul
@@ -48,7 +49,7 @@ export function SiteNav() {
                 const current = active === id;
                 return (
                   <li key={id}>
-                    <a
+                    <Link
                       href={`#${id}`}
                       aria-current={current ? "location" : undefined}
                       className={cn(
@@ -64,7 +65,7 @@ export function SiteNav() {
                           <span className="sr-only">, {t.a11y.currentSection}</span>
                         </>
                       )}
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
@@ -72,7 +73,7 @@ export function SiteNav() {
           </nav>
 
           {/* Dock surface at the top; on scroll it drops its fill like everything else in the bar. */}
-          <a
+          <Link
             href="#contact"
             aria-current={active === "contact" ? "location" : undefined}
             className={cn(
@@ -82,7 +83,7 @@ export function SiteNav() {
             )}
           >
             {letsTalkLabel}
-          </a>
+          </Link>
         </div>
       </header>
     </>

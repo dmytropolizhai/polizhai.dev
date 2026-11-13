@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState, type MouseEvent } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Mark } from "@/components/ui/mark";
@@ -187,9 +188,9 @@ function ServicePanel({ id, className }: { id: ServiceId; className?: string }) 
       )}
 
       <div>
-        <a href="#contact" className={buttonVariants({ variant: "primary" })}>
+        <Link href="#contact" className={buttonVariants({ variant: "primary" })}>
           {s.cta}
-        </a>
+        </Link>
       </div>
     </div>
   );

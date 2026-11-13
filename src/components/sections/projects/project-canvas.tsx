@@ -143,7 +143,7 @@ export function ProjectCanvas({ onOpen, onHoverChange, className }: Props) {
       onPointerEnter={() => onHoverChange?.(true)}
       onPointerLeave={() => onHoverChange?.(false)}
       className={cn(
-        "group/canvas relative h-[clamp(32rem,85svh,60rem)] w-full max-sm:h-[32.5rem] overflow-clip select-none",
+        "group/canvas relative h-[clamp(32rem,85svh,60rem)] w-full max-sm:h-130 overflow-clip select-none",
         // Touch: vertical swipes scroll the page, horizontal swipes pan. Fine pointers: full 2D drag.
         "touch-pan-y pointer-fine:touch-none",
         "pointer-fine:cursor-grab pointer-fine:data-dragging:cursor-grabbing",

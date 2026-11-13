@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ProjectId } from "@content/site";
 import { buttonVariants } from "@/components/ui/button";
 import { Status } from "@/components/ui/status";
@@ -60,10 +61,10 @@ export function TileActions({ id, lead }: { id: ProjectId; lead: "primary" | "se
           {t.common.linkLabels[first.kind]}
         </TextLink>
       ) : (
-        <a href={first.href} {...externalProps(first.href)} className={buttonVariants({ variant: lead, size: "sm" })}>
+        <Link href={first.href} {...externalProps(first.href)} className={buttonVariants({ variant: lead, size: "sm" })}>
           {t.common.linkLabels[first.kind]}
           <ExternalNote href={first.href} />
-        </a>
+        </Link>
       )}
       {rest.map((l) => (
         <TextLink key={l.kind} href={l.href} className="type-small font-bold">
