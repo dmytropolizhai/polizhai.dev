@@ -162,8 +162,8 @@ export default function AssistantSheet({ open, onOpenChange }: AssistantSheetPro
             <div ref={logEndRef} />
           </div>
 
-          {/* Invisible Turnstile mount point */}
-          <div ref={turnstileContainerRef} className="sr-only" aria-hidden="true" />
+          {/* Turnstile mount point (hidden unless interaction is required) */}
+          <div ref={turnstileContainerRef} className="px-5" />
 
           {/* Input footer */}
           <form onSubmit={handleSubmit} className="border-t border-line px-5 py-4">

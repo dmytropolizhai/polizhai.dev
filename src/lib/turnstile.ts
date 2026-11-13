@@ -3,13 +3,13 @@ type TurnstileApi = {
     container: HTMLElement,
     options: {
       sitekey: string;
-      size?: "invisible" | "normal" | "compact";
+      appearance?: "always" | "execute" | "interaction-only";
+      theme?: "light" | "dark" | "auto";
       callback?: (token: string) => void;
-      "error-callback"?: () => void;
+      "error-callback"?: (errorCode?: string) => void;
       "expired-callback"?: () => void;
     },
   ) => string;
-  execute: (widgetId: string) => void;
   reset: (widgetId: string) => void;
   remove: (widgetId: string) => void;
 };
@@ -86,7 +86,8 @@ export async function getTurnstileToken(
 
     widgetId = api.render(container, {
       sitekey: siteKey,
-      size: "invisible",
+      appearance: "interaction-only",
+      theme: "dark",
       callback: (token: string) => {
         if (settled) return;
         settled = true;
@@ -94,12 +95,12 @@ export async function getTurnstileToken(
         cleanup();
         resolve(token);
       },
-      "error-callback": () => {
+      "error-callback": (errorCode?: string) => {
         if (settled) return;
         settled = true;
         window.clearTimeout(timeout);
         cleanup();
-        reject(new Error("Turnstile error"));
+        reject(new Error(`Turnstile error: ${errorCode ?? "unknown"}`));
       },
       "expired-callback": () => {
         if (settled) return;
@@ -109,11 +110,5 @@ export async function getTurnstileToken(
         reject(new Error("Turnstile expired"));
       },
     });
-
-    try {
-      api.execute(widgetId);
-    } catch {
-      // Auto-executes on invisible widgets in some versions
-    }
   });
 }
