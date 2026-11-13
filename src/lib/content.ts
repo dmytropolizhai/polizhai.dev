@@ -48,6 +48,11 @@ export const isExternal = (href: string) => href.startsWith("https://");
 export const showClientQuote =
   facts.clientQuote.status === "visible" && (facts.clientQuote.approval as string) === "approved";
 
+/** Dock sections shown in nav bar and phone dock, excluding reviews if testimonials are hidden. */
+export const dockSections = showClientQuote
+  ? facts.dock
+  : facts.dock.filter((id) => id !== "reviews");
+
 /** "2026-09" → "September 2026", "2025" → "2025". */
 export const formatWhen = (when: string | null, locale = defaultLocale) => {
   if (!when) return null;

@@ -7,7 +7,7 @@ import { useScrolled } from "@/hooks/use-scrolled";
 import { useSiteContent } from "@/lib/content-context";
 import { cn } from "@/lib/utils";
 
-const CLEAR = ["top", "client"] as const;
+const CLEAR = ["top"] as const;
 
 /**
  * Top bar: lockup · section links · action (Dmytro, 2026-11-11).
@@ -16,10 +16,13 @@ const CLEAR = ["top", "client"] as const;
  * Links live here from md up; phones keep the bottom dock for them.
  */
 export function SiteNav() {
-  const { facts, letsTalkLabel, t } = useSiteContent();
-  const links = facts.dock.filter((id) => id !== "contact");
+  const { facts, letsTalkLabel, t, showClientQuote } = useSiteContent();
+  const dockSections = showClientQuote
+    ? facts.dock
+    : facts.dock.filter((id) => id !== "reviews");
+  const links = dockSections.filter((id) => id !== "contact");
   const { scrolled, sentinel } = useScrolled();
-  const active = useActiveSection(facts.dock, CLEAR);
+  const active = useActiveSection(dockSections, CLEAR);
 
   return (
     <>

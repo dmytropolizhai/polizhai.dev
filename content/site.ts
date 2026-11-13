@@ -199,8 +199,8 @@ export const facts = {
     { name: "Numerologgi", href: urls.numerologgi, logo: "/logos/numerologgi.svg", status: "visible" },
   ],
 
-  sections: ["top", "work", "how", "journey", "about", "client", "contact"],
-  dock: ["work", "how", "journey", "about", "contact"],
+  sections: ["top", "work", "how", "journey", "about", "reviews", "contact"],
+  dock: ["work", "how", "journey", "about", "reviews", "contact"],
 
   projects: {
     prolifts: {
@@ -700,7 +700,7 @@ export const en = {
       how: { label: "How I work", short: "How" },
       journey: { label: "Journey", short: "Journey" },
       about: { label: "About", short: "About" },
-      client: { label: "What they say", short: "Feedback" },
+      reviews: { label: "What they say", short: "Reviews" },
       contact: { label: "Contact", short: "Contact" },
     },
   },

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
  * zero-height band at 50%, no scroll listener (landing-page.md, "The dock").
  * The hero (`#top`) and any untracked section clear the selection, so nothing is marked there.
  */
-export function useActiveSection<T extends string>(ids: readonly T[], clearIds: readonly string[] = ["top", "client"]) {
+export function useActiveSection<T extends string>(ids: readonly T[], clearIds: readonly string[] = ["top"]) {
   const [active, setActive] = useState<T | null>(null);
 
   useEffect(() => {

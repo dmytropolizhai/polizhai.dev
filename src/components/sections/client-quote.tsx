@@ -23,7 +23,8 @@ export function ClientQuote() {
   const copyDeck = t.testimonials;
 
   return (
-    <Section id="client" title={copyDeck.heading} intro={copyDeck.subheading}>
+    <Section id="reviews" title={copyDeck.heading} intro={copyDeck.subheading}>
+      <span id="client" className="sr-only" />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
         {testimonials.map((item, idx) => {
           const initials = getInitials(item.name);
