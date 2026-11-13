@@ -6,6 +6,7 @@ import {
   stats as defaultStats,
   type Href,
   type Link,
+  type Locale,
   type ProjectId,
   type ServiceId,
   type SiteCopy,
@@ -84,6 +85,7 @@ export type ResolvedTestimonial = {
 };
 
 export type ResolvedSiteContent = {
+  locale: Locale;
   t: SiteCopy;
   facts: {
     siteUrl: string;
@@ -124,12 +126,12 @@ export type ResolvedSiteContent = {
   };
 };
 
-function buildDefaultContent(): ResolvedSiteContent {
-  const en = copy[defaultLocale];
+function buildDefaultContent(locale: Locale = defaultLocale): ResolvedSiteContent {
+  const currentCopy = copy[locale] ?? copy[defaultLocale];
 
   const projects: ResolvedProject[] = (Object.keys(defaultFacts.projects) as ProjectId[]).map((id) => {
     const f = defaultFacts.projects[id];
-    const c = en.work.projects[id];
+    const c = currentCopy.work.projects[id];
     const shot = id in defaultShots.projects ? defaultShots.projects[id as keyof typeof defaultShots.projects] : null;
     return {
       id,
@@ -147,7 +149,7 @@ function buildDefaultContent(): ResolvedSiteContent {
         id: sid,
         value: defaultStats[sid].value,
         suffix: defaultStats[sid].suffix,
-        label: en.stats[sid],
+        label: currentCopy.stats[sid],
       })),
       links: f.links,
       caseStudy: f.caseStudy,
@@ -158,8 +160,8 @@ function buildDefaultContent(): ResolvedSiteContent {
   const journey: ResolvedJourneyEntry[] = (Object.keys(defaultFacts.journey) as (keyof typeof defaultFacts.journey)[]).map(
     (id) => ({
       id,
-      title: en.journey.entries[id].title,
-      body: en.journey.entries[id].body,
+      title: currentCopy.journey.entries[id].title,
+      body: currentCopy.journey.entries[id].body,
       when: defaultFacts.journey[id].when,
       status: defaultFacts.journey[id].status,
     }),
@@ -167,8 +169,8 @@ function buildDefaultContent(): ResolvedSiteContent {
 
   const services: ResolvedService[] = (Object.keys(defaultFacts.services.items) as ServiceId[]).map((id) => ({
     id,
-    name: en.services.items[id].name,
-    outcome: en.services.items[id].outcome,
+    name: currentCopy.services.items[id].name,
+    outcome: currentCopy.services.items[id].outcome,
     price: defaultFacts.services.items[id].price,
     priceUnit: defaultFacts.services.items[id].priceUnit,
     proof: defaultFacts.services.items[id].proof,
@@ -177,15 +179,15 @@ function buildDefaultContent(): ResolvedSiteContent {
   const supportTiers: ResolvedSupportTier[] = (Object.keys(defaultFacts.services.supportTiers) as TierId[]).map(
     (id) => ({
       id,
-      name: en.services.support.tiers[id].name,
-      includes: en.services.support.tiers[id].includes,
+      name: currentCopy.services.support.tiers[id].name,
+      includes: currentCopy.services.support.tiers[id].includes,
       price: defaultFacts.services.supportTiers[id].price,
       priceUnit: defaultFacts.services.supportTiers[id].priceUnit,
     }),
   );
 
   const testimonials: ResolvedTestimonial[] = defaultFacts.testimonials.map((item) => {
-    const itemCopy = en.testimonials.items[item.id];
+    const itemCopy = currentCopy.testimonials.items[item.id];
     return {
       id: item.id,
       name: item.name,
@@ -193,14 +195,15 @@ function buildDefaultContent(): ResolvedSiteContent {
       company: item.company,
       project: item.project,
       kind: item.kind,
-      quote: itemCopy?.quote ?? en.client.quote,
+      quote: itemCopy?.quote ?? currentCopy.client.quote,
       context: itemCopy?.context ?? "",
       photo: item.photo,
     };
   });
 
   return {
-    t: en,
+    locale,
+    t: currentCopy,
     facts: {
       siteUrl: defaultFacts.siteUrl,
       email: defaultFacts.email,
@@ -253,8 +256,8 @@ function imageUrl(source: SanityImageSource | null | undefined, width?: number, 
  * Fetches portfolio content from Sanity CMS at build/request time.
  * Falls back to `content/site.ts` whenever Sanity is unconfigured, empty, or unreachable.
  */
-export async function getSiteContent(): Promise<ResolvedSiteContent> {
-  const fallback = buildDefaultContent();
+export async function getSiteContent(locale: Locale = defaultLocale): Promise<ResolvedSiteContent> {
+  const fallback = buildDefaultContent(locale);
   if (!isSanityConfigured || !client) {
     return fallback;
   }
@@ -273,6 +276,7 @@ export async function getSiteContent(): Promise<ResolvedSiteContent> {
 
     const next: ResolvedSiteContent = {
       ...fallback,
+      locale,
       t: structuredClone(fallback.t),
       facts: { ...fallback.facts },
       pendingCopy: {

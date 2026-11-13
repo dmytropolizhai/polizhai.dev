@@ -12,10 +12,10 @@ export function How() {
   const figures = pendingCopy.budgetFigures;
 
   const languages = [
-    { name: "Ukrainian", code: "UK", level: "Native" },
-    { name: "Russian", code: "RU", level: "Native" },
-    { name: "Latvian", code: "LV", level: "B1" },
-    { name: "English", code: "EN", level: "B1" },
+    { name: t.about.languages.names.uk, code: "UK", level: t.about.languages.native },
+    { name: t.about.languages.names.ru, code: "RU", level: t.about.languages.native },
+    { name: t.about.languages.names.lv, code: "LV", level: "B1" },
+    { name: t.about.languages.names.en, code: "EN", level: "B1" },
   ];
 
   return (

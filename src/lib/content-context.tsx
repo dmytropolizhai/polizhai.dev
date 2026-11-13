@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo } from "react";
-import { defaultLocale, type PriceUnit, type ServiceId, type TierId } from "@content/site";
+import { defaultLocale, type Locale, type PriceUnit, type ServiceId, type TierId } from "@content/site";
 import {
   defaultSiteContent,
   type ResolvedProject,
@@ -10,6 +10,7 @@ import {
 import type { VisibleProjectId } from "./content";
 
 type SiteContentContextValue = ResolvedSiteContent & {
+  locale: Locale;
   visibleProjects: readonly VisibleProjectId[];
   projectsById: Record<string, ResolvedProject>;
   letsTalkLabel: string;
@@ -34,12 +35,11 @@ export function SiteContentProvider({
   return <SiteContentContext.Provider value={data}>{children}</SiteContentContext.Provider>;
 }
 
-const euro = (amount: number) => new Intl.NumberFormat(defaultLocale).format(amount);
-
 export function useSiteContent(): SiteContentContextValue {
   const data = useContext(SiteContentContext);
 
   return useMemo(() => {
+    const euro = (amount: number) => new Intl.NumberFormat(data.locale).format(amount);
     const projectsById: Record<string, ResolvedProject> = {};
     for (const p of data.projects) {
       projectsById[p.id] = p;
@@ -51,9 +51,10 @@ export function useSiteContent(): SiteContentContextValue {
 
     const visibleSet = new Set<string>(visibleProjects);
 
-    const letsTalkLabel = data.pendingCopy.letsTalk.show
-      ? data.pendingCopy.letsTalk.text
-      : data.t.nav.sections.contact.label;
+    const letsTalkLabel =
+      data.locale === defaultLocale && data.pendingCopy.letsTalk.show
+        ? data.pendingCopy.letsTalk.text
+        : data.t.nav.sections.contact.label;
 
     const showClientQuote =
       data.facts.clientQuote.status === "visible" && data.facts.clientQuote.approval === "approved";

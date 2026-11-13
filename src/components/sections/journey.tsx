@@ -31,9 +31,9 @@ function groupByDate(entries: readonly ResolvedJourneyEntry[]): { when: string |
   return groups;
 }
 
-function formatJourneyDate(when: string | null): string {
+function formatJourneyDate(when: string | null, locale?: string): string {
   if (!when) return "Origin";
-  return formatWhen(when) ?? when;
+  return formatWhen(when, locale) ?? when;
 }
 
 /** Verified client-focused proof tags anchored to business outcomes. */
@@ -117,7 +117,7 @@ function JourneyEntry({ entry, isProject, reduced, displayDate, onSelectProject 
 }
 
 export function Journey() {
-  const { journey, t, visibleProjects } = useSiteContent();
+  const { journey, t, visibleProjects, locale } = useSiteContent();
   const railRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion() ?? false;
   const { scrollYProgress } = useScroll({ target: railRef, offset: ["start center", "end center"] });
@@ -156,7 +156,7 @@ export function Journey() {
 
         <ol aria-label={t.a11y.timeline} className="m-0 list-none p-0">
           {groups.map((group, gi) => {
-            const displayDate = formatJourneyDate(group.when);
+            const displayDate = formatJourneyDate(group.when, locale);
             return (
               <li key={gi} className="pb-(--space-12) last:pb-0 md:grid md:grid-cols-4 md:gap-6">
                 <div className="hidden md:block">

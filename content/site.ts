@@ -1030,7 +1030,1103 @@ export const en = {
 // Registry. Add `lv`, `ru`, `uk` here when translated.
 // ---------------------------------------------------------------------------
 
-export const copy = { en } satisfies Partial<Record<Locale, SiteCopy>>;
+
+// ---------------------------------------------------------------------------
+// Latvian
+// ---------------------------------------------------------------------------
+
+export const lv = {
+  meta: {
+    title: "Dmytro Polizhai · Full-Stack izstrādātājs Rīgā",
+    description:
+      "Dmytro Polizhai ir full-stack izstrādātājs Rīgā, Latvijā. Viņš projektē, izstrādā un palaiž tīmekļa lietotnes, piemēram, Stundio, Prolifts un Curio.",
+    og: {
+      title: "Dmytro Polizhai · Full-Stack izstrādātājs Rīgā",
+      description: "Palaist un noslīpēt. Tīmekļa lietotnes no pirmā komita līdz strādājošai vietnei.",
+      imageAlt: "Dmytro Polizhai, full-stack izstrādātājs Rīgā",
+    },
+  },
+
+  common: {
+    emailMe: "Rakstīt man",
+    copied: "Nokopēts",
+    backToWork: "Atpakaļ pie izvēlētajiem darbiem",
+    linkLabels: {
+      visit: "Apmeklēt vietni",
+      app: "Atvērt lietotni",
+      site: "Projekta vietne",
+      caseStudy: "Lasīt gadījuma izpēti",
+      source: "Pirmkods vietnē GitHub",
+      contact: "Rakstīt man par projektu",
+    },
+    statusLabels: { live: "Darbībā", "repo-only": "Tikai kods" },
+    close: "Aizvērt",
+  },
+
+  nav: {
+    label: "Sadaļas",
+    sections: {
+      top: { label: "Sākums", short: "Sākums" },
+      work: { label: "Izvēlētie darbi", short: "Darbi" },
+      how: { label: "Kā es strādāju", short: "Process" },
+      journey: { label: "Ceļš", short: "Ceļš" },
+      about: { label: "Par mani", short: "Par mani" },
+      reviews: { label: "Atsauksmes", short: "Atsauksmes" },
+      contact: { label: "Kontakti", short: "Kontakti" },
+    },
+  },
+
+  hero: {
+    headline: "Palaist un noslīpēt.",
+    identity: "Dmytro Polizhai · Full-Stack izstrādātājs Rīgā",
+    subline: "Projektēju, izstrādāju un palaižu tīmekļa lietotnes — no pirmā komita līdz strādājošai vietnei.",
+    seeWork: "Skatīt darbus",
+    customers: {
+      label: "Vairāk nekā 5 apmierināti klienti",
+      listIntro: "Daži no tiem",
+    },
+  },
+
+  stats: {
+    stundioUsers: "audzēkņu katru mācību dienu",
+    stundioCommits: "no 545 komitiem ir mani",
+    curioLoadTime: "ātrāks lapas ielādes laiks",
+  },
+
+  work: {
+    heading: "Izvēlētie darbi",
+    intro: "Vispirms strādājoši produkti. Katra kartīte ved uz vietni vai kodu.",
+    secondaryLine: "Vispirms darbībā. Kustība tikai tur, kur tā palīdz.",
+    sideProjectsHeading: "Papildu projekti",
+    canvasTitle: "Izpētīt projektus",
+    cursor: { drag: "Vilkt", view: "Skatīt" },
+    outcomeLabel: "Rezultāts",
+    projects: {
+      prolifts: {
+        kindLabel: "Klienta vietne",
+        oneLiner:
+          "Pro-lifts SIA, liftu uzņēmuma Rīgā, tīmekļa vietne. Latviešu, krievu un angļu valodā, ar video galveni, kas atskaņojas ritinot.",
+        role: "Izstrādāju dizainu un kodu, iestatīju CMS un pārvaldu izvietošanu.",
+        outcome: "Viena vietne trīs valodās un CMS, ko komanda atjaunina bez programmētāja.",
+      },
+      stundio: {
+        kindLabel: "Atvērtais pirmkods",
+        oneLiner:
+          "Neoficiāla stundu saraksta lietotne Rīgas Valsts tehnikuma audzēkņiem. Tīmeklī, Android un Linux.",
+        role: "Esmu uzrakstījis 442 no tās 545 komitiem.",
+        outcome: "400+ audzēkņu pārbauda savu stundu sarakstu katru mācību dienu.",
+      },
+      curio: {
+        kindLabel: "Izstrādāts Curio dibinātājam",
+        oneLiner: "Īso ziņu lente. Pārrakstīju tās priekšgalu Next.js ar vairāku valodu atbalstu.",
+        role: "Uzrakstīju 830 no 830 komitiem priekšgala repozitorijā. Lapas ielādes laiks samazinājās par 10% (vietnes analītika).",
+        outcome: "Lapas ielādējas par 10% ātrāk, vairākās valodās.",
+      },
+      numerologgi: {
+        kindLabel: "Klienta veikals",
+        oneLiner: "Plānotāju interneta veikals ar CMS katalogu un karšu maksājumiem.",
+        role: "Uzrakstīju visus 113 komitus.",
+        outcome: "Plānotāji tiek pārdoti tiešsaistē, ar karšu maksājumiem un katalogu, ko īpašnieks rediģē pats.",
+      },
+      zinly: {
+        kindLabel: "Līdzdibināta lietotne",
+        oneLiner: "Mākslīgā intelekta mācību lietotne, kas nolasa studenta kalendāru un aizpilda katru brīvo brīdi ar īsu nodarbību.",
+        role: "Līdzdibināju kopā ar Irinu Kovaļenko un izveidoju tīmekļa vietni.",
+        outcome: "Īsas teksta, audio un video nodarbības, kas iekļaujas studenta brīvajās minūtēs.",
+        note: "Agrīnā piekļuve tiks atvērta 2027. gada vasarā.",
+      },
+      "one-to-one": {
+        kindLabel: "Kods",
+        oneLiner:
+          "Privāta reāllaika tērzēšana ar e-pasta koda autorizāciju. Darbojas uz Socket.IO, Redis, Postgres un Docker.",
+        role: "Uzrakstīju visus 212 komitus visā sistēmā: priekšgals, aizmugursistēma un CI.",
+        outcome: "Pilns reāllaika steks vienā repozitorijā: autorizācija, čats, dati un CI.",
+        note: "Arhivēts. Vietne nav palaista, bet kods ir publisks.",
+      },
+      dnf: {
+        kindLabel: "Papildu projekts",
+        oneLiner: "Taimera lietotne Rubika kuba ātrsalikšanas meistariem.",
+        role: "Mans personīgais papildu projekts, veidots ar Angular.",
+        outcome: "Ērts treniņu taimeris ātrsalicējiem.",
+      },
+    },
+  },
+
+  how: {
+    heading: "Kā es strādāju",
+    intro: "Ko jūs varat sagaidīt, sadarbojoties ar mani.",
+    cells: {
+      launch: {
+        title: "Darbībā nedēļās, nevis aģentūras mēnešos",
+        body: "Dizainu, priekšgalu, aizmugursistēmu un izvietošanu veicu pats. Jums nav jāmaksā par projektu vadītājiem vai nodošanas aizkavēšanos — jūsu produkts nonāk pie reāliem lietotājiem 2–4 nedēļu laikā.",
+        figures: [
+          { value: "2–4 ned.", label: "no sākuma līdz palaišanai" },
+          { value: "0", label: "aģentūras starpnieku" },
+        ],
+        stages: ["Dizains", "Priekšgals", "Aizmugure", "Izvietošana"],
+      },
+      cms: {
+        title: "Pārtrauciet maksāt programmētājiem par teksta labojumiem",
+        body: "Iestatu modernu CMS (Sanity vai Payload) atbilstoši jūsu procesiem. Jūsu komanda maina tekstus, fotoattēlus, cenas un kataloga vienumus dažu minūšu laikā — bez rēķiniem programmētājam.",
+        figure: { value: "0 €", label: "par satura vai cenu atjauninājumu" },
+        tools: ["Sanity", "Payload CMS"],
+      },
+      speed: {
+        title: "Modernas tehnoloģijas, kas pārvērš klikšķus pieteikumos",
+        body: "Lēnas vietnes iztērē reklāmas budžetu, pirms apmeklētājs vispār ierauga piedāvājumu. Izmantoju modernu steku (Next.js, React, TypeScript), kas nodrošina ielādi zem 1,8 sekundēm, labu vietu meklētājos un reklāmas konversiju.",
+        stack: ["Next.js", "React", "TypeScript"],
+      },
+      support: {
+        title: "2 nedēļas bezmaksas atbalsta, pēc tam ikmēneša uzturēšana",
+        body: "Katra palaišana ietver divas nedēļas bezmaksas atbalsta, lai pārliecinātos, ka viss darbojas nevainojami. Vajadzīgi regulāri atjauninājumi, uzraudzība un jaunas funkcijas? Turpiniet ar prognozējamu ikmēneša abonementu.",
+        phases: [
+          { value: "2 ned.", label: "bez maksas pēc palaišanas" },
+          { value: "Ikmēneša", label: "izvēles uzturēšanas plāns" },
+        ],
+        tags: ["Atjauninājumi", "Uzraudzība", "Labojumi"],
+      },
+      languages: {
+        title: "Četras valodas, bez papildu maksas",
+        body: "Saziņa ar jūsu komandu latviešu, angļu, ukraiņu vai krievu valodā — un pilns visu četru valodu atbalsts jūsu projektā bez maksas.",
+        figures: [
+          { value: "4", label: "atbalstītās valodas" },
+          { value: "0 €", label: "vairākvalodu iestatīšana" },
+        ],
+      },
+    },
+  },
+
+  journey: {
+    heading: "Ceļš",
+    intro: "Attīstības ceļš, projekts pēc projekta.",
+    entries: {
+      "data-pipeline": {
+        title: "Google Maps datu apstrāde",
+        body: "Mans pirmais komerciālais kods: visu kafejnīcu datu iegūšana lielākajās Kanādas pilsētās Upwork klientam, sinhronizējot milzīgas datu kopas ar Google Drive un Google Sheets.",
+      },
+      systems: {
+        title: "C++ un C# pirms MI ēras",
+        body: "Zema līmeņa koda rakstīšana C++ un C# vēl pirms LLM parādīšanās. Tas veidoja manu izpratni par atmiņu, datu struktūrām un to, kā programmatūra patiesībā darbojas zem pārsega.",
+      },
+      curio: {
+        title: "Curio: priekšgals 'zem atslēgas'",
+        body: "Ziņu platformas pāreja no pielāgota UI uz Shadcn iekš Next.js. Piegādāts pilns priekšgals ar vairāku valodu atbalstu, samazinot lapas ielādes laiku par 10%.",
+      },
+      stundio: {
+        title: "Stundio: EduPage aizstājējs",
+        body: "Tehnikuma oficiālais stundu saraksts telefonos nebija lietojams. Izveidoju ātru atvērtā pirmkoda klientu — tas izplatījās audzēkņu čatos bez mārketinga un kļuva par ikdienas rīku simtiem audzēkņu.",
+      },
+      prolifts: {
+        title: "Pro-lifts nonāk darbībā",
+        body: "Pilna cikla korporatīvā vietne liftu uzņēmumam Rīgā. Pilnīga atbilstība Latvijas likumdošanai, 3 valodas un Sanity CMS, lai komanda atjauninātu saturu bez koda aiztikšanas.",
+      },
+      numerologgi: {
+        title: "Numerologgi: piegādāts pirms termiņa",
+        body: "E-komercijas veikals ar Stripe maksājumiem un CMS katalogu. Klientam tas bija nepieciešams pirms novembra; pabeidzu arhitektūru, integrācijas un palaišanu jau oktobra vidū.",
+      },
+      freelance: {
+        title: "Full-stack dibinātājiem",
+        body: "Viens cilvēks, kurš aptver produkta vīziju, dizainu, arhitektūru un izvietošanu produkcijā. Ātra piegāde, tieša saziņa un nulle aģentūras virsizdevumu.",
+      },
+    },
+  },
+
+  about: {
+    heading: "Par mani",
+    nameLabel: "Kā izrunāt manu vārdu",
+    bio: [
+      "Esmu full-stack izstrādātājs Rīgā, Latvijā. Es veidoju tīmekļa lietotnes un aizvedu tās līdz pat palaišanai.",
+      "Mana atvērtā pirmkoda lietotne Stundio ir stundu saraksts Rīgas Valsts tehnikuma audzēkņiem. Vairāk nekā 400 no viņiem to izmanto katru mācību dienu. Esmu izveidojis strādājošas vietnes uzņēmumiem Pro-lifts SIA un Numerologgi, kā arī Curio priekšgalu tā dibinātājam.",
+    ],
+    originLine: "Pašmācīts. Sāku ar Google Maps datu ieguvi. Tagad veidoju reālus produktus klientiem un sev.",
+    schoolLine: "Mācos programmēšanu Rīgas Valsts tehnikumā (RVT).",
+    languages: {
+      heading: "Valodas",
+      names: { uk: "Ukraiņu", ru: "Krievu", lv: "Latviešu", en: "Angļu" },
+      native: "Dzimtā",
+    },
+    certificates: { heading: "Sertifikāti", note: "Profesionālie sertifikāti vietnē Coursera." },
+  },
+
+  client: {
+    heading: "Klienta vārdi",
+    quote: "Tas ir spridzeklis. Man ļoti patīk. Visi man prasīs, kurš to taisīja. Es celšu tavu cenu un reputāciju.",
+  },
+
+  testimonials: {
+    heading: "Atsauksmes",
+    subheading: "Klientu un līdzdibinātāju atsauksmes par izpildi, ātrumu un meistarību.",
+    kinds: {
+      client: "Klients",
+      venture: "Līdzdibinātājs",
+    },
+    items: {
+      prolifts: {
+        quote: "Tas ir spridzeklis. Man ļoti patīk. Visi man prasīs, kurš to taisīja. Es celšu tavu cenu un reputāciju.",
+        context: "Uzņēmuma vietne trijās valodās un CMS",
+      },
+      zinly: {
+        quote: "Dmitrijs sarežģītas inženiertehniskās koncepcijas dažu dienu laikā pārvērš ātrās un intuitīvās saskarnēs. Viņa uzticamība un meistarība padara viņu par lielisku produktu veidotāju.",
+        context: "MI mācību lietotne studentiem",
+      },
+    },
+  },
+
+  services: servicesLv,
+
+  contact: {
+    heading: "Pastāstiet, ko vēlaties palaist",
+    body: "Rezervējiet 40 minūšu ievadsarunu, lai pārrunātu produkta mērķus, apjomu un palaišanas grafiku.",
+    labels: { email: "", telegram: "", call: "Pieteikt ievadzvanu" },
+    localTimeLabel: "Laiks Rīgā",
+  },
+
+  footer: { credit: "Izstrādājis Dmytro Polizhai Rīgā.", backToTop: "Uz augšu" },
+
+  notFound: {
+    title: "Lapa nav atrasta · Dmytro Polizhai",
+    heading: "Lapa nav atrasta",
+    body: "Šī lapa nepastāv vai ir pārvietota.",
+    cta: "Atpakaļ uz sākumlapu",
+  },
+
+  caseStudy: {
+    headings: {
+      problem: "Problēma",
+      constraints: "Ierobežojumi",
+      built: "Ko es uzbūvēju",
+      how: "Kā tas tika paveikts",
+      result: "Rezultāts",
+      links: "Saites",
+    },
+    stackGroups: {
+      app: "Lietotne",
+      content: "Saturs un valodas",
+      forms: "Veidlapas un mēstules",
+      delivery: "Piegāde",
+      data: "Dati un paziņojumi",
+      platforms: "Platformas",
+      quality: "Testi",
+    },
+  },
+
+  caseStudies: {
+    prolifts: {
+      meta: {
+        title: "Prolifts: vietne uzņēmumam Pro-lifts SIA · Dmytro Polizhai",
+        description:
+          "Kā es izveidoju pro-lifts.lv — Next.js un Sanity vietni trīs valodās ar ritinot vadāmu video galveni.",
+      },
+      byline: "Tīmekļa vietne uzņēmumam Pro-lifts SIA, autors Dmytro Polizhai",
+      intro:
+        "Pro-lifts SIA ir liftu servisa uzņēmums Rīgā. Izveidoju uzņēmuma vietni trīs valodās ar CMS un video galveni, kas atskaņojas ritinot.",
+      note: "Piegādāts ar manas studijas nosaukumu Multilance.",
+      problem: [
+        "Pro-lifts SIA uzstāda un apkalpo daudzu zīmolu liftus. Vietnei bija jāizskaidro seši pakalpojumi, jāparāda uzņēmuma pieredze un jāpalīdz apmeklētājiem sazināties.",
+        "Tai bija jādarbojas latviešu, krievu un angļu valodā. Klientam bija arī jāspēj rediģēt saturu bez programmētāja iesaistes.",
+      ],
+      constraints: [
+        "Trīs valodas. Latviešu valoda ir galvenā, krievu un angļu seko.",
+        "Video galvene, kas nevainojami darbojas arī telefonā.",
+        "Saturs CMS sistēmā, nevis kodā.",
+      ],
+      built: [
+        "Galvene tiek atskaņota ritinot. Sagriezu MI video kadros, lai ritināšana kontrolētu laiku. Vertikālajiem un horizontālajiem ekrāniem ir savi kadru komplekti.",
+        "Sešas pakalpojumu sadaļas, ražotāju izvēle, darba process, veikto darbu saraksts un BUJ.",
+        "Saziņas veidlapa, kas nosūta e-pastu un bloķē mēstules.",
+        "Sanity Studio vietnes iekšienē satura rediģēšanai un publicēšanai.",
+        "Vietnes karte, strukturētie dati un sociālo tīklu attēls katrai valodai.",
+      ],
+      how: "Izveidoju video klipus ar Google Flow (Veo 3.1) no atslēgkadru attēliem. Pēc tam sagriezu tos kadros un uzrakstīju ritināšanas kodu pats, bez animācijas bibliotēkām. Pirms katras izvietošanas GitHub Actions veic pārbaudes, tipu pārbaudi un būvēšanu. Galvenais zars nonāk produkcijā, bet izstrādes zars — priekšskatījumā.",
+      result: [
+        "Vietne sāka darboties adresē pro-lifts.lv 2026. gada septembrī latviešu, krievu un angļu valodā. Tā joprojām tiek atjaunināta.",
+        "Klients pats rediģē lapas saturu Sanity bez manis.",
+      ],
+    },
+    stundio: {
+      meta: {
+        title: "Stundio: stundu saraksta lietotne RVT audzēkņiem · Dmytro Polizhai",
+        description:
+          "Kā es izveidoju Stundio — atvērtā pirmkoda stundu saraksta lietotni tīmeklim, Android un Linux. 400+ audzēkņu to lieto katru mācību dienu.",
+      },
+      byline: "Atvērtā pirmkoda stundu saraksta lietotne, autors Dmytro Polizhai",
+      intro:
+        "Radīts Rīgā. Lietots katru dienu. Stundio parāda Rīgas Valsts tehnikuma stundu sarakstu tavā tālrunī ar visām izmaiņām.",
+      note: "Neoficiāla. Nav saistīta ar RVT, EduPage vai aSc.",
+      problem: [
+        "Mācību saraksts nepārtraukti mainās. Nodarbības tiek pārceltas, atceltas vai mainās skolotāji.",
+        "Audzēkņiem ātri savā tālrunī jāredz nākamā kabineta numurs un izmaiņas.",
+      ],
+      constraints: [
+        "Dati nāk no skolas publiskā EduPage saraksta. Es tos nekontrolēju.",
+        "Nav lietotāju kontu un nav personas datu uz servera.",
+        "Trīs platformas: tīmeklis, Android un Linux. Esmu galvenais izstrādātājs.",
+        "Bezmaksas un ar atvērto pirmkodu.",
+      ],
+      built: [
+        "Nākamais kabinets, kā arī atceltās, pārceltās un aizvietotās stundas tieši sarakstā.",
+        "Ātra ielāde no pārlūka kešatmiņas pēc pirmā apmeklējuma ar norādi par datu svaigumu.",
+        "Nav reģistrācijas. Grupu vai skolotāju izvēlas tikai vienreiz.",
+        "Audzēkņa režīms ar maršrutu starp korpusiem un Skolotāja režīms.",
+        "Web Push un vietējie paziņojumi.",
+        "Trīs Android sākuma ekrāna logrīki.",
+        "Instalējama tīmekļa lietotne, Android lietotne ar automātiskiem atjauninājumiem un Linux darbvirsmas lietotne.",
+        "Latviešu, angļu un ukraiņu valoda.",
+      ],
+      how: "Lietotne nolasa skolas publisko EduPage stundu sarakstu. Pēc pirmā apmeklējuma pārlūks to saglabā kešatmiņā, tāpēc lietotne atveras acumirklī.",
+      result: [
+        "Vairāk nekā 400 audzēkņu atver Stundio katru mācību dienu. Tā ir pieejama adresē app.stundio.lv.",
+        "Kods ir publisks saskaņā ar MIT licenci. Esmu uzrakstījis 442 no tās 545 komitiem (uz 2026. gada 9. novembri).",
+      ],
+    },
+  },
+
+  a11y: {
+    skipLink: "Pāriet uz galveno saturu",
+    currentSection: "pašreizējā sadaļa",
+    externalLink: "atveras jaunā cilnē",
+    copy: {
+      button: "Kopēt e-pasta adresi",
+      copied: "E-pasts nokopēts",
+      failed: "Neizdevās nokopēt. Lūdzu, izmantojiet e-pasta saiti.",
+    },
+    customersList: "Daži no maniem klientiem",
+    timeline: "Gaitas laika josla",
+    portraitAlt: "Dmytro Polizhai portrets",
+  },
+} satisfies SiteCopy;
+
+// ---------------------------------------------------------------------------
+// Russian
+// ---------------------------------------------------------------------------
+
+export const ru = {
+  meta: {
+    title: "Dmytro Polizhai · Full-Stack разработчик в Риге",
+    description:
+      "Dmytro Polizhai — full-stack разработчик в Риге (Латвия). Проектирует, создает и запускает веб-приложения: Stundio, Prolifts, Curio.",
+    og: {
+      title: "Dmytro Polizhai · Full-Stack разработчик в Риге",
+      description: "Запустить. Довести до идеала. Веб-приложения от первого коммита до запуска.",
+      imageAlt: "Dmytro Polizhai, full-stack разработчик в Риге",
+    },
+  },
+
+  common: {
+    emailMe: "Написать мне",
+    copied: "Скопировано",
+    backToWork: "Назад к проектам",
+    linkLabels: {
+      visit: "Открыть сайт",
+      app: "Открыть приложение",
+      site: "Сайт проекта",
+      caseStudy: "Читать кейс",
+      source: "Исходный код на GitHub",
+      contact: "Написать о проекте",
+    },
+    statusLabels: { live: "Работает", "repo-only": "Только код" },
+    close: "Закрыть",
+  },
+
+  nav: {
+    label: "Разделы",
+    sections: {
+      top: { label: "В начало", short: "Вверх" },
+      work: { label: "Проекты", short: "Проекты" },
+      how: { label: "Как я работаю", short: "Процесс" },
+      journey: { label: "Опыт", short: "Опыт" },
+      about: { label: "Обо мне", short: "Обо мне" },
+      reviews: { label: "Отзывы", short: "Отзывы" },
+      contact: { label: "Контакты", short: "Контакты" },
+    },
+  },
+
+  hero: {
+    headline: "Запустить. Довести до идеала.",
+    identity: "Dmytro Polizhai · Full-Stack разработчик в Риге",
+    subline: "Проектирую, создаю и запускаю веб-приложения — от первого коммита до работающего сайта.",
+    seeWork: "Смотреть проекты",
+    customers: {
+      label: "Более 5 довольных клиентов",
+      listIntro: "Некоторые из них",
+    },
+  },
+
+  stats: {
+    stundioUsers: "студентов каждый учебный день",
+    stundioCommits: "из 545 коммитов написаны мной",
+    curioLoadTime: "быстрее загрузка страниц",
+  },
+
+  work: {
+    heading: "Проекты",
+    intro: "Сначала работающие продукты. Каждая карточка ведет на сайт или исходный код.",
+    secondaryLine: "Сначала результат. Движение только там, где уместно.",
+    sideProjectsHeading: "Сайд-проекты",
+    canvasTitle: "Исследовать проекты",
+    cursor: { drag: "Тянуть", view: "Смотреть" },
+    outcomeLabel: "Результат",
+    projects: {
+      prolifts: {
+        kindLabel: "Сайт клиента",
+        oneLiner:
+          "Сайт компании Pro-lifts SIA, поставщика лифтов в Риге. На латышском, русском и английском, с видео в шапке при скролле.",
+        role: "Разработал дизайн и код, настроил CMS и процесс деплоя.",
+        outcome: "Один сайт на трех языках и CMS, которую команда обновляет без разработчика.",
+      },
+      stundio: {
+        kindLabel: "Open source",
+        oneLiner:
+          "Неофициальное расписание для студентов Рижского государственного техникума. В вебе, на Android и Linux.",
+        role: "Я написал 442 из 545 коммитов.",
+        outcome: "Более 400 студентов проверяют расписание каждый учебный день.",
+      },
+      curio: {
+        kindLabel: "Разработано для основателя Curio",
+        oneLiner: "Лента коротких новостей. Переписал фронтенд на Next.js с поддержкой нескольких языков.",
+        role: "Написал 830 из 830 коммитов во фронтенд-репозитории. Время загрузки страниц снизилось на 10% (по аналитике).",
+        outcome: "Страницы загружаются на 10% быстрее, на нескольких языках.",
+      },
+      numerologgi: {
+        kindLabel: "Магазин клиента",
+        oneLiner: "Интернет-магазин планеров с каталогом в CMS и оплатой картой.",
+        role: "Написал все 113 коммитов.",
+        outcome: "Продажи планеров онлайн, прием карт и каталог, который владелец редактирует сам.",
+      },
+      zinly: {
+        kindLabel: "Сооснованный продукт",
+        oneLiner: "ИИ-приложение для обучения, которое анализирует календарь студента и заполняет свободные окна короткими уроками.",
+        role: "Соосновал вместе с Ириной Коваленко и создал сайт.",
+        outcome: "Короткие текстовые, аудио- и видеоуроки, которые помещаются в свободные минуты студента.",
+        note: "Ранний доступ откроется летом 2027 года.",
+      },
+      "one-to-one": {
+        kindLabel: "Код",
+        oneLiner:
+          "Приватный чат один на один в реальном времени со входом по коду из почты. Работает на Socket.IO, Redis, Postgres и Docker.",
+        role: "Написал все 212 коммитов: фронтенд, бэкенд и CI.",
+        outcome: "Полноценный стек реального времени в одном репозитории: авторизация, чат, данные и CI.",
+        note: "Архивный проект. Сайта нет, но код открыт.",
+      },
+      dnf: {
+        kindLabel: "Сайд-проект",
+        oneLiner: "Таймер для спидкуберов, собирающих кубик Рубика на скорость.",
+        role: "Мой личный сайд-проект на Angular.",
+        outcome: "Сфокусированный таймер для тренировок спидкуберов.",
+      },
+    },
+  },
+
+  how: {
+    heading: "Как я работаю",
+    intro: "Чего ожидать от совместной работы со мной.",
+    cells: {
+      launch: {
+        title: "Запуск за недели, а не месяцы агентств",
+        body: "Я сам отвечаю за дизайн, фронтенд, бэкенд и деплой. Вы не платите проектным менеджерам и не теряете время на передачу задач — продукт готов к реальным клиентам за 2–4 недели.",
+        figures: [
+          { value: "2–4 нед.", label: "от старта до запуска" },
+          { value: "0", label: "посредников" },
+        ],
+        stages: ["Дизайн", "Фронтенд", "Бэкенд", "Деплой"],
+      },
+      cms: {
+        title: "Хватит платить разработчикам за правки текста",
+        body: "Я настраиваю современную CMS (Sanity или Payload) под ваши процессы. Ваша команда меняет тексты, фото, цены и товары за минуты — без счетов за работу программиста.",
+        figure: { value: "0 €", label: "за обновление контента или цен" },
+        tools: ["Sanity", "Payload CMS"],
+      },
+      speed: {
+        title: "Современный стек, превращающий клики в заявки",
+        body: "Медленные сайты сливают рекламный бюджет до того, как клиент увидит предложение. Я использую современный стек (Next.js, React, TypeScript), обеспечивающий загрузку быстрее 1,8 секунд, позиции в поиске и конверсию.",
+        stack: ["Next.js", "React", "TypeScript"],
+      },
+      support: {
+        title: "2 недели бесплатной поддержки, затем ежемесячно",
+        body: "Каждый запуск включает две недели бесплатной поддержки, чтобы убедиться в стабильной работе. Нужны регулярные обновления, мониторинг и новые функции? Продолжайте по прозрачной месячной подписке.",
+        phases: [
+          { value: "2 нед.", label: "бесплатно после запуска" },
+          { value: "В месяц", label: "план поддержки на выбор" },
+        ],
+        tags: ["Обновления", "Мониторинг", "Правки"],
+      },
+      languages: {
+        title: "Четыре языка без доплат",
+        body: "Прямое общение с вашей командой на латышском, английском, украинском или русском — и полная поддержка всех четырех языков в вашем проекте бесплатно.",
+        figures: [
+          { value: "4", label: "языка на выбор" },
+          { value: "0 €", label: "настройка мультиязычности" },
+        ],
+      },
+    },
+  },
+
+  journey: {
+    heading: "Опыт",
+    intro: "Мой путь от проекта к проекту.",
+    entries: {
+      "data-pipeline": {
+        title: "Пайплайн данных Google Maps",
+        body: "Мой первый коммерческий код: сбор данных по всем кофейням в крупных городах Канады для клиента с Upwork с выгрузкой массивов в Google Drive и Google Таблицы.",
+      },
+      systems: {
+        title: "C++ и C# до эпохи ИИ",
+        body: "Низкоуровневое программирование на C++ и C# еще до появления LLM. Это сформировало глубокое понимание работы памяти, структур данных и того, как софт исполняется «под капотом».",
+      },
+      curio: {
+        title: "Curio: фронтенд под ключ",
+        body: "Перевод новостной платформы с кастомного UI на Shadcn в Next.js. Сдал полностью готовый фронтенд с мультиязычностью, снизив время загрузки страниц на 10%.",
+      },
+      stundio: {
+        title: "Stundio: замена EduPage",
+        body: "Официальное расписание техникума было непригодно для телефонов. Я создал быстрый open-source клиент — он разошелся по чатам студентов без маркетинга и стал ежедневным инструментом сотен учащихся.",
+      },
+      prolifts: {
+        title: "Запуск Pro-lifts",
+        body: "Корпоративный сайт под ключ для лифтовой компании в Риге. Полное соответствие законам Латвии, 3 языка и Sanity CMS, чтобы команда меняла контент без вмешательства в код.",
+      },
+      numerologgi: {
+        title: "Numerologgi: сдан раньше срока",
+        body: "Интернет-магазин с оплатой через Stripe и каталогом в CMS. Клиенту нужно было запуститься до ноября; я завершил архитектуру, интеграции и запуск к середине октября.",
+      },
+      freelance: {
+        title: "Full-stack для основателей",
+        body: "Один человек закрывает продуктовое видение, дизайн, архитектуру и деплой в продакшен. Быстрый результат, прямое общение и никаких накладных расходов агентств.",
+      },
+    },
+  },
+
+  about: {
+    heading: "Обо мне",
+    nameLabel: "Как произносится мое имя",
+    bio: [
+      "Я full-stack разработчик в Риге (Латвия). Создаю веб-приложения и довожу их до полноценного запуска.",
+      "Мое open-source приложение Stundio — это расписание для студентов Рижского государственного техникума. Более 400 из них используют его каждый учебный день. Я создал работающие сайты для Pro-lifts SIA и Numerologgi, а также фронтенд Curio для его основателя.",
+    ],
+    originLine: "Самоучка. Начал со скрапера Google Maps. Сейчас создаю работающие продукты для клиентов и для себя.",
+    schoolLine: "Изучаю программирование в Рижском государственном техникуме (RVT).",
+    languages: {
+      heading: "Языки",
+      names: { uk: "Украинский", ru: "Русский", lv: "Латышский", en: "Английский" },
+      native: "Родной",
+    },
+    certificates: { heading: "Сертификаты", note: "Профессиональные сертификаты на Coursera." },
+  },
+
+  client: {
+    heading: "Слова клиента",
+    quote: "Это пушка. Мне очень нравится. Все будут спрашивать меня, кто это делал. Буду растить тебе цену и репутацию.",
+  },
+
+  testimonials: {
+    heading: "Отзывы",
+    subheading: "Оценка клиентов и кофаундеров за качество, скорость и профессионализм.",
+    kinds: {
+      client: "Клиент",
+      venture: "Сооснователь",
+    },
+    items: {
+      prolifts: {
+        quote: "Это пушка. Мне очень нравится. Все будут спрашивать меня, кто это делал. Буду растить тебе цену и репутацию.",
+        context: "Сайт компании на трех языках и CMS",
+      },
+      zinly: {
+        quote: "Дмитрий превращает сложные инженерные концепции в быстрые и интуитивные интерфейсы за считанные дни. Его надежность и мастерство делают его выдающимся создателем продуктов.",
+        context: "ИИ-приложение для учебы студентов",
+      },
+    },
+  },
+
+  services: servicesRu,
+
+  contact: {
+    heading: "Расскажите, что вы хотите запустить",
+    body: "Запланируйте 40-минутный бриф-звонок, чтобы обсудить цели вашего продукта, объем задач и сроки запуска.",
+    labels: { email: "", telegram: "", call: "Запланировать звонок" },
+    localTimeLabel: "Время в Риге",
+  },
+
+  footer: { credit: "Создано Dmytro Polizhai в Риге.", backToTop: "Наверх" },
+
+  notFound: {
+    title: "Страница не найдена · Dmytro Polizhai",
+    heading: "Страница не найдена",
+    body: "Этой страницы не существует или она была перемещена.",
+    cta: "На главную страницу",
+  },
+
+  caseStudy: {
+    headings: {
+      problem: "Проблема",
+      constraints: "Ограничения",
+      built: "Что сделано",
+      how: "Реализация",
+      result: "Результат",
+      links: "Ссылки",
+    },
+    stackGroups: {
+      app: "Приложение",
+      content: "Контент и языки",
+      forms: "Формы и защита от спама",
+      delivery: "Деплой",
+      data: "Данные и уведомления",
+      platforms: "Платформы",
+      quality: "Тестирование",
+    },
+  },
+
+  caseStudies: {
+    prolifts: {
+      meta: {
+        title: "Prolifts: сайт для Pro-lifts SIA · Dmytro Polizhai",
+        description:
+          "Как я создал pro-lifts.lv — сайт на Next.js и Sanity на трех языках с интерактивным видео в шапке при скролле.",
+      },
+      byline: "Сайт для Pro-lifts SIA, разработчик Dmytro Polizhai",
+      intro:
+        "Pro-lifts SIA — компания по обслуживанию лифтов в Риге. Я создал сайт на трех языках с CMS и видео в шапке, управляемым скроллом.",
+      note: "Сдано под брендом моей студии Multilance.",
+      problem: [
+        "Pro-lifts SIA монтирует и обслуживает лифты десятков брендов. Сайту требовалось наглядно описать шесть услуг, продемонстрировать опыт и упростить связь с компанией.",
+        "Он должен был работать на латышском, русском и английском языках, а клиент должен был иметь возможность редактировать контент без разработчика.",
+      ],
+      constraints: [
+        "Три языка. Латышский — основной, русский и английский — дополнительные.",
+        "Видео в шапке, которое быстро и плавно работает даже на мобильных телефонах.",
+        "Управление контентом через CMS, без правок в коде.",
+      ],
+      built: [
+        "Интерактивное видео в шапке. Я разбил сгенерированное ИИ видео на кадры, привязав воспроизведение к скроллу. Для вертикальных и горизонтальных экранов используются отдельные наборы кадров.",
+        "Шесть разделов услуг, выбор производителей, схема работы, галерея проектов и частые вопросы.",
+        "Форма обратной связи с отправкой на почту и защитой от спама.",
+        "Встроенная панель Sanity Studio для редактирования и публикации контента.",
+        "Карта сайта, микроразметка и изображения для соцсетей для каждого языка.",
+      ],
+      how: "Видеоклипы для шапки я сгенерировал в Google Flow (Veo 3.1) на основе ключевых кадров. Затем нарезал их на секвенцию и написал логику скролла без тяжелых библиотек анимации. Перед каждым деплоем GitHub Actions запускает линтер, проверку типов и сборку. Ветка main уходит в прод, ветка dev — на превью.",
+      result: [
+        "Сайт запущен на pro-lifts.lv в сентябре 2026 года на латышском, русском и английском. Проект продолжает обновляться.",
+        "Клиент самостоятельно редактирует содержимое страниц в Sanity без моей помощи.",
+      ],
+    },
+    stundio: {
+      meta: {
+        title: "Stundio: расписание для студентов RVT · Dmytro Polizhai",
+        description:
+          "Как я создал Stundio — open-source приложение расписания для веба, Android и Linux. Более 400 студентов используют его каждый учебный день.",
+      },
+      byline: "Open-source приложение расписания, разработчик Dmytro Polizhai",
+      intro:
+        "Сделано в Риге. Используется каждый день. Stundio показывает расписание Рижского государственного техникума в телефоне с учетом всех замен.",
+      note: "Неофициальное приложение. Не связано с RVT, EduPage или aSc.",
+      problem: [
+        "Расписание в техникуме постоянно меняется: уроки переносят, отменяют или назначают других преподавателей.",
+        "Студентам нужно быстро со смартфона узнать номер следующего кабинета и актуальные замены.",
+      ],
+      constraints: [
+        "Данные берутся из открытого школьного расписания EduPage, над которым у меня нет контроля.",
+        "Никаких аккаунтов и хранения персональных данных на сервере.",
+        "Три платформы: веб, Android и Linux. Я единственный ведущий разработчик.",
+        "Бесплатно и с открытым исходным кодом.",
+      ],
+      built: [
+        "Номер следующего кабинета, а также отмененные, перенесенные и замененные пары прямо в расписании.",
+        "Мгновенная загрузка из кэша браузера после первого визита с индикатором актуальности данных.",
+        "Никакой регистрации. Группа или преподаватель выбираются один раз.",
+        "Режим студента с маршрутами между корпусами и режим преподавателя.",
+        "Web Push и локальные уведомления.",
+        "Три виджета для рабочего стола Android.",
+        "Устанавливаемое веб-приложение, Android-приложение с автообновлением и десктопное приложение для Linux.",
+        "Латышский, английский и украинский языки.",
+      ],
+      how: "Приложение считывает данные из открытого расписания EduPage техникума. После первого посещения браузер сохраняет расписание в кэше, поэтому приложение открывается мгновенно.",
+      result: [
+        "Более 400 студентов открывают Stundio каждый учебный день. Проект доступен по адресу app.stundio.lv.",
+        "Код открыт под лицензией MIT. Я написал 442 из 545 коммитов (по состоянию на 9 ноября 2026 года).",
+      ],
+    },
+  },
+
+  a11y: {
+    skipLink: "Перейти к основному содержимому",
+    currentSection: "текущий раздел",
+    externalLink: "открывается в новой вкладке",
+    copy: {
+      button: "Скопировать email",
+      copied: "Email скопирован",
+      failed: "Не удалось скопировать. Воспользуйтесь ссылкой на email.",
+    },
+    customersList: "Некоторые из моих клиентов",
+    timeline: "Хронология пути",
+    portraitAlt: "Портрет Dmytro Polizhai",
+  },
+} satisfies SiteCopy;
+
+// ---------------------------------------------------------------------------
+// Ukrainian
+// ---------------------------------------------------------------------------
+
+export const uk = {
+  meta: {
+    title: "Dmytro Polizhai · Full-Stack розробник у Ризі",
+    description:
+      "Dmytro Polizhai — full-stack розробник у Ризі (Латвія). Проєктує, створює та запускає вебзастосунки: Stundio, Prolifts, Curio.",
+    og: {
+      title: "Dmytro Polizhai · Full-Stack розробник у Ризі",
+      description: "Запустити. Довести до ладу. Вебзастосунки від першого коміту до робочого сайту.",
+      imageAlt: "Dmytro Polizhai, full-stack розробник у Ризі",
+    },
+  },
+
+  common: {
+    emailMe: "Написати мені",
+    copied: "Скопійовано",
+    backToWork: "Назад до проєктів",
+    linkLabels: {
+      visit: "Відвідати сайт",
+      app: "Відкрити застосунок",
+      site: "Сайт проєкту",
+      caseStudy: "Читати кейс",
+      source: "Вихідний код на GitHub",
+      contact: "Написати щодо проєкту",
+    },
+    statusLabels: { live: "Працює", "repo-only": "Лише код" },
+    close: "Закрити",
+  },
+
+  nav: {
+    label: "Розділи",
+    sections: {
+      top: { label: "Вгору", short: "Вгору" },
+      work: { label: "Проєкти", short: "Проєкти" },
+      how: { label: "Як я працюю", short: "Процес" },
+      journey: { label: "Шлях", short: "Шлях" },
+      about: { label: "Про мене", short: "Про мене" },
+      reviews: { label: "Відгуки", short: "Відгуки" },
+      contact: { label: "Контакти", short: "Контакти" },
+    },
+  },
+
+  hero: {
+    headline: "Запустити. Довести до ладу.",
+    identity: "Dmytro Polizhai · Full-Stack розробник у Ризі",
+    subline: "Проєктую, розробляю та запускаю вебзастосунки — від першого коміту до робочого сайту.",
+    seeWork: "Дивитися проєкти",
+    customers: {
+      label: "Більше 5 задоволених клієнтів",
+      listIntro: "Деякі з них",
+    },
+  },
+
+  stats: {
+    stundioUsers: "студентів щодня під час навчання",
+    stundioCommits: "з 545 комітів написані мною",
+    curioLoadTime: "швидше завантаження сторінок",
+  },
+
+  work: {
+    heading: "Проєкти",
+    intro: "Спершу діючі продукти. Кожна картка веде на сайт або код.",
+    secondaryLine: "Спочатку результат. Рух лише там, де доречно.",
+    sideProjectsHeading: "Сайд-проєкти",
+    canvasTitle: "Дослідити проєкти",
+    cursor: { drag: "Тягнути", view: "Дивитися" },
+    outcomeLabel: "Результат",
+    projects: {
+      prolifts: {
+        kindLabel: "Сайт клієнта",
+        oneLiner:
+          "Сайт компанії Pro-lifts SIA, що займається ліфтами в Ризі. Трьома мовами (латиська, російська, англійська), з відео у шапці при скролі.",
+        role: "Спроєктував дизайн і код, налаштував CMS і автоматичний деплой.",
+        outcome: "Один сайт трьома мовами та CMS, яку команда оновлює без допомоги розробника.",
+      },
+      stundio: {
+        kindLabel: "Open source",
+        oneLiner:
+          "Неофіційний розклад для студентів Ризького державного технікуму. У вебі, на Android та Linux.",
+        role: "Я написав 442 з 545 комітів.",
+        outcome: "400+ студентів перевіряють свій розклад щодня під час навчання.",
+      },
+      curio: {
+        kindLabel: "Розроблено для засновника Curio",
+        oneLiner: "Стрічка коротких новин. Переписав фронтенд на Next.js із підтримкою кількох мов.",
+        role: "Написав 830 із 830 комітів у фронтенд-репозиторії. Час завантаження сторінок зменшився на 10% (за аналітикою сайту).",
+        outcome: "Сторінки завантажуються на 10% швидше, кількома мовами.",
+      },
+      numerologgi: {
+        kindLabel: "Магазин клієнта",
+        oneLiner: "Онлайн-магазин планерів із каталогом у CMS та оплатою картками.",
+        role: "Написав усі 113 комітів.",
+        outcome: "Продажі планерів онлайн, прийом карток і каталог, який власник редагує сам.",
+      },
+      zinly: {
+        kindLabel: "Співзаснований застосунок",
+        oneLiner: "ШІ-застосунок для навчання, що аналізує календар студента й заповнює вільні вікна короткими уроками.",
+        role: "Співзаснував разом з Іриною Коваленко та створив сайт.",
+        outcome: "Короткі текстові, аудіо- та відеоуроки, які вкладаються у вільні хвилини студента.",
+        note: "Ранній доступ відкриється влітку 2027 року.",
+      },
+      "one-to-one": {
+        kindLabel: "Код",
+        oneLiner:
+          "Приватний чат тет-а-тет у реальному часі з авторизацією через код на пошту. Працює на Socket.IO, Redis, Postgres та Docker.",
+        role: "Написав усі 212 комітів: фронтенд, бекенд і CI.",
+        outcome: "Повноцінний стек реального часу в одному репозиторії: авторизація, чат, дані та CI.",
+        note: "В архіві. Сайту немає, але код відкритий.",
+      },
+      dnf: {
+        kindLabel: "Сайд-проєкт",
+        oneLiner: "Таймер для спідкуберів, що збирають кубик Рубіка на швидкість.",
+        role: "Мій власний сайд-проєкт, створений на Angular.",
+        outcome: "Зручний таймер для тренувань спідкуберів.",
+      },
+    },
+  },
+
+  how: {
+    heading: "Як я працюю",
+    intro: "Чого очікувати від нашої співпраці.",
+    cells: {
+      launch: {
+        title: "Запуск за тижні, а не місяці агенцій",
+        body: "Я особисто відповідаю за дизайн, фронтенд, бекенд і деплой. Ви не переплачуєте менеджерам проєктів і не втрачаєте час на узгодження — ваш продукт стає доступним клієнтам за 2–4 тижні.",
+        figures: [
+          { value: "2–4 тиж.", label: "від старту до запуску" },
+          { value: "0", label: "посередників агенції" },
+        ],
+        stages: ["Дизайн", "Фронтенд", "Бекенд", "Деплой"],
+      },
+      cms: {
+        title: "Досить платити розробникам за правки тексту",
+        body: "Я налаштовую сучасну CMS (Sanity або Payload) під ваші процеси. Ваша команда змінює тексти, фото, ціни та товари за лічені хвилини — без додаткових рахунків від програміста.",
+        figure: { value: "0 €", label: "за оновлення контенту чи цін" },
+        tools: ["Sanity", "Payload CMS"],
+      },
+      speed: {
+        title: "Сучасні технології, що перетворюють кліки на заявки",
+        body: "Повільні сайти спалюють рекламний бюджет ще до того, як клієнт побачить пропозицію. Я використовую сучасний стек (Next.js, React, TypeScript), що забезпечує завантаження швидше 1,8 секунди, високі позиції в пошуку та конверсію.",
+        stack: ["Next.js", "React", "TypeScript"],
+      },
+      support: {
+        title: "2 тижні безкоштовної підтримки, далі — щомісячний догляд",
+        body: "Кожен запуск включає два тижні безкоштовної підтримки для бездоганної роботи. Потрібні регулярні оновлення, моніторинг та нові функції? Залишайтеся на передбачуваній щомісячній підписці.",
+        phases: [
+          { value: "2 тиж.", label: "безкоштовно після запуску" },
+          { value: "Щомісяця", label: "план підтримки за вибором" },
+        ],
+        tags: ["Оновлення", "Моніторинг", "Виправлення"],
+      },
+      languages: {
+        title: "Чотири мови без жодних доплат",
+        body: "Пряме спілкування з вашою командою латиською, англійською, українською або російською — і повна підтримка всіх чотирьох мов у вашому проєкті безкоштовно.",
+        figures: [
+          { value: "4", label: "мови на вибір" },
+          { value: "0 €", label: "налаштування багатомовності" },
+        ],
+      },
+    },
+  },
+
+  journey: {
+    heading: "Шлях",
+    intro: "Мій шлях від проєкту до проєкту.",
+    entries: {
+      "data-pipeline": {
+        title: "Пайплайн даних Google Maps",
+        body: "Мій перший комерційний код: збір даних щодо кав'ярень у найбільших містах Канади для клієнта з Upwork із синхронізацією масивів у Google Drive та Google Таблиці.",
+      },
+      systems: {
+        title: "C++ та C# до епохи ШІ",
+        body: "Низькорівневе програмування на C++ та C# ще до появи LLM. Це дало мені глибоке розуміння роботи з пам'яттю, структур даних і того, як програми виконуються на рівні системи.",
+      },
+      curio: {
+        title: "Curio: фронтенд під ключ",
+        body: "Переведення платформи новин із кастомного інтерфейсу на Shadcn у Next.js. Здав повністю готовий фронтенд із підтримкою кількох мов, зменшивши час завантаження сторінок на 10%.",
+      },
+      stundio: {
+        title: "Stundio: заміна Edupage",
+        body: "Офіційний розклад технікуму був незручним на смартфонах. Я створив швидкий open-source клієнт — він поширився студентськими чатами без жодного маркетингу і став щоденною звичкою для сотень учнів.",
+      },
+      prolifts: {
+        title: "Запуск Pro-lifts",
+        body: "Корпоративний сайт під ключ для ліфтової компанії в Ризі. Повна юридична відповідність стандартам Латвії, 3 мови та налаштування Sanity CMS для оновлення вмісту без коду.",
+      },
+      numerologgi: {
+        title: "Numerologgi: здано достроково",
+        body: "Інтернет-магазин з оплатою через Stripe і каталогом у CMS. Клієнту потрібен був запуск до листопада; я закінчив архітектуру, інтеграції та реліз уже до середини жовтня.",
+      },
+      freelance: {
+        title: "Full-stack для засновників",
+        body: "Одна людина закриває продуктове бачення, дизайн, архітектуру та реліз у прод. Швидка здача, пряме спілкування і нуль накладних витрат агенцій.",
+      },
+    },
+  },
+
+  about: {
+    heading: "Про мене",
+    nameLabel: "Як вимовляти моє ім'я",
+    bio: [
+      "Я full-stack розробник у Ризі (Латвія). Створюю вебзастосунки та доводжу їх до повноцінного запуску.",
+      "Мій open-source застосунок Stundio — це розклад для студентів Ризького державного технікуму. Більше 400 з них використовують його щодня під час навчання. Я створив сайти для Pro-lifts SIA та Numerologgi, а також фронтенд Curio для його засновника.",
+    ],
+    originLine: "Самоук. Почав зі скрапера Google Maps. Тепер створюю реальні продукти для клієнтів і для себе.",
+    schoolLine: "Вивчаю програмування в Ризькому державному технікумі (RVT).",
+    languages: {
+      heading: "Мови",
+      names: { uk: "Українська", ru: "Російська", lv: "Латиська", en: "Англійська" },
+      native: "Рідна",
+    },
+    certificates: { heading: "Сертифікати", note: "Професійні сертифікати на Coursera." },
+  },
+
+  client: {
+    heading: "Слова клієнта",
+    quote: "Це вогонь. Мені дуже подобається. Усі будуть питати мене, хто це зробив. Я буду ростити тобі ціну та репутацію.",
+  },
+
+  testimonials: {
+    heading: "Відгуки",
+    subheading: "Оцінка клієнтів та співзасновників за якість виконання, швидкість та майстерність.",
+    kinds: {
+      client: "Клієнт",
+      venture: "Співзасновник",
+    },
+    items: {
+      prolifts: {
+        quote: "Це вогонь. Мені дуже подобається. Усі будуть питати мене, хто це зробив. Я буду ростити тобі ціну та репутацію.",
+        context: "Сайт компанії трьома мовами та CMS",
+      },
+      zinly: {
+        quote: "Дмитро перетворює складні інженерні концепції на швидкі та інтуїтивні інтерфейси за лічені дні. Його надійність і майстерність роблять його неймовірним творцем продуктів.",
+        context: "ШІ-застосунок для навчання студентів",
+      },
+    },
+  },
+
+  services: servicesUk,
+
+  contact: {
+    heading: "Розкажіть, що ви хочете запустити",
+    body: "Заплануйте 40-хвилинну бриф-розмову, щоб обговорити цілі продукту, обсяг робіт і терміни запуску.",
+    labels: { email: "", telegram: "", call: "Запланувати дзвінок" },
+    localTimeLabel: "Час у Ризі",
+  },
+
+  footer: { credit: "Створено Dmytro Polizhai у Ризі.", backToTop: "Вгору" },
+
+  notFound: {
+    title: "Сторінку не знайдено · Dmytro Polizhai",
+    heading: "Сторінку не знайдено",
+    body: "Цієї сторінки не існує, або вона була переміщена.",
+    cta: "На головну сторінку",
+  },
+
+  caseStudy: {
+    headings: {
+      problem: "Проблема",
+      constraints: "Обмеження",
+      built: "Що зроблено",
+      how: "Реалізація",
+      result: "Результат",
+      links: "Посилання",
+    },
+    stackGroups: {
+      app: "Застосунок",
+      content: "Контент і мови",
+      forms: "Форми та спам",
+      delivery: "Деплой",
+      data: "Дані та сповіщення",
+      platforms: "Платформи",
+      quality: "Тести",
+    },
+  },
+
+  caseStudies: {
+    prolifts: {
+      meta: {
+        title: "Prolifts: сайт для Pro-lifts SIA · Dmytro Polizhai",
+        description:
+          "Як я створив pro-lifts.lv — сайт на Next.js та Sanity трьома мовами з керованим скролом відео у шапці.",
+      },
+      byline: "Сайт для Pro-lifts SIA, автор Dmytro Polizhai",
+      intro:
+        "Pro-lifts SIA — сервісна ліфтова компанія в Ризі. Я створив сайт трьома мовами з CMS та відео у шапці, що керується скролом.",
+      note: "Здано під назвою моєї студії Multilance.",
+      problem: [
+        "Pro-lifts SIA встановлює та обслуговує ліфти багатьох виробників. Сайту потрібно було пояснити шість послуг, показати досвід компанії та спростити зв'язок.",
+        "Він мав працювати латиською, російською та англійською мовами. Також клієнт мав редагувати контент без участі розробника.",
+      ],
+      constraints: [
+        "Три мови. Латиська — основна, російська та англійська — додаткові.",
+        "Відео у шапці, яке швидко та плавно працює навіть на смартфонах.",
+        "Контент у CMS, а не в коді.",
+      ],
+      built: [
+        "Шапка відтворюється під час скролу. Я розбив ШІ-відео на кадри, тож скрол безпосередньо керує часом. Для вертикальних і горизонтальних екранів створені окремі набори кадрів.",
+        "Шість розділів послуг, вибір виробників, етапи роботи, список проєктів та часті запитання.",
+        "Контактна форма з відправкою на пошту та блокуванням спаму.",
+        "Sanity Studio всередині сайту для редагування та публікації контенту.",
+        "Карта сайту, структуровані дані та зображення для соцмереж для кожної мови.",
+      ],
+      how: "Відеоролики для шапки я згенерував у Google Flow (Veo 3.1) на основі ключових кадрів. Потім розрізав їх на послідовність кадрів і написав код керування скролом власноруч, без анімаційних бібліотек. Перед кожним деплоєм GitHub Actions запускає лінтер, перевірку типів і збірку. Гілка main іде на прод, а dev — на прев'ю.",
+      result: [
+        "Сайт став доступний на pro-lifts.lv у вересні 2026 року латиською, російською та англійською мовами. Проєкт продовжує отримувати оновлення.",
+        "Клієнт редагує контент сторінок у Sanity самостійно без мене.",
+      ],
+    },
+    stundio: {
+      meta: {
+        title: "Stundio: застосунок розкладу для студентів RVT · Dmytro Polizhai",
+        description:
+          "Як я створив Stundio — open-source застосунок розкладу для вебу, Android та Linux. 400+ студентів використовують його щодня під час навчання.",
+      },
+      byline: "Open-source застосунок розкладу, автор Dmytro Polizhai",
+      intro:
+        "Створено в Ризі. Використовується щодня. Stundio показує розклад Ризького державного технікуму у вашому смартфоні з усіма змінами.",
+      note: "Неофіційний застосунок. Не пов'язаний з RVT, EduPage чи aSc.",
+      problem: [
+        "Розклад занять постійно змінюється. Пари переносять, скасовують або змінюють викладачів.",
+        "Студентам потрібно швидко побачити на телефоні потрібну аудиторію та актуальні зміни.",
+      ],
+      constraints: [
+        "Дані беруться з публічного розкладу EduPage технікуму. Я їх не контролюю.",
+        "Жодних акаунтів і збереження персональних даних на сервері.",
+        "Три платформи: веб, Android та Linux. Я головний розробник.",
+        "Безкоштовно та з відкритим вихідним кодом.",
+      ],
+      built: [
+        "Номер наступної аудиторії, а також скасовані, перенесені та замінені пари прямо в списку.",
+        "Швидке завантаження з кешу браузера після першого візиту з позначкою про актуальність даних.",
+        "Без реєстрації. Групу чи викладача ви обираєте лише один раз.",
+        "Режим студента з маршрутами між корпусами та режим викладача.",
+        "Web Push та локальні сповіщення.",
+        "Три віджети для головного екрана Android.",
+        "Встановлюваний вебзастосунок, застосунок для Android з автооновленням та десктопний застосунок для Linux.",
+        "Латиська, англійська та українська мови.",
+      ],
+      how: "Застосунок зчитує публічний розклад технікуму з EduPage. Після першого візиту браузер зберігає його в кеші, тому застосунок відкривається миттєво.",
+      result: [
+        "Понад 400 студентів відкривають Stundio щодня під час навчання. Застосунок працює за адресою app.stundio.lv.",
+        "Код відкритий за ліцензією MIT. Я написав 442 з 545 комітів (станом на 9 листопада 2026 року).",
+      ],
+    },
+  },
+
+  a11y: {
+    skipLink: "Перейти до основного вмісту",
+    currentSection: "поточний розділ",
+    externalLink: "відкривається в новій вкладці",
+    copy: {
+      button: "Скопіювати email",
+      copied: "Email скопійовано",
+      failed: "Не вдалося скопіювати. Скористайтеся посиланням на email.",
+    },
+    customersList: "Деякі з моїх клієнтів",
+    timeline: "Хронологія шляху",
+    portraitAlt: "Портрет Dmytro Polizhai",
+  },
+} satisfies SiteCopy;
+
+export const copy = { en, lv, ru, uk } satisfies Record<Locale, SiteCopy>;
 
 // ---------------------------------------------------------------------------
 // JSON-LD for `/`. Render with `JSON.stringify` inside `<script type="application/ld+json">`.

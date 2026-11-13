@@ -6,6 +6,7 @@ import { useActiveSection } from "@/hooks/use-active-section";
 import { useScrolled } from "@/hooks/use-scrolled";
 import { useSiteContent } from "@/lib/content-context";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "./language-switcher";
 
 const CLEAR = ["top"] as const;
 
@@ -79,24 +80,27 @@ export function SiteNav() {
           </nav>
 
           {/* Dock surface at the top; on scroll it drops its fill like everything else in the bar. */}
-          <Link
-            href="#contact"
-            aria-current={active === "contact" ? "location" : undefined}
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "sm" }),
-              "pointer-events-auto relative justify-self-end transition-[background-color,border-color,border-radius,color] duration-(--dur-component) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
-              scrolled && "rounded-none border-transparent bg-transparent hover:bg-raised hover:text-fg",
-              active === "contact" && "text-fg",
-            )}
-          >
-            {letsTalkLabel}
-            {active === "contact" && (
-              <>
-                <Mark className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.75rem]" />
-                <span className="sr-only">, {t.a11y.currentSection}</span>
-              </>
-            )}
-          </Link>
+          <div className="flex items-center gap-1.5 justify-self-end md:gap-2">
+            <LanguageSwitcher scrolled={scrolled} />
+            <Link
+              href="#contact"
+              aria-current={active === "contact" ? "location" : undefined}
+              className={cn(
+                buttonVariants({ variant: "secondary", size: "sm" }),
+                "pointer-events-auto relative transition-[background-color,border-color,border-radius,color] duration-(--dur-component) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
+                scrolled && "rounded-none border-transparent bg-transparent hover:bg-raised hover:text-fg",
+                active === "contact" && "text-fg",
+              )}
+            >
+              {letsTalkLabel}
+              {active === "contact" && (
+                <>
+                  <Mark className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.75rem]" />
+                  <span className="sr-only">, {t.a11y.currentSection}</span>
+                </>
+              )}
+            </Link>
+          </div>
         </div>
       </header>
     </>
