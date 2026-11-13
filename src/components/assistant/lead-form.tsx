@@ -10,6 +10,7 @@ type LeadFormProps = {
   transcript: readonly AssistantMessage[];
   provider: "groq" | "workers-ai" | "none";
   turnstileContainerRef: RefObject<HTMLDivElement | null>;
+  initialMessage?: string;
   onCancel: () => void;
 };
 
@@ -17,6 +18,7 @@ export function LeadForm({
   transcript,
   provider,
   turnstileContainerRef,
+  initialMessage,
   onCancel,
 }: LeadFormProps) {
   const { locale, t } = useSiteContent();
@@ -24,7 +26,7 @@ export function LeadForm({
 
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialMessage ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
@@ -41,7 +43,7 @@ export function LeadForm({
       return;
     }
     if (!trimmedMessage) {
-      setError(t.assistant.error.sendFailed);
+      setError(copy.message);
       return;
     }
 
@@ -113,39 +115,51 @@ export function LeadForm({
         <button
           type="button"
           onClick={onCancel}
-          className="cursor-pointer text-xs text-fg-muted underline-offset-4 hover:text-fg hover:underline"
+          className="min-h-6 cursor-pointer px-1 text-xs text-fg-muted underline-offset-4 hover:text-fg hover:underline"
         >
           {t.common.close}
         </button>
       </div>
 
+      <label htmlFor="lead-name" className="sr-only">
+        {copy.name}
+      </label>
       <input
+        id="lead-name"
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder={copy.name}
         maxLength={100}
-        className="w-full border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus:border-line-strong focus:outline-none"
+        className="w-full border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
       />
 
+      <label htmlFor="lead-contact" className="sr-only">
+        {copy.contact}
+      </label>
       <input
+        id="lead-contact"
         type="text"
         value={contact}
         onChange={(e) => setContact(e.target.value)}
         placeholder={copy.contact}
         maxLength={200}
         required
-        className="w-full border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus:border-line-strong focus:outline-none"
+        className="w-full border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
       />
 
+      <label htmlFor="lead-message" className="sr-only">
+        {copy.message}
+      </label>
       <textarea
+        id="lead-message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder={copy.message}
         maxLength={2000}
         rows={3}
         required
-        className="w-full resize-none border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus:border-line-strong focus:outline-none"
+        className="w-full resize-none border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
       />
 
       {error && (
@@ -154,7 +168,7 @@ export function LeadForm({
         </p>
       )}
 
-      <p className="text-xs text-fg-subtle">{copy.privacy}</p>
+      <p className="text-sm text-fg-subtle">{copy.privacy}</p>
 
       <Button type="submit" variant="primary" size="sm" disabled={submitting} className="self-start">
         {copy.submit}

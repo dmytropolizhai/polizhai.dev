@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AssistantTrigger } from "@/components/assistant/assistant-trigger";
 import { useSiteContent } from "@/lib/content-context";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { Mark } from "@/components/ui/mark";
@@ -19,37 +20,37 @@ export function Dock() {
   const active = useActiveSection(dockSections, CLEAR);
 
   return (
-    <nav
-      aria-label={t.nav.label}
-      className="fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-(--z-dock) flex justify-center px-2 md:hidden"
-    >
-      <ul className="flex h-(--dock-h) max-w-full items-center rounded-pill border border-line-strong bg-raised p-1">
-        {dockSections.map((id) => {
-          const current = active === id;
-          return (
-            <li key={id}>
-              <Link
-                href={`#${id}`}
-                aria-current={current ? "location" : undefined}
-                className={cn(
-                  "relative flex h-11 items-center rounded-pill px-1.5 min-[360px]:px-2 text-[0.8125rem] font-bold text-fg-muted min-[480px]:px-4 min-[480px]:text-sm",
-                  "transition-[color,background-color,translate] duration-(--dur-micro) ease-move",
-                  "hover:bg-line hover:text-fg",
-                  current && "text-fg",
-                )}
-              >
-                {t.nav.sections[id].short}
-                {current && (
-                  <>
-                    <Mark className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.75rem]" />
-                    <span className="sr-only">, {t.a11y.currentSection}</span>
-                  </>
-                )}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-(--z-dock) flex items-center justify-center gap-2 px-2 md:inset-x-auto md:right-6 md:bottom-6 md:px-0">
+      <nav aria-label={t.nav.label} className="pointer-events-auto max-w-full min-w-0 md:hidden">
+        <ul className="flex h-(--dock-h) max-w-full items-center rounded-pill border border-line-strong bg-raised p-1">
+          {dockSections.map((id) => {
+            const current = active === id;
+            return (
+              <li key={id}>
+                <Link
+                  href={`#${id}`}
+                  aria-current={current ? "location" : undefined}
+                  className={cn(
+                    "relative flex h-11 items-center rounded-pill px-1.5 min-[360px]:px-2 text-[0.8125rem] font-bold text-fg-muted min-[480px]:px-4 min-[480px]:text-sm",
+                    "transition-[color,background-color,translate] duration-(--dur-micro) ease-move",
+                    "hover:bg-line hover:text-fg",
+                    current && "text-fg",
+                  )}
+                >
+                  {t.nav.sections[id].short}
+                  {current && (
+                    <>
+                      <Mark className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.75rem]" />
+                      <span className="sr-only">, {t.a11y.currentSection}</span>
+                    </>
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      <AssistantTrigger />
+    </div>
   );
 }

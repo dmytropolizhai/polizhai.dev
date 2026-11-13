@@ -70,7 +70,7 @@ export function Contact() {
                 <button
                   type="button"
                   onClick={openAssistant}
-                  className="cursor-pointer underline decoration-line-strong underline-offset-4 transition-colors duration-(--dur-micro) ease-move hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
+                  className="inline-flex min-h-6 cursor-pointer items-center underline decoration-line-strong underline-offset-4 transition-colors duration-(--dur-micro) ease-move hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
                 >
                   {t.assistant.contactLine}
                 </button>

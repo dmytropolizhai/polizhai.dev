@@ -1,13 +1,12 @@
 "use client";
 
 import { useAssistant } from "@/components/assistant/assistant-context";
-import { buttonVariants } from "@/components/ui/button";
+import { Mark } from "@/components/ui/mark";
 import { useSiteContent } from "@/lib/content-context";
-import { cn } from "@/lib/utils";
 
-export function AssistantTrigger({ scrolled }: { scrolled: boolean }) {
+export function AssistantTrigger() {
   const { showAssistant, t } = useSiteContent();
-  const { openAssistant } = useAssistant();
+  const { open, openAssistant } = useAssistant();
 
   if (!showAssistant) return null;
 
@@ -16,13 +15,10 @@ export function AssistantTrigger({ scrolled }: { scrolled: boolean }) {
       type="button"
       onClick={openAssistant}
       aria-label={t.a11y.assistant.open}
-      className={cn(
-        buttonVariants({ variant: "secondary", size: "sm" }),
-        "pointer-events-auto cursor-pointer transition-[background-color,border-color,border-radius,color] duration-(--dur-component) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
-        scrolled && "rounded-none border-transparent bg-transparent hover:bg-raised hover:text-fg",
-      )}
+      aria-expanded={open}
+      className="pointer-events-auto inline-flex size-(--dock-h) shrink-0 cursor-pointer items-center justify-center rounded-pill border border-line-strong bg-raised text-fg transition-colors duration-(--dur-micro) ease-move hover:bg-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
     >
-      {t.assistant.navButton}
+      <Mark className="text-base" />
     </button>
   );
 }
