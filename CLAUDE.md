@@ -2,71 +2,79 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Read `AGENTS.md` first: this Next.js version has breaking changes, so check `node_modules/next/dist/docs/` before writing Next-specific code.
+
 ## What this is
 
-The **polizhai.dev** rebuild: personal-brand portfolio of Dmytro Polizhai, "Full-Stack Developer". A React 19 + Next.js 16 (App Router) + TypeScript app (Tailwind 4, shadcn on Base UI, motion), prerendered to static HTML (`output: "export"`) and deployed on Cloudflare Pages. The Cloudflare build output directory is `out`, not `dist`. Planning docs (research, brand, design, content) live beside the app and are its source of truth.
+The **polizhai.dev** personal-brand portfolio of Dmytro Polizhai, "Full-Stack Developer". Next.js 16 (App Router) + React 19 + TypeScript, Tailwind 4, shadcn on Base UI, `motion`. It is a **static export** (`output: "export"` in `next.config.mjs`; output dir is `out/`, not `dist/`). Content is read from Sanity CMS at build time, with a built-in fallback. `PRODUCT.md` states the product goal; planning docs (`research/`, `brand/`, `design/`, `content/`) sit beside the app.
 
 ## Commands
 
 pnpm only.
 
-- `pnpm dev`: Next dev server
-- `pnpm build`: `next build` (prerenders `/` into `out/`; strict TS with `noUncheckedIndexedAccess` via `tsconfig.json`; there is no lint or test setup yet)
-- `pnpm typecheck`: `tsc --noEmit`, types only
-- `pnpm dlx shadcn@latest add <item>`: add registry components (`@magicui/...`, `@animate-ui/...`, React Bits URLs). After adding, check the import of `cn`: shadcn once resolved it to the npm package `cn`, which is wrong; it must be `@/lib/utils`. Strip `'use client'` and unused `React` imports.
+- `pnpm dev`: Next dev server. Studio at `/studio`.
+- `pnpm build`: `next build`, prerenders into `out/`. There is no lint or test setup; `pnpm typecheck` (`tsc --noEmit`) is the only check. TS is strict with `noUncheckedIndexedAccess`.
+- `pnpm sanity:seed`: seeds Sanity from `content/site.ts` + `src/lib/pending.ts`. Needs `NEXT_PUBLIC_SANITY_PROJECT_ID` and `SANITY_API_WRITE_TOKEN` (see `.env.example`).
+- `pnpm dlx shadcn@latest add <item>`: add registry components (`@magicui/...`, `@animate-ui/...`, React Bits URLs). Afterwards check that `cn` imports from `@/lib/utils` (shadcn once resolved it to the npm package `cn`), and strip `'use client'` and unused `React` imports.
 
-## App architecture
+## Architecture
 
-- `src/app/layout.tsx` (server: `<html>`, global CSS, `metadata` and `viewport` from the old `index.html` head) → `src/app/page.tsx` (server, renders `<App />`) → `src/App.tsx` (`'use client'`): Hero, `<main>` (How, Journey, About, ClientQuote, Contact), Footer, Dock. The dock is last in the DOM by design. There is no Work section: the hero holds the H1 (`t.hero.headline`, the motto), subline, two buttons and the full-bleed project canvas (`<section id="work">`).
-- `src/index.css` imports Tailwind, `@fontsource-variable/archivo/wdth.css` (both axes; the wide titles need it) and `design/tokens.css`. Token classes (`type-*`, `.mark`, `texture-*`) and utilities (`bg-surface`, `text-fg-muted`, `ease-move`, `rounded-pill`, `rounded-panel`) come from there; the stock Tailwind palette is removed. `index.css` adds only `container-site`, `.reveal`, `.rise-in`, the `.glass-*` card block (canvas cards) and the `.mark3d*` block (`.highlight-sweep` is removed).
-- **Content goes through `src/lib/content.ts`** (`t` = active locale copy, `facts`, `hrefOf`, `showClientQuote`, `formatWhen`). Components never hard-code copy. Aliases: `@/` → `src/`, `@content/` → `content/`.
-- `src/lib/pending.ts` holds everything waiting on Dmytro: **NEW** copy flags (`letsTalk`, `budgetFigures`, `projectOutcome`; `curioBars` is removed), screenshot base paths (`shots.projects[id]` → `/shots/<id>.avif` + `.webp`) and the portrait path (`null` renders a halftone placeholder with the same ratio), and `caseStudyPagesLive` (hides `/work/*` links until those pages exist). `lib/content.ts` also exports `VisibleProjectId`, `visibleProjects` and `letsTalkLabel`.
-- One job per library:
-  - React Bits: the hero background, `Ferrofluid` (`src/components/effects/ferrofluid.tsx`, a port). Threads is removed.
-  - Magic UI NumberTicker: the stats in the project dialog (Stundio 400+, Curio 10%), in `ui/number-ticker.tsx`. It is adapted: the HTML ships the final value, and a `play` prop restarts the count.
-  - Animate UI: icons, in `components/animate-ui/icons/`.
-  - shadcn on Base UI: primitives in `components/ui/`, including the Dialog. The button is rewritten to the design system's pill variants `primary` and `secondary`.
-  - Own code: the project canvas, the dock (SmoothUI's job), and the journey rail (Aceternity's job), all rebuilt monochrome.
-- Hero (2026-11-12): a centred band, then the canvas. The band is the H1 "Make it run, make it right." (`type-display type-display-poster`: Archivo 900, 125% width, uppercase, `clamp(1.75rem, min(8.8vw, 10.7svh), 6rem)`, `max-w-[15em]`, static, the LCP; the `-poster` modifier in `design/tokens.css` is hero-only, Contact's poster line keeps plain `type-display`), the subline, and two pills: "See the work" (secondary, scrolls the canvas to fill the viewport and focuses it) and "Email me" (primary, `CopyEmailButton`, copies the address; changed 2026-11-12, decided by Dmytro, because "Let's talk" duplicated the nav action). No eyebrow. The background is the lazy WebGL `Ferrofluid`, which ignores the pointer (move and click) while it is over the canvas. `Mark3D` (`src/components/effects/mark-3d.tsx`) still exists but is unmounted; leave it alone.
-- Project canvas (the hero's one moving thing and the site's signature element):
-  - `src/hooks/use-pan-canvas.ts` (own code): refs only, no React state per frame, one rAF loop with lerp plus friction inertia. Each card wraps on its own with a modulo, so six cards are six DOM nodes with no clones. The loop stops when settled, off screen or tab hidden. Tuning lives in a `TUNING` object.
-  - `sections/work/project-canvas.tsx`: the canvas (full-bleed, no frame, no fill, `clamp(32rem, 85svh, 60rem)` tall, sr-only `<h2>` from `t.work.canvasTitle`), and the cards as `<button id="work-<id>">`. Layout (position, size, rotation, depth, first-screen flag, crop) is a `LAYOUT` record keyed by `VisibleProjectId`, so a newly visible project fails to compile until it is placed. Five equal cards in a loose ring around an empty centre.
-  - Cards are rounded Liquid Glass (`.glass-card` in `index.css`): inset `<picture>` screenshot (AVIF then WebP), caption plate with kind label, name and host with the live mark, pointer-following glare via `--mx`/`--my`. Nothing above the cards may set filter, opacity, mask or clip-path (backdrop root); the edge fades are overlays for that reason.
-  - `sections/work/project-dialog.tsx`: a shadcn Dialog on Base UI. It shows the meta, body, stats and actions, built from `sections/work/project-parts.tsx`.
-  - Touch: `touch-action: pan-y`, so vertical swipes scroll the page and only horizontal pan moves the canvas. Reduced motion: static layout, 1:1 drag, no inertia.
-- Entrances use `<Reveal>` (CSS rise and fade, once, stagger with `index` × 60ms). Titles and the H1 never animate.
-- Navigation: `SiteNav` is the fixed top bar: lockup, section links from md up, and a "Let's talk" action. `useScrolled` uses a sentinel and an IntersectionObserver, not a scroll listener. When scrolled, the bar turns solid and everything inside it goes transparent and square. `Dock` is the bottom pill for phones only.
-- `cn` uses `extendTailwindMerge` with the `pill` radius. Without it, `rounded-none` cannot override `rounded-pill`.
-- Section highlight: `useActiveSection`, an IntersectionObserver band at 50% viewport. `#top` and `#client` clear it.
+### Two route groups, two root layouts
 
-## Layout and source-of-truth order
+There is no top-level `app/layout.tsx`. `src/app/(site)/layout.tsx` and `src/app/(studio)/layout.tsx` each render their own `<html>`.
+
+- `(site)`: `layout.tsx` builds metadata from `getSiteContent()` and imports `src/index.css`. `page.tsx` is a server component that fetches content, wraps `<PortfolioShell />` in `SiteContentProvider`.
+- `(studio)/studio/[[...tool]]`: the embedded Sanity Studio (`sanity.config.ts`, `basePath: "/studio"`), a client component with `generateStaticParams` for the static export.
+- `PortfolioShell` (`'use client'`) composes the page: SiteNav, Hero, `<main>` (Services, How, Journey, About, ClientQuote, Contact), Footer, Dock. The Dock is last in the DOM by design.
+
+### Content pipeline (the part that spans many files)
+
+Three layers, resolved in `src/sanity/lib/fetch.ts` (`getSiteContent()`):
+
+1. **Defaults**: `content/site.ts` (all copy and facts, TS source of truth) and `src/lib/pending.ts` (copy waiting on Dmytro, screenshot paths, portrait). `buildDefaultContent()` turns these into a `ResolvedSiteContent`.
+2. **Sanity overrides**: GROQ queries in `src/sanity/lib/queries.ts`, schemas in `src/sanity/schemaTypes/`. When `NEXT_PUBLIC_SANITY_PROJECT_ID` is empty (`isSanityConfigured` is false) the defaults are returned as is, so the site builds with no CMS.
+3. **Client access**: `SiteContentProvider` in `src/lib/content-context.tsx`; components call `useSiteContent()`, which adds derived values (`visibleProjects`, `letsTalkLabel`, `showClientQuote`, service and tier price labels).
+
+Components never hard-code copy. Aliases: `@/` → `src/`, `@content/` → `content/`. `src/lib/content.ts` is the older static accessor (`t`, `facts`, `hrefOf`, `isTbd`, `VisibleProjectId`); prefer `useSiteContent()` for anything Sanity can override. Adding a content field means touching `content/site.ts` (or `pending.ts`), the Sanity schema, the query, `ResolvedSiteContent`, and the seed script.
+
+### `content/site.ts` model
+
+- `facts` (names, URLs, numbers, dates, stack; never translated) and `SiteCopy` (every translatable string). Lists are `Record<Id, ...>` keyed by ids in `facts`, so a locale missing an entry fails to compile.
+- Locales: `en`, `lv`, `ru`, `uk`; only `en` is active (`defaultLocale`). Add one by copying `en`, translating, `export const lv = {...} satisfies SiteCopy`, and registering it in `copy`.
+- `Tbd` values (`[TBD: ...]`) are gaps for Dmytro; renderers must skip them (`isTbd`) and skip `status: "hidden"`. The client quote also needs `approval: "approved"`.
+- `src/lib/pending.ts` holds the NEW-copy flags (`letsTalk`, `budgetFigures`, `projectOutcome`), screenshot base paths (`/shots/<id>.avif` + `.webp`), and the portrait path (`null` renders a halftone placeholder).
+- Counts (442/545, 830, 212, 113, 400+) are repeated inside prose strings; grep copy when refreshing `facts.asOf`.
+
+### Styling and UI
+
+- `src/index.css` imports Tailwind, `@fontsource-variable/archivo/wdth.css` and `design/tokens.css`. Token classes (`type-*`, `.mark`, `texture-*`) and utilities (`bg-surface`, `text-fg-muted`, `ease-move`, `rounded-pill`, `rounded-panel`) come from the tokens; the stock Tailwind palette is removed. `index.css` adds `container-site`, `.reveal`, `.rise-in`, `.glass-*` (canvas cards) and `.mark3d*`.
+- `cn` (`src/lib/utils.ts`) uses `extendTailwindMerge` with the `pill` radius; without it `rounded-none` cannot override `rounded-pill`.
+- One job per UI library: React Bits = hero `Ferrofluid` background (`effects/ferrofluid.tsx`, a port); Magic UI = `ui/number-ticker.tsx` (adapted: HTML ships the final value, `play` restarts the count); Animate UI = icons in `components/animate-ui/icons/`; shadcn on Base UI = primitives in `components/ui/` (the button has the pill variants `primary`/`secondary`); own code = project canvas, dock, journey rail. `effects/mark-3d.tsx` and `liquid-ether.*` exist but are unmounted; leave them alone.
+- Hero: H1 is the motto, static and the LCP (`type-display type-display-poster`, hero-only modifier). Buttons: "See the work" (scrolls the canvas to fill the viewport, then focuses it) and "Email me" (`CopyEmailButton`).
+- **Project canvas** (the hero's one moving thing, the signature element), in `components/sections/projects/`: `use-pan-canvas.ts` (`src/hooks`) is refs only, no React state per frame, one rAF loop with lerp plus inertia, per-card modulo wrap, tuning in a `TUNING` object. `project-canvas.tsx` holds a `LAYOUT` record keyed by `VisibleProjectId`, so a newly visible project fails to compile until it is placed. Cards are Liquid Glass (`.glass-card`): nothing above them may set filter, opacity, mask or clip-path (it breaks the backdrop root), so edge fades are overlays. `project-dialog.tsx` is a shadcn Dialog on Base UI. Touch uses `touch-action: pan-y`; reduced motion gives a static layout.
+- Entrances use `<Reveal>` (CSS rise and fade, once, stagger `index` × 60ms). Titles and the H1 never animate.
+- `SiteNav` is the fixed top bar (`useScrolled` uses a sentinel + IntersectionObserver, not a scroll listener); `Dock` is the bottom pill for phones only; `useActiveSection` is an IntersectionObserver band at 50% viewport.
+
+## Source-of-truth order
 
 When documents disagree, later entries win:
 
-1. `research/` (`BRIEF.md` summary; `github.md`, `profile.md`, `market.md`, `stack.md`) — raw input. `BRIEF.md` still says polizhai.com; the domain is now **polizhai.dev**.
-2. `brand/strategy.md` — voice, motion rules, structure, performance budgets. Its wordmark (§3) and palette/type (§6) are superseded by the design system.
-3. `design/design-system.md` ("Poster mono") + `design/tokens.css` — Tailwind v4 `@theme` plus shadcn variable mapping, Archivo only, black/white/grey, **dark only, no theme toggle**. `design/preview.html` renders every token (open in a browser); `design/logo/` holds the SVGs.
-4. `content/site.ts` — **all site copy and facts**; `content/copy-deck.md` is the prose mirror.
-5. `design/landing-page.md` — home page plan ("a stack of posters"); quotes `site.ts` keys, so don't invent copy there.
-
-## Content model (`content/site.ts`)
-
-- Two layers: `facts` (names, URLs, numbers, dates, stack; never translated) and `SiteCopy` (every translatable string). Lists are `Record<Id, ...>` keyed by ids in `facts`, so a locale missing an entry fails to compile.
-- Locales: `en`, `lv`, `ru`, `uk` (default `en`). Add one by copying `en`, translating, `export const lv = {...} satisfies SiteCopy`, and registering it in `copy`.
-- `Tbd` values (`[TBD: ...]`) are gaps for Dmytro to fill; renderers must skip them (`isTbd`) and skip anything with `status: "hidden"`. The client quote also needs `approval: "approved"` before launch.
-- Counts (442/545, 830, 212, 113, 400+) are repeated inside prose strings; grep copy when refreshing `facts.asOf`.
-- Navigation is a single dock fixed at the bottom (`sections` / `dock` / `SectionId`: Work, How, Journey, About, Contact). Sections are unnumbered.
+1. `research/` (`BRIEF.md` summary): raw input. It still says polizhai.com; the domain is **polizhai.dev**.
+2. `brand/strategy.md`: voice, motion rules, structure, budgets. Its wordmark (§3) and palette/type (§6) are superseded by the design system.
+3. `design/design-system.md` ("Poster mono") + `design/tokens.css`: Archivo only, black/white/grey, **dark only, no theme toggle**. `design/preview.html` renders every token.
+4. `content/site.ts`: all site copy and facts; `content/copy-deck.md` is the prose mirror.
+5. `design/landing-page.md`: home page plan ("a stack of posters"); quotes `site.ts` keys, so don't invent copy.
 
 ## Hard rules (decided by Dmytro)
 
 - **Never mention game development** (NN Game Studio / UE5) anywhere on the site.
-- **No lift/elevator metaphor, no "lift shaft" wording, no floor concept**, and no scroll-played Prolifts stage on the home page. The signature element is the own-code draggable project canvas in the hero.
-- The project canvas is the one named exception to the design system's no-tilt, vertical-only motion, 0px radius and no-depth rules: tilted cards, free 2D drag (2026-11-11) and rounded Liquid Glass cards with blur, rim and shadow (2026-11-12). The canvas itself has no frame. Decided by Dmytro. Everything else stays vertical, untilted, flat and square.
+- **No lift/elevator metaphor, no "lift shaft" wording, no floor concept**, and no scroll-played Prolifts stage on the home page.
+- The project canvas is the one named exception to the design system's no-tilt, vertical-only motion, 0px radius and no-depth rules (tilted cards, free 2D drag, rounded Liquid Glass). The canvas itself has no frame. Everything else stays vertical, untilted, flat and square.
 - No green accent, no light theme, no toggle, no availability pill.
 - Education shown is RVT (Riga State Technical School), not RTU. Languages: Ukrainian/Russian native, Latvian B1, English B1.
-- Effects: **one job per UI library** (shadcn/ui, React Bits, Aceternity UI, Animate UI, SmoothUI); one moving thing per poster section.
+- One job per UI library; one moving thing per poster section.
 - Showcase clients: Prolifts, Numerologgi, Stundio (400+ daily users), Curio ("built for Curio's founder", owner not named).
-- New copy (e.g. "Let's talk" Contact line, two budget labels in How I work) needs Dmytro's OK before shipping. The same goes for the lv/ru/uk wording of `work.canvasTitle`, `work.cursor.*` and `common.close`.
+- New copy (the "Let's talk" Contact line, budget labels in How I work) needs Dmytro's OK before shipping, as do the lv/ru/uk wording of `work.canvasTitle`, `work.cursor.*` and `common.close`.
 
 ## Workflow
 
