@@ -5,10 +5,9 @@ import { Mark } from "@/components/ui/mark";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { useScrolled } from "@/hooks/use-scrolled";
 import { useSiteContent } from "@/lib/content-context";
+import { NAV_CLEAR_SECTIONS, useDockSections } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./language-switcher";
-
-const CLEAR = ["top"] as const;
 
 /**
  * Top bar: lockup · section links · action (Dmytro, 2026-11-11).
@@ -17,13 +16,11 @@ const CLEAR = ["top"] as const;
  * Links live here from md up; phones keep the bottom dock for them.
  */
 export function SiteNav() {
-  const { facts, letsTalkLabel, t, showClientQuote } = useSiteContent();
-  const dockSections = showClientQuote
-    ? facts.dock
-    : facts.dock.filter((id) => id !== "reviews");
+  const { letsTalkLabel, t } = useSiteContent();
+  const dockSections = useDockSections();
   const links = dockSections.filter((id) => id !== "contact");
   const { scrolled, sentinel } = useScrolled();
-  const active = useActiveSection(dockSections, CLEAR);
+  const active = useActiveSection(dockSections, NAV_CLEAR_SECTIONS);
 
   return (
     <>
@@ -37,12 +34,13 @@ export function SiteNav() {
           scrolled ? "border-line bg-bg" : "pointer-events-none border-transparent bg-transparent",
         )}
       >
-        <div className="container-site flex h-(--nav-h) items-center justify-between gap-4 md:grid md:grid-cols-[1fr_auto_1fr]">
+        <div className="container-site flex h-(--nav-h) items-center justify-between gap-2 min-[360px]:gap-3 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4">
           <Link
             href="#top"
+            aria-label={t.nav.sections.top.label}
             className="pointer-events-auto inline-flex min-h-11 shrink-0 items-center justify-self-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
           >
-            <Lockup className="h-6 w-auto" />
+            <Lockup className="h-[1.125rem] w-auto min-[360px]:h-5 sm:h-6" />
           </Link>
 
           <nav aria-label={t.nav.label} className="pointer-events-auto hidden justify-self-center md:block">
@@ -68,7 +66,7 @@ export function SiteNav() {
                       {t.nav.sections[id].short}
                       {current && (
                         <>
-                          <Mark className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.75rem]" />
+                          <Mark className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[0.625rem]" />
                           <span className="sr-only">, {t.a11y.currentSection}</span>
                         </>
                       )}
@@ -79,7 +77,7 @@ export function SiteNav() {
             </ul>
           </nav>
 
-          {/* Dock surface at the top; on scroll it drops its fill like everything else in the bar. */}
+          {/* Dock surface at the top; on scroll it flattens to square corners while keeping a visible border as the primary conversion CTA. */}
           <div className="flex items-center gap-1.5 justify-self-end md:gap-2">
             <LanguageSwitcher scrolled={scrolled} />
             <Link
@@ -87,15 +85,15 @@ export function SiteNav() {
               aria-current={active === "contact" ? "location" : undefined}
               className={cn(
                 buttonVariants({ variant: "secondary", size: "sm" }),
-                "pointer-events-auto relative transition-[background-color,border-color,border-radius,color] duration-(--dur-component) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
-                scrolled && "rounded-none border-transparent bg-transparent hover:bg-raised hover:text-fg",
+                "pointer-events-auto relative px-3.5 transition-[background-color,border-color,border-radius,color] duration-(--dur-component) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse min-[360px]:px-4 sm:px-6",
+                scrolled && "rounded-none border-control bg-transparent text-fg hover:bg-raised hover:text-fg",
                 active === "contact" && "text-fg",
               )}
             >
               {letsTalkLabel}
               {active === "contact" && (
                 <>
-                  <Mark className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[0.75rem]" />
+                  <Mark className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[0.625rem]" />
                   <span className="sr-only">, {t.a11y.currentSection}</span>
                 </>
               )}
