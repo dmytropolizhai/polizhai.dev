@@ -9,7 +9,12 @@ export async function verifyTurnstile(
   fetchFn: typeof fetch = fetch,
 ): Promise<boolean> {
   const secret = env.TURNSTILE_SECRET_KEY?.trim();
-  if (!secret || !token.trim()) {
+  if (!secret) {
+    console.error("[turnstile] missing TURNSTILE_SECRET_KEY");
+    return false;
+  }
+  if (!token.trim()) {
+    console.error("[turnstile] empty turnstile token");
     return false;
   }
 
@@ -25,9 +30,16 @@ export async function verifyTurnstile(
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: body.toString(),
     });
-    if (!res.ok) return false;
-    const data = (await res.json()) as { success?: unknown };
-    return data?.success === true;
+    if (!res.ok) {
+      console.error("[turnstile] siteverify HTTP error:", res.status);
+      return false;
+    }
+    const data = (await res.json()) as { success?: unknown; "error-codes"?: unknown };
+    if (data?.success !== true) {
+      console.error("[turnstile] siteverify failed:", Array.isArray(data?.["error-codes"]) ? data["error-codes"].join(",") : "unknown");
+      return false;
+    }
+    return true;
   } catch (err) {
     console.error("[turnstile] siteverify error:", err instanceof Error ? err.message : "unknown");
     return false;

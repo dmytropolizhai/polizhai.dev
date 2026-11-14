@@ -86,7 +86,7 @@ export async function getTurnstileToken(
 
     widgetId = api.render(container, {
       sitekey: siteKey,
-      appearance: "interaction-only",
+      appearance: "always",
       theme: "dark",
       callback: (token: string) => {
         if (settled) return;
