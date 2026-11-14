@@ -200,7 +200,7 @@ export const facts = {
   ],
 
   sections: ["top", "work", "how", "journey", "about", "reviews", "contact"],
-  dock: ["work", "how", "journey", "about", "reviews", "contact"],
+  dock: ["how", "journey", "about", "reviews", "contact"],
 
   projects: {
     prolifts: {
