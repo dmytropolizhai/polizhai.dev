@@ -42,7 +42,7 @@ export function ClientQuote() {
               key={item.id}
               as="article"
               index={idx}
-              className="flex flex-col justify-between border border-line bg-surface p-(--space-8) transition-colors hover:border-line-strong"
+              className="flex flex-col justify-between rounded-card border border-line bg-surface p-(--space-8) transition-colors hover:border-line-strong"
             >
               <div>
                 <blockquote className="type-h3 font-medium tracking-tight text-fg break-words [text-wrap:pretty]">

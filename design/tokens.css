@@ -156,6 +156,7 @@
   --radius-xl: 0px;
   --radius-pill: var(--round-pill);
   --radius-panel: 1.25rem; /* the hero project canvas only (named exception to 0px) */
+  --radius-card: 1rem;
 
   --ease-move: var(--motion-move);
   --ease-arrive: var(--motion-arrive);

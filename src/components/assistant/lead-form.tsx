@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent, type RefObject } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import type { AssistantMessage } from "@/hooks/use-chat-stream";
 import { useSiteContent } from "@/lib/content-context";
@@ -30,6 +31,8 @@ export function LeadForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const arriveEase = [0.22, 1, 0.36, 1] as const;
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -97,82 +100,107 @@ export function LeadForm({
     }
   }
 
-  if (sent) {
-    return (
-      <div className="border border-line bg-raised p-4">
-        <p className="type-body text-fg">{copy.sent}</p>
-        <Button type="button" variant="secondary" size="sm" className="mt-3" onClick={onCancel}>
-          {t.common.close}
-        </Button>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 border border-line bg-raised p-4">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="type-label text-fg">{copy.title}</h3>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="min-h-6 cursor-pointer px-1 text-xs text-fg-muted underline-offset-4 hover:text-fg hover:underline"
+    <AnimatePresence mode="wait" initial={false}>
+      {sent ? (
+        <motion.div
+          key="lead-sent"
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.22, ease: arriveEase }}
+          className="rounded-card border border-line bg-raised p-4"
         >
-          {t.common.close}
-        </button>
-      </div>
+          <p className="type-body text-fg">{copy.sent}</p>
+          <Button type="button" variant="secondary" size="sm" className="mt-3" onClick={onCancel}>
+            {t.common.close}
+          </Button>
+        </motion.div>
+      ) : (
+        <motion.form
+          key="lead-form"
+          onSubmit={handleSubmit}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.22, ease: arriveEase }}
+          className="flex flex-col gap-3 rounded-card border border-line bg-raised p-4"
+        >
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="type-label text-fg">{copy.title}</h3>
+            <button
+              type="button"
+              onClick={onCancel}
+              className="min-h-6 cursor-pointer px-1 text-xs text-fg-muted underline-offset-4 transition-colors duration-(--dur-micro) hover:text-fg hover:underline"
+            >
+              {t.common.close}
+            </button>
+          </div>
 
-      <label htmlFor="lead-name" className="sr-only">
-        {copy.name}
-      </label>
-      <input
-        id="lead-name"
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder={copy.name}
-        maxLength={100}
-        className="w-full border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
-      />
+          <label htmlFor="lead-name" className="sr-only">
+            {copy.name}
+          </label>
+          <input
+            id="lead-name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder={copy.name}
+            maxLength={100}
+            className="w-full rounded-card border border-line bg-bg px-3 py-2 text-sm text-fg transition-[border-color] duration-(--dur-micro) ease-move placeholder:text-fg-subtle focus-visible:border-control focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
+          />
 
-      <label htmlFor="lead-contact" className="sr-only">
-        {copy.contact}
-      </label>
-      <input
-        id="lead-contact"
-        type="text"
-        value={contact}
-        onChange={(e) => setContact(e.target.value)}
-        placeholder={copy.contact}
-        maxLength={200}
-        required
-        className="w-full border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
-      />
+          <label htmlFor="lead-contact" className="sr-only">
+            {copy.contact}
+          </label>
+          <input
+            id="lead-contact"
+            type="text"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+            placeholder={copy.contact}
+            maxLength={200}
+            required
+            className="w-full rounded-card border border-line bg-bg px-3 py-2 text-sm text-fg transition-[border-color] duration-(--dur-micro) ease-move placeholder:text-fg-subtle focus-visible:border-control focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
+          />
 
-      <label htmlFor="lead-message" className="sr-only">
-        {copy.message}
-      </label>
-      <textarea
-        id="lead-message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder={copy.message}
-        maxLength={2000}
-        rows={3}
-        required
-        className="w-full resize-none border border-line bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
-      />
+          <label htmlFor="lead-message" className="sr-only">
+            {copy.message}
+          </label>
+          <textarea
+            id="lead-message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder={copy.message}
+            maxLength={2000}
+            rows={3}
+            required
+            className="w-full resize-none rounded-card border border-line bg-bg px-3 py-2 text-sm text-fg transition-[border-color] duration-(--dur-micro) ease-move placeholder:text-fg-subtle focus-visible:border-control focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse"
+          />
 
-      {error && (
-        <p role="alert" className="text-xs text-fg">
-          {error}
-        </p>
+          <AnimatePresence>
+            {error && (
+              <motion.p
+                key="lead-error"
+                role="alert"
+                initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 4 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.16, ease: arriveEase }}
+                className="text-xs text-fg"
+              >
+                {error}
+              </motion.p>
+            )}
+          </AnimatePresence>
+
+          <p className="text-sm text-fg-subtle">{copy.privacy}</p>
+
+          <Button type="submit" variant="primary" size="sm" disabled={submitting} className="self-start">
+            {copy.submit}
+          </Button>
+        </motion.form>
       )}
-
-      <p className="text-sm text-fg-subtle">{copy.privacy}</p>
-
-      <Button type="submit" variant="primary" size="sm" disabled={submitting} className="self-start">
-        {copy.submit}
-      </Button>
-    </form>
+    </AnimatePresence>
   );
 }

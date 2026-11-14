@@ -28,6 +28,7 @@ export function ProjectDialog({ id, onClose, finalFocusTarget }: Props) {
   return (
     <Dialog open={id !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
+        className="rounded-card"
         finalFocus={() => {
           if (!current) return true;
           return (finalFocusTarget ? finalFocusTarget(current) : document.getElementById(`work-${current}`)) ?? true;

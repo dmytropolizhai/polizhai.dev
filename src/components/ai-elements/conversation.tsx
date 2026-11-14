@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { UIMessage } from "ai";
 import { ArrowDownIcon, DownloadIcon } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { ComponentProps, ReactNode } from "react";
 import { useCallback } from "react";
 import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
@@ -76,27 +77,42 @@ export const ConversationScrollButton = ({
   ...props
 }: ConversationScrollButtonProps) => {
   const { isAtBottom, scrollToBottom } = useStickToBottomContext();
+  const prefersReducedMotion = useReducedMotion();
 
   const handleScrollToBottom = useCallback(() => {
     scrollToBottom();
   }, [scrollToBottom]);
 
   return (
-    !isAtBottom && (
-      <Button
-        className={cn(
-          "absolute bottom-4 left-1/2 size-11 -translate-x-1/2 rounded-pill border-line-strong bg-raised px-0 text-fg hover:bg-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
-          className
-        )}
-        onClick={handleScrollToBottom}
-        size="sm"
-        type="button"
-        variant="secondary"
-        {...props}
-      >
-        <ArrowDownIcon className="size-4" />
-      </Button>
-    )
+    <AnimatePresence>
+      {!isAtBottom && (
+        <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2">
+          <motion.div
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.92 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.18,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            <Button
+              className={cn(
+                "pointer-events-auto size-11 rounded-pill border-line-strong bg-raised px-0 text-fg hover:bg-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
+                className
+              )}
+              onClick={handleScrollToBottom}
+              size="sm"
+              type="button"
+              variant="secondary"
+              {...props}
+            >
+              <ArrowDownIcon className="size-4" />
+            </Button>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 };
 

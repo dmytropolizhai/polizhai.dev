@@ -45,7 +45,7 @@ export const Suggestion = ({
   return (
     <Button
       className={cn(
-        "cursor-pointer rounded-pill px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
+        "cursor-pointer rounded-pill px-4 transition-[transform,background-color,border-color] duration-(--dur-micro) ease-move active:scale-[0.97] motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse",
         className
       )}
       onClick={handleClick}
